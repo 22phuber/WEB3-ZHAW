@@ -15,4 +15,7 @@ riotjs/*
 # Ignore all local history of files
 .history
 
+# OS X
+.DS_Store
+
 # End of https://www.gitignore.io/api/visualstudiocode
