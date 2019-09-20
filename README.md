@@ -4,7 +4,7 @@ Projekt repository for the graded assignment of WEB3
 
 ## Get started with React project `issue-tracker`
 
-```
+```shell
 cd issue-tracker
 yarn install
 yarn start # Start server on localhost:3000
