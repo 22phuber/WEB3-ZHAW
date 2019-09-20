@@ -10,5 +10,5 @@ yarn install
 yarn start # Start server on localhost:3000
 ```
 
-Check also the (README.md)[issue-tracker/README.md] inside the `issue-tracker` folder
+Check also the [README.md](issue-tracker/README.md) inside the `issue-tracker` folder
 
