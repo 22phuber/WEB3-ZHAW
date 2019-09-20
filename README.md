@@ -12,7 +12,7 @@ yarn start # Start server on localhost:3000
 
 Check also the [README.md](issue-tracker/README.md) inside the `issue-tracker` folder
 
-## Learning react
+## Learning React
 
 * [React Docs](https://create-react-app.dev/docs/documentation-intro)
 
