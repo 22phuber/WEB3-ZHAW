@@ -22,3 +22,4 @@ Check also the [README.md](issue-tracker/README.md) inside the `issue-tracker` f
 * [React Tutorial 1: How to Get Started and How it Compares](https://www.toptal.com/react/react-tutorial-pt1)
 * [React Tutorial 2: Components, Hooks, and Performance](https://www.toptal.com/react/react-tutorial-pt2)
 * [Tutorial: Intro to React](https://reactjs.org/tutorial/tutorial.html)
+* [https://fullstackopen.com](https://fullstackopen.com/en/part0)
