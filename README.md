@@ -53,8 +53,7 @@ Once added you should only run `yarn install` to update latest added packages
 - CloseButton
 
 #### Modal
-- IssueModal
-- ProjectModal
+- Modal
 - DatePicker
 - PrioritySelector
 - TextInputField
@@ -64,11 +63,11 @@ To enable light and dark switch mode, set the changing attributes in .css classe
 <ComponentName>-light and <ComponentName>-dark, for example:
 
 ```css
-TextInputField-dark {
+.TextInputField-dark {
     background-color: rgba(65,62,62,0.9);
 }
 
-TextInputField-light {
+.TextInputField-light {
     background-color: rgba(242,241,241,1);
 }
 ```
