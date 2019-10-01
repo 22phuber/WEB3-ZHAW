@@ -1,19 +1,21 @@
-import React from 'react';
+import React, { useState } from "react";
 import logo from './logo.svg';
 import './App.css';
 import Header from './Header';
 import Button from './Button';
 
-const changeBackgroundColor = () => {
-  document.querySelector('header')
-  .style.backgroundColor = #121212;
-}
-
 function App() {
+
+  const [colourMode, setColourMode] = useState("light-mode");
+
+  const changeColourMode = () => {
+    setColourMode( colourMode === "dark-mode" ? "light-mode" : "dark-mode");
+  };
+
   return (
     <div className="App">
       <Header text="Example" />
-      <header className="App-header">
+      <header className={"App-header" + ' ' + colourMode}>
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -26,7 +28,8 @@ function App() {
         >
           Learn React
         </a>
-        <Button onClick={changeBackgroundColor()} text = "Change colour!" />
+        <Button onClick={() => changeColourMode()} 
+        text = {colourMode === "light-mode" ? "Change to dark mode" : "Change to light mode"} />
       </header>
     </div>
   );
