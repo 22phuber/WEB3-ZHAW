@@ -6,8 +6,6 @@ const ls = {
   get: () => "off"
 };
 
-
-
 const Header = ({ text }) => {
   const [status, setStatus] = useState(ls.get("list"));
   const setNewValue = value => {
