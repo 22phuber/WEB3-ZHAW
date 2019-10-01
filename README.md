@@ -39,7 +39,7 @@ Once added you should only run `yarn install` to update latest added packages
 - Time
 
 #### Main
-- Main
+- MainContainer
 - Tab
 - List
 
@@ -61,13 +61,14 @@ Once added you should only run `yarn install` to update latest added packages
 
 css is set using a file name equal to the component name.
 To enable light and dark switch mode, set the changing attributes in .css classes called:
-<ComponentName>_light and <ComponentName>_dark, for example:
+<ComponentName>-light and <ComponentName>-dark, for example:
+
 ```css
-TextInputField_dark {
+TextInputField-dark {
     background-color: rgba(65,62,62,0.9);
 }
 
-TextInputField_light {
+TextInputField-light {
     background-color: rgba(242,241,241,1);
 }
 ```
