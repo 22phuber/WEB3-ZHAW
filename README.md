@@ -37,9 +37,10 @@ Once added you should only run `yarn install` to update latest added packages
 
 ## Components: naming & css
 #### Header
-- TitleHeader
-- DateField
-- TimeField
+- HeaderContainer
+- Title
+- Date
+- Time
 
 #### Main
 - Main
@@ -58,6 +59,22 @@ Once added you should only run `yarn install` to update latest added packages
 #### Modal
 - IssueModal
 - ProjectModal
+- DatePicker
+- PrioritySelector
+- TextInputField
+
+css is set using a file name equal to the component name.
+To enable light and dark switch mode, set the changing attributes in .css classes called:
+<ComponentName>_light and <ComponentName>_dark, for example:
+```css
+TextInputField_dark {
+    background-color: rgba(65,62,62,0.9);
+}
+
+TextInputField_light {
+    background-color: rgba(242,241,241,1);
+}
+```
 
 # Learning React
 
