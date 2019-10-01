@@ -33,13 +33,12 @@ Once added you should only run `yarn install` to update latest added packages
 
 ## Components: naming & css
 #### Header
-- HeaderContainer
+- Header
 - Title
-- Date
-- Time
+- Clock
 
 #### Main
-- MainContainer
+- Main
 - Tab
 - List
 
