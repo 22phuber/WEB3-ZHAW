@@ -51,7 +51,7 @@ Once added you should only run `yarn install` to update latest added packages
 - AddButton
 - CloseButton
 
-#### Modal
+#### Modal
 - IssueModal
 - ProjectModal
 
