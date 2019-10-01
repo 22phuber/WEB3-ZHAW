@@ -18,6 +18,23 @@ npm install
 npm start
 ```
 
+This repository also makes usage of the following react packages:
+
+local-storage
+https://www.npmjs.com/package/local-storage
+ ```shell
+ npm install local-storage --save
+ ```
+
+React-FontAwesome
+https://github.com/FortAwesome/react-fontawesome
+```shell
+npm i --save @fortawesome/fontawesome-svg-core
+npm i --save @fortawesome/free-solid-svg-icons
+npm i --save @fortawesome/react-fontawesome
+```
+
+
 Check also the [README.md](issue-tracker/README.md) inside the `issue-tracker` folder
 
 ## Learning React
