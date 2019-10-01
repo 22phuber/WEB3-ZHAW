@@ -12,11 +12,12 @@ const Header = ({ text }) => {
     setStatus(value);
     ls.set(value);
   };
+
   console.log(text);
   return (
     <div className="header">
       Header {text} {status}{" "}
-      <Button onClick={() => setStatus(status === "on" ? "off" : "on")} text= "toggle" />
+      <Button onClick={() => setStatus(status === "on" ? "off" : "on")} text = "toggle" />
     </div>
   );
 };

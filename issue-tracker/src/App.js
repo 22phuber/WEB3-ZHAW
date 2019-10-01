@@ -2,6 +2,12 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Header from './Header';
+import Button from './Button';
+
+const changeBackgroundColor = () => {
+  document.querySelector('header')
+  .style.backgroundColor = #121212;
+}
 
 function App() {
   return (
@@ -20,6 +26,7 @@ function App() {
         >
           Learn React
         </a>
+        <Button onClick={changeBackgroundColor()} text = "Change colour!" />
       </header>
     </div>
   );
