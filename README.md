@@ -1,12 +1,8 @@
-# WEB3_Projekt
+# WEB3 ZHAW Project
 
-Projekt repository for the graded assignment of WEB3
+Project repository for the graded assignment of WEB3
 
-# Mockup & Components
-
-![Mockup and Components](assets/mockup.png)
-
-## Get started with React project `issue-tracker`
+# Get started with React project `issue-tracker`
 
 ```shell
 cd issue-tracker
@@ -14,29 +10,47 @@ yarn install
 yarn start # Start server on localhost:3000
 ```
 
-On windows, after installing node.js trough the respective [windows installer](https://nodejs.org/en/download/package-manager/#windows) (Make sure you are on TLS)
+- Check also the [README.md](issue-tracker/README.md) inside the `issue-tracker` folder
 
-```shell
-cd issue-tracker
-npm install
-npm start
-```
 
-Check also the [README.md](issue-tracker/README.md) inside the `issue-tracker` folder
+# Mockup & Components
 
-## Learning React
+![Mockup and Components](assets/mockup.png)
+
+## Components: naming & css
+#### Header
+- TitleHeader
+- DateField
+- TimeField
+
+#### Main
+- Main
+- Tab
+- List
+
+#### Footer
+- Footer
+- NightMode
+
+#### Buttons
+- Button
+- AddButton
+- CloseButton
+
+#### Modal
+- IssueModal
+- ProjectModal
+
+# Learning React
 
 * [React Docs](https://create-react-app.dev/docs/documentation-intro)
 
----------------------
 ### Tutorials
 
 * [React Tutorial 1: How to Get Started and How it Compares](https://www.toptal.com/react/react-tutorial-pt1)
 * [React Tutorial 2: Components, Hooks, and Performance](https://www.toptal.com/react/react-tutorial-pt2)
 * [Tutorial: Intro to React](https://reactjs.org/tutorial/tutorial.html)
 * [https://fullstackopen.com](https://fullstackopen.com/en/part0)
-
----------------------
 ### More specific articles
 
 * [Functional vs Class-Components in React](https://medium.com/@Zwenza/functional-vs-class-components-in-react-231e3fbd7108)
