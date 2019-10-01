@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Button from './Button';
 
 const ls = {
   set: () => {},
@@ -15,9 +16,7 @@ const Header = ({ text }) => {
   return (
     <div className="header">
       Header {text} {status}{" "}
-      <button onClick={() => setStatus(status === "on" ? "off" : "on")}>
-        toggle
-      </button>
+      <Button onClick={() => setStatus(status === "on" ? "off" : "on")} text= "toggle" />
     </div>
   );
 };
