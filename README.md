@@ -2,6 +2,10 @@
 
 Projekt repository for the graded assignment of WEB3
 
+# Mockup & Components
+
+![Mockup and Components](assets/mockup.png)
+
 ## Get started with React project `issue-tracker`
 
 ```shell
