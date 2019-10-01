@@ -14,14 +14,10 @@ yarn start # Start server on localhost:3000
 https://www.npmjs.com/package/local-storage
 ```shell
 yarn add local-storage --save
-yarn add @fortawesome/fontawesome-svg-core
-yarn add @fortawesome/free-solid-svg-icons
-yarn add @fortawesome/react-fontawesome
 ```
 ### Package: React-FontAwesome
 https://github.com/FortAwesome/react-fontawesome
 ```shell
-yarn add local-storage --save
 yarn add @fortawesome/fontawesome-svg-core
 yarn add @fortawesome/free-solid-svg-icons
 yarn add @fortawesome/react-fontawesome
@@ -56,7 +52,7 @@ Once added you should only run `yarn install` to update latest added packages
 - AddButton
 - CloseButton
 
-#### Modal
+#### Modal
 - IssueModal
 - ProjectModal
 - DatePicker
