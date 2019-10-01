@@ -10,13 +10,28 @@ yarn install
 yarn start # Start server on localhost:3000
 ```
 
-On windows, after installing node.js trough the respective [windows installer](https://nodejs.org/en/download/package-manager/#windows) (Make sure you are on TLS)
+## add dependecies like
 
+### local-storage
+https://www.npmjs.com/package/local-storage
 ```shell
-cd issue-tracker
-npm install
-npm start
+yarn add local-storage --save
+yarn add @fortawesome/fontawesome-svg-core
+yarn add @fortawesome/free-solid-svg-icons
+yarn add @fortawesome/react-fontawesome
 ```
+
+### React-FontAwesome
+https://github.com/FortAwesome/react-fontawesome
+```shell
+yarn add local-storage --save
+yarn add @fortawesome/fontawesome-svg-core
+yarn add @fortawesome/free-solid-svg-icons
+yarn add @fortawesome/react-fontawesome
+```
+
+### Install/Update packages/dependencies
+Once added you should only run `yarn install` to update latest added packages
 
 Check also the [README.md](issue-tracker/README.md) inside the `issue-tracker` folder
 
