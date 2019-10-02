@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Clock from '../clock/clock.component';
 
 import './header.styles.css';
