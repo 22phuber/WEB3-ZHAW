@@ -33,8 +33,7 @@ Once added you should only run `yarn install` to update latest added packages
 
 ## Components: naming & css
 #### Header
-- Header
-- Title
+- Header { property: appTitle }
 - Clock
 
 #### Main
