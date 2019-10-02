@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Header from './components/header/header.component';
+import Input from './components/input/input.component';
 
 
 function App() {
@@ -21,6 +22,10 @@ function App() {
         >
           Learn React
         </a>
+        <Input type={Input.types.email} id= {"emailId"} 
+        name={"emailName"} placeholder={"email@test.com"} required={"true"}/>
+        <Input type={Input.types.date} id= {"dateId"} 
+        name={"dateName"} required={"false"}/>
       </header>
     </div>
   );
