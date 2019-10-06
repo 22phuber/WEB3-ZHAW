@@ -23,9 +23,9 @@ function App() {
           Learn React
         </a>
         <Input type={Input.types.email} id= {"emailId"} 
-        name={"emailName"} placeholder={"email@test.com"} required={"true"}/>
+        name={"emailName"} placeholder={"email@test.com"} required={"true"} label={"email"}/>
         <Input type={Input.types.date} id= {"dateId"} 
-        name={"dateName"} required={"false"}/>
+        name={"dateName"} required={"false"} label={"date"}/>
       </header>
     </div>
   );
