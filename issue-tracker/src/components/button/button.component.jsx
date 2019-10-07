@@ -2,11 +2,18 @@ import React from "react";
 
 import './button.styles.css';
 
-const Button = ({ onClick, text }) => {
+const Button = (props) => {
   return (
-  <button className="Button btn btn-primary" onClick={onClick}>{text}</button>
+    <button 
+      id={props.elementId} 
+      className={"Button "+props.classes} 
+      type={props.type} 
+      disabled={props.disabled||false} 
+      name={props.name} 
+      onClick={props.clickHandler}>
+    {props.text}
+    </button>
   )
 }
-
 
 export default Button;
