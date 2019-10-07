@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Header from './components/header/header.component';
 import Input from './components/input/input.component';
+import Modal from './components/modal/modal.component';
 
 
 function App() {
@@ -23,9 +24,10 @@ function App() {
           Learn React
         </a>
         <Input type={Input.types.email} id= {"emailId"} 
-        name={"emailName"} placeholder={"email@test.com"} required={"true"}/>
+        name={"emailName"} placeholder={"email@test.com"} required={"true"} label={"email"}/>
         <Input type={Input.types.date} id= {"dateId"} 
-        name={"dateName"} required={"false"}/>
+        name={"dateName"} required={"false"} label={"date"}/>
+        <Modal show={false}/>
       </header>
     </div>
   );

@@ -9,7 +9,7 @@ const types = {
   color: 'color',
   date: 'date',
   datetimelocal: 'datetime-local',
-  email:'email',
+  email: 'email',
   file: 'file',
   hidden: 'hidden',
   image: 'image',
@@ -30,8 +30,11 @@ const types = {
 
 const Input = props => {
   return (
-      <input type={props.type} id={props.id} name={props.name} 
-      placeholder={props.placeholder} required={props.required||false}/>
+    <>
+      <label for={props.id}>{props.label}</label>
+      <input type={props.type} id={props.id} name={props.name}
+        placeholder={props.placeholder} required={props.required || false} />
+    </>
   );
 }
 
