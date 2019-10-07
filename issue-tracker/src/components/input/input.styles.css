@@ -1,3 +1,8 @@
 .Input {
     position: relative;
 }
+
+.Label {
+    text-align: left;
+    margin-right:15px;
+}

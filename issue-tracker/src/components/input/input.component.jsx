@@ -30,11 +30,11 @@ const types = {
 
 const Input = props => {
   return (
-    <>
-      <label for={props.id}>{props.label}</label>
-      <input type={props.type} id={props.id} name={props.name}
+    <div className="SingleInput">
+      <label className="Label" for={props.id}>{props.label}</label>
+      <input className="Input" type={props.type} id={props.id} name={props.name}
         placeholder={props.placeholder} required={props.required || false} />
-    </>
+    </div>
   );
 }
 
