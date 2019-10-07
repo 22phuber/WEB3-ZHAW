@@ -9,7 +9,7 @@ const
 var server = http.createServer(function(request, response) {
     var uri = url.parse(request.url).pathname,
         filename = path.join(process.cwd(), uri);
-    console.log("Serving: " + filename);
+    console.log("Accesslog: " + filename);
 
     fs.stat(filename, function(err, stats) {
         if (err) {
@@ -40,5 +40,5 @@ var server = http.createServer(function(request, response) {
 });
 
 server.listen(8080, function(){
-    console.log('ready captain!');
+    console.log('issue-treacker mockup server ready!');
 });
