@@ -28,10 +28,10 @@ function App() {
         <Form action={"https://dublin.zhaw.ch/~bkrt/cgi/showenv.cgi"} method={"POST"}
           children={
             <>
-              <Input type={Input.types.email} id={"emailId"}
+              <Input type={Input.types.email} id={"emailId"} autocomplete={"off"}
                 name={"emailName"} placeholder={"email@test.com"} required={"true"} label={"email"} />
               <Input type={Input.types.date} id={"dateId"}
-                name={"dateName"} required={"false"} label={"date"} />
+                name={"dateName"} required={"false"} label={"date"} autocomplete={"off"} />
               <Input type={Input.types.submit} id={"submit"} name={"submit"} value={"send"} />
             </>
           } />

@@ -33,8 +33,8 @@ const Input = props => {
     <div className="SingleInput">
       <label className="Label" for={props.id}>{props.label}</label>
       <input className="Input" type={props.type} id={props.id} name={props.name}
-        placeholder={props.placeholder} required={props.required || false}
-        value={props.value} />
+        placeholder={props.placeholder} required={props.required || false} 
+        autocomplete={props.autocomplete || "on"} value={props.value} />
     </div>
   );
 }
