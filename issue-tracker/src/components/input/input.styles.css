@@ -1,8 +1,17 @@
 .Input {
     position: relative;
+    padding: 2px;
+    width: 350px;
 }
 
 .Label {
     text-align: left;
-    margin-right:15px;
+    clear: left; 
+    width: 120px;
+    display: block;
+}
+
+.Label, .Input {
+    color: black;
+    float: left;
 }

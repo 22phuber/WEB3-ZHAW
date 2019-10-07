@@ -5,6 +5,7 @@ import Header from './components/header/header.component';
 import Input from './components/input/input.component';
 import Modal from './components/modal/modal.component';
 import Form from './components/form/form.component';
+import Popup from './components/popup/popup.component';
 
 
 function App() {
@@ -24,17 +25,7 @@ function App() {
         >
           Learn React
         </a>
-        <Modal show={false} />
-        <Form action={"https://dublin.zhaw.ch/~bkrt/cgi/showenv.cgi"} method={"POST"}
-          children={
-            <>
-              <Input type={Input.types.email} id={"emailId"} autocomplete={"off"}
-                name={"emailName"} placeholder={"email@test.com"} required={"true"} label={"email"} />
-              <Input type={Input.types.date} id={"dateId"}
-                name={"dateName"} required={"false"} label={"date"} autocomplete={"off"} />
-              <Input type={Input.types.submit} id={"submit"} name={"submit"} value={"send"} />
-            </>
-          } />
+        <Popup title="Add Information!" show={true} />
       </header>
     </div>
   );

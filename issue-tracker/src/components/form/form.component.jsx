@@ -4,7 +4,7 @@ import './form.styles.css';
 
 const Form = props => {
     return (
-      <form action={props.action} method={props.method}>
+      <form className={"Form"} action={props.action} method={props.method}>
         {props.children}
       </form>
     );
