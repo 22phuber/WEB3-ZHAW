@@ -1,18 +1,13 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Header from './Header';
-import Button from './Button';
-
-const changeBackgroundColor = () => {
-  document.querySelector('header')
-  .style.backgroundColor = #121212;
-}
+import Header from './components/header/header.component';
+import Button from './components/button/button.component';
 
 function App() {
   return (
     <div className="App">
-      <Header text="Example" />
+      <Header appTitle="Yet another issue tracker" />
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -23,10 +18,18 @@ function App() {
           href="https://reactjs.org"
           target="_blank"
           rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <Button onClick={changeBackgroundColor()} text = "Change colour!" />
+        >Learn React</a>
+
+        <Button
+          elementId="myDamnButton"
+          classes="btn btn-primary"
+          type="button"
+          name="myTestButton"
+          clickHandler={e => alert("button clicked" )}
+          text="click me"
+          disabled={false}
+        />
+
       </header>
     </div>
   );
