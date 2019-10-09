@@ -2,6 +2,10 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Header from './components/header/header.component';
+import Input from './components/input/input.component';
+import Modal from './components/modal/modal.component';
+import Form from './components/form/form.component';
+import Popup from './components/popup/popup.component';
 import Button from './components/button/button.component';
 
 function App() {
@@ -18,8 +22,9 @@ function App() {
           href="https://reactjs.org"
           target="_blank"
           rel="noopener noreferrer"
-        >Learn React</a>
-
+        >
+          Learn React
+        </a>
         <Button
           elementId="myDamnButton"
           classes="btn btn-primary"
@@ -29,7 +34,7 @@ function App() {
           text="click me"
           disabled={false}
         />
-
+        <Popup title="Add Information!" show={true} />
       </header>
     </div>
   );
