@@ -6,7 +6,7 @@ import Input from './components/input/input.component';
 import Modal from './components/modal/modal.component';
 import Form from './components/form/form.component';
 import Popup from './components/popup/popup.component';
-
+import Button from './components/button/button.component';
 
 function App() {
   return (
@@ -25,6 +25,15 @@ function App() {
         >
           Learn React
         </a>
+        <Button
+          elementId="myDamnButton"
+          classes="btn btn-primary"
+          type="button"
+          name="myTestButton"
+          clickHandler={e => alert("button clicked" )}
+          text="click me"
+          disabled={false}
+        />
         <Popup title="Add Information!" show={true} />
       </header>
     </div>
