@@ -18,13 +18,13 @@ const Popup = props => {
             children={
               <>
                 <Input type={Input.types.email} id={"emailId"} autocomplete={"off"}
-                  name={"emailName"} placeholder={"email@test.com"} required={"true"} label={"email"} />
+                  name={"emailName"} placeholder={"email@test.com"} required={true} label={"email"} />
                 <Input type={Input.types.date} id={"dateId"}
-                  name={"dateName"} required={"false"} label={"date"} autocomplete={"off"} />
+                  name={"dateName"} required={false} label={"date"} autocomplete={"off"} />
                   <Input type={Input.types.email} id={"secondEmail"} autocomplete={"off"}
-                  name={"emailName"} placeholder={"email@test.com"} required={"true"} label={"email"} />
+                  name={"emailName"} placeholder={"email@test.com"} required={true} label={"email"} />
                 <Input type={Input.types.date} id={"secondDateId"}
-                  name={"dateName"} required={"false"} label={"date"} autocomplete={"off"} />
+                  name={"dateName"} required={false} label={"date"} autocomplete={"off"} />
                 <Input type={Input.types.submit} id={"submit"} name={"submit"} value={"send"} />
               </>
             } />
