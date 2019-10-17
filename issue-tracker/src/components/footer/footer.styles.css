@@ -1,9 +1,24 @@
-.Footer {
-    width: 100%;
-    height: 50px;
+footer[class^="Footer"] {
+    padding: 0;
+    margin: 0;
     position: absolute; 
     left: 0 ; 
     right: 0; 
     bottom: 0; 
-    background-color: rgba(168, 168, 168, 04);
+}
+
+.Footer-dark {
+    background-color: rgba(168, 168, 168, 0.4);
+}
+
+.Footer-light {
+    background-color: rgba(168, 168, 168, 0.1);
+}
+
+footer > label {
+    padding: 10px;
+    margin: 0;
+    position: relative;
+    float: right;
+    right: 20px;
 }

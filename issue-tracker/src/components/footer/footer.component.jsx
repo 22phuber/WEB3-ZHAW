@@ -4,13 +4,17 @@ import Switch from '@material-ui/core/Switch';
 
 import './footer.styles.css';
 
-const Footer = ({ props }) => {;
+const Footer = props => {;
 
     return (
-      <footer className="Footer">
-        <FormControlLabel
+      <footer className={"Footer" + props.colourMode}>
+        <FormControlLabel 
             value="start"
-            control={<Switch color="primary" />}
+            control={<Switch 
+                      color="primary" 
+                      checked={props.checked || false}
+                      onChange={props.onChange} 
+                    />}
             label="Nightmode"
             labelPlacement="start"
           />
