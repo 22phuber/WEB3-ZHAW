@@ -18,6 +18,10 @@ function App() {
       }
   }
 
+  //Needed to block touch on iOS devices
+  App.ontouchstart = (e) => {
+    e.preventDefault();
+  }
 
   return (
     <div className="App">
