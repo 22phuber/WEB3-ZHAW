@@ -1,13 +1,19 @@
 import React from "react";
-import Button from '../button/button.component';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 
-import './Footer.styles.css';
+import './footer.styles.css';
 
-const Footer = ({ myProperty }) => {;
+const Footer = ({ props }) => {;
 
     return (
-      <footer>
-
+      <footer className="Footer">
+        <FormControlLabel
+            value="start"
+            control={<Switch color="primary" />}
+            label="Nightmode"
+            labelPlacement="start"
+          />
       </footer>
     );
 };
