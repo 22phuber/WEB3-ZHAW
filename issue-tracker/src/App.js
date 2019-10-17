@@ -9,6 +9,7 @@ function App() {
     <div className="App">
       <Header appTitle="Yet another issue tracker" />
       <Main />
+      <Footer />
     </div>
   );
 }
