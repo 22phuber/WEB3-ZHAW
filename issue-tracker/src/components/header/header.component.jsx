@@ -3,10 +3,10 @@ import Clock from '../clock/clock.component';
 
 import './header.styles.css';
 
-const Header = ({ appTitle }) => {
+const Header = props => {
   return (
-    <div className="Header text-left d-flex justify-content-between align-items-center">
-        <h1 className="">{appTitle}</h1> 
+    <div className={"Header" + props.colourMode}>
+        <h1 className="">{props.appTitle}</h1> 
         <Clock className="" />
     </div>
   );

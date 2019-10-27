@@ -1,5 +1,17 @@
-.Header {
+[class^="Header"] {
     width: 100%;
     padding: 10px;
     position: relative;
+    text-align:  text-left;
+    align-items: center;
+    flex: 1;
+    justify-content: space-between;
+}
+
+.Header-dark {
+    background-color: rgba(168, 168, 168, 0.4);
+}
+
+.Header-light {
+    background-color: rgba(168, 168, 168, 0.1);
 }
