@@ -1,42 +1,40 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import PropTypes from "prop-types";
 
-import Tab from '../tab/tab.component';
+import Tab from "../tab/tab.component";
 
-import './tabs.styles.css';
+import "./tabs.styles.css";
 
 class Tabs extends Component {
   static propTypes = {
-    children: PropTypes.instanceOf(Array).isRequired,
-  }
+    children: PropTypes.instanceOf(Array).isRequired
+  };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      activeTab: this.props.children[0].props.label,
+      activeTab: this.props.children[0].props.label
     };
   }
 
-  onClickTabItem = (tab) => {
+  onClickTabItem = tab => {
     this.setState({ activeTab: tab });
-  }
+  };
 
   render() {
     const {
       onClickTabItem,
-      props: {
-        children,
-      },
-      state: {
-        activeTab,
-      }
+      props: { children },
+      state: { activeTab }
     } = this;
 
     return (
       <div className="Tabs">
         <ol className="tab-list">
-          {children.map((child) => {
+          {children.map(child => {
             const { label } = child.props;
 
             return (
@@ -48,9 +46,12 @@ class Tabs extends Component {
               />
             );
           })}
+          <li className="tab-list-item" onClick={() => alert("Add Project")}>
+            <FontAwesomeIcon icon={faPlus} />
+          </li>
         </ol>
         <div className="tab-content">
-          {children.map((child) => {
+          {children.map(child => {
             if (child.props.label !== activeTab) return undefined;
             return child.props.children;
           })}
