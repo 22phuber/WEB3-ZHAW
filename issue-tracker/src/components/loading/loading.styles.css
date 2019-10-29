@@ -1,0 +1,10 @@
+.Loading {
+    font-size: 60px;
+    color: #333333;
+}
+
+.Loading p{
+    z-index: 120;
+    padding: 15px;
+    background-color: white;
+}
