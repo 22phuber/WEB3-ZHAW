@@ -16,44 +16,51 @@ class Main extends Component {
   }
 
   componentDidMount() {
-    // if (
-    //   localStorage.getItem(client_uuid) &&
-    //   localStorage.getItem(client_uuid) !== ""
-    // ) {
-    //   const projectIds = localStorage
-    //     .getItem(client_uuid)
-    //     .split(",")
-    //     .filter(Boolean)
-    //     .map(Number);
+    if (
+      localStorage.getItem(client_uuid) &&
+      localStorage.getItem(client_uuid) !== ""
+    ) {
+      const projectIds = localStorage
+        .getItem(client_uuid)
+        .split(",")
+        .filter(Boolean)
+        .map(Number);
 
-    //   const promises = projectIds.map(id =>
-    //     fetch(herokuApi.projects + "/" + id)
-    //   );
+      const promises = projectIds.map(id =>
+        fetch(herokuApi.projects + "/" + id)
+      );
 
-    //   Promise.all(promises)
-    //     .then(res => {
-    //       const responses = res.map(response => response.json());
-    //       return Promise.all(responses);
-    //     })
-    //     .then(data => {
-    //       this.setState({ data: data });
-    //     });
-    // }
+      Promise.all(promises)
+        .then(res => {
+          const responses = res.map(response => response.json());
+          return Promise.all(responses);
+        })
+        .then(data => {
+          this.setState({ data: data });
+        });
+    }
   }
 
   render() {
     const { data } = this.state;
-    return (
-      <div className="Main">
-        {/* <Tabs>
-          {data.map(project => (
-            <div key={project.id} label={project.title}>
-              <Issues project={project.title} issues={project.issues} />
-            </div>
-          ))}
-        </Tabs> */}
-      </div>
-    );
+    if (data) {
+      return (
+        <div className="Main">
+          <Tabs>
+            {data.map(project => (
+              <div key={project.id} label={project.title}>
+                <Issues project={project.title} projectId={project.id}/>
+              </div>
+            ))}
+          </Tabs>
+        </div>
+      );
+    } else {
+      return (
+        <div className="Main">
+        </div>
+      );
+    }
   }
 }
 

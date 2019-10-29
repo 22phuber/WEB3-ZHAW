@@ -3,7 +3,7 @@ var now = new Date();
 const currentISOTimeStamp = now.toISOString();
 // due dates
 var dueDate = new Date();
-dueDate.setDate(dueDate.getDate() + Math.floor(Math.random() * 21) );
+dueDate.setDate(dueDate.getDate() + Math.floor(Math.random() * 21));
 const dueDateISOTimeStamp = dueDate.toISOString();
 
 // UUID for API client_id
@@ -33,41 +33,41 @@ const herokuApi = {
   ],
   issue_payload: [
     {
-        "done": false,
-        "due_date": dueDateISOTimeStamp,
-        "created_at": currentISOTimeStamp,
-        "updated_at": currentISOTimeStamp,
-        "title": null,
-        "project_client_id": client_uuid,
-        "priority": null,
-        "id": 0,
-        "client_id": client_uuid,
-        "project_id": 0
-      },
-      {
-        "done": false,
-        "due_date": dueDateISOTimeStamp,
-        "created_at": currentISOTimeStamp,
-        "updated_at": currentISOTimeStamp,
-        "title": null,
-        "project_client_id": client_uuid,
-        "priority": null,
-        "id": 0,
-        "client_id": client_uuid,
-        "project_id": 0
-      },
-      {
-        "done": true,
-        "due_date": dueDateISOTimeStamp,
-        "created_at": currentISOTimeStamp,
-        "updated_at": currentISOTimeStamp,
-        "title": null,
-        "project_client_id": client_uuid,
-        "priority": null,
-        "id": 0,
-        "client_id": client_uuid,
-        "project_id": 0
-      }
+      done: false,
+      due_date: dueDateISOTimeStamp,
+      created_at: currentISOTimeStamp,
+      updated_at: currentISOTimeStamp,
+      title: null,
+      project_client_id: client_uuid,
+      priority: null,
+      id: 0,
+      client_id: client_uuid,
+      project_id: 0
+    },
+    {
+      done: false,
+      due_date: dueDateISOTimeStamp,
+      created_at: currentISOTimeStamp,
+      updated_at: currentISOTimeStamp,
+      title: null,
+      project_client_id: client_uuid,
+      priority: null,
+      id: 0,
+      client_id: client_uuid,
+      project_id: 0
+    },
+    {
+      done: true,
+      due_date: dueDateISOTimeStamp,
+      created_at: currentISOTimeStamp,
+      updated_at: currentISOTimeStamp,
+      title: null,
+      project_client_id: client_uuid,
+      priority: null,
+      id: 0,
+      client_id: client_uuid,
+      project_id: 0
+    }
   ]
 };
 
@@ -82,6 +82,7 @@ var generateID = function() {
 };
 
 async function initializeIssueTrackerData() {
+  // Create projects
   herokuApi.project_payload.forEach(async payload => {
     try {
       const response = await fetch(herokuApi.projects, {
@@ -109,6 +110,38 @@ async function initializeIssueTrackerData() {
     } catch (error) {
       console.error(error);
     }
+  });
+
+  const projectIds = localStorage
+    .getItem(client_uuid)
+    .split(",")
+    .filter(Boolean)
+    .map(Number);
+  // Create issues for projects
+  projectIds.forEach(id => {
+    console.log(id);
+    herokuApi.issue_payload.forEach(async payload => {
+      try {
+        const response = await fetch(
+          herokuApi.projects + "/" + id + "/issues",
+          {
+            method: "POST",
+            headers: {
+              Accept: herokuApi.contentType,
+              "Content-Type": herokuApi.contentType
+            },
+            body: JSON.stringify({
+              ...payload,
+              title: "Issue-" + generateID()
+            })
+          }
+        );
+        const responseJson = await response.json();
+        console.log(responseJson);
+      } catch (error) {
+        console.error(error);
+      }
+    });
   });
 }
 
@@ -176,8 +209,4 @@ const PROJECT_DATA = [
   }
 ];
 
-export {
-    PROJECT_DATA,
-    client_uuid,
-    herokuApi
-};
+export { PROJECT_DATA, client_uuid, herokuApi };
