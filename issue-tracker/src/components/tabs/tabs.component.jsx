@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import Tab from "../tab/tab.component";
 
 import "./tabs.styles.css";
+import NewProjectPopup from "../newProjectPopup/newProjectPopup.component";
 
 class Tabs extends Component {
   static propTypes = {
@@ -16,13 +17,25 @@ class Tabs extends Component {
     super(props);
 
     this.state = {
-      activeTab: this.props.children[0].props.label 
+      activeTab: this.props.children[0].props.label,
+      showPopup: false
     };
   }
 
+  setPopupState = value => {
+    this.setState({
+      showPopup: value
+    });
+  }
+
   onClickAddProject = () => {
-    alert("Frodo was here!");
+    this.setPopupState(true);
   };
+
+  createNewProject = (data) => {
+    this.setPopupState(false);
+    console.log(data);
+  }
 
   onClickTabItem = tab => {
     this.setState({ activeTab: tab });
@@ -44,12 +57,18 @@ class Tabs extends Component {
               const { label } = child.props;
 
               return (
-                <Tab
-                  activeTab={activeTab}
-                  key={label}
-                  label={label}
-                  onClick={onClickTabItem}
-                />
+                <>
+                  <Tab
+                    activeTab={activeTab}
+                    key={label}
+                    label={label}
+                    onClick={onClickTabItem}
+                  />
+                  <NewProjectPopup show={this.state.showPopup} title={"New Project"}
+                    onCloseRequest={() => this.setPopupState(false)}
+                    onNewProjectCreated={this.createNewProject}
+                  />
+                </>
               );
             })}
             <li className="tab-list-item" onClick={onClickAddProject}>
@@ -67,6 +86,10 @@ class Tabs extends Component {
     } else {
       return (
         <div className="Tabs">
+          <NewProjectPopup show={this.state.showPopup} title={"New Project"}
+            onCloseRequest={() => this.setPopupState(false)}
+            onNewProjectCreated={this.createNewProject}
+          />
           <ol className="tab-list">
             <li className="tab-list-item" onClick={onClickAddProject}>
               <FontAwesomeIcon icon={faPlus} />

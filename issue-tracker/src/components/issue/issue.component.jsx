@@ -9,7 +9,7 @@ const Issue = ({ issue }) => {
   if (issue) {
     return (
       <div key={issue.id} className="Issue">
-        <input type="checkbox" checked={issue.done} />
+        <input type="checkbox" defaultChecked={issue.done} />
         <div>{issue.title}</div>
         <div>{issue.priority}</div>
         <div>{issue.due_date}</div>
