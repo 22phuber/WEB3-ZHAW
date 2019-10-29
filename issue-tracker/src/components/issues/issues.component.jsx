@@ -29,7 +29,7 @@ class Issues extends Component {
     });
   }
 
-  componentDidMount() {
+  fetchIssues() {
     if (
       localStorage.getItem(client_uuid) &&
       localStorage.getItem(client_uuid) !== ""
@@ -44,6 +44,10 @@ class Issues extends Component {
         .then(response => response.json())
         .then(data => this.setState({ issues: data }));
     }
+  }
+
+  componentDidMount() {
+    this.fetchIssues();
   }
 
   render() {

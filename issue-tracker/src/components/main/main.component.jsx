@@ -15,7 +15,7 @@ class Main extends Component {
     };
   }
 
-  componentDidMount() {
+  fetchProjects() {
     if (
       localStorage.getItem(client_uuid) &&
       localStorage.getItem(client_uuid) !== ""
@@ -39,6 +39,10 @@ class Main extends Component {
           this.setState({ data: data });
         });
     }
+  }
+
+  componentDidMount() {
+    this.fetchProjects();
   }
 
   render() {
