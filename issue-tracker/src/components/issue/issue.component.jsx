@@ -7,7 +7,6 @@ import "./issue.styles.css";
 
 const Issue = ({ issue }) => {
   if (issue) {
-    console.log(issue);
     return (
       <div key={issue.id} className="Issue">
         <input type="checkbox" checked={issue.done} />
