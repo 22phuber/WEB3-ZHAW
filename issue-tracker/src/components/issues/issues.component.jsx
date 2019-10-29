@@ -29,6 +29,12 @@ class Issues extends Component {
     });
   }
 
+  createdNewIssue = (data) => {
+    this.setPopupState(false);
+    console.log(data);
+    this.fetchIssues();
+  }
+
   fetchIssues() {
     if (
       localStorage.getItem(client_uuid) &&
@@ -58,6 +64,7 @@ class Issues extends Component {
         <div className="Issues">
           <NewIssuePopup show={this.state.showPopup} title={"New issue"}
             onCloseRequest={() => this.setPopupState(false)}
+            onNewIssueCreated={this.createdNewIssue}
           />
           <h1>Issues</h1>
           <div>

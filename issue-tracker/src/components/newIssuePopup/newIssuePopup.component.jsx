@@ -10,6 +10,7 @@ import Button from "../button/button.component";
 import '../input/input.styles.css';
 
 const NewIssuePopup = props => {
+
   if (props.show) {
     return (
       <>
@@ -19,14 +20,14 @@ const NewIssuePopup = props => {
           <Button buttonText={<FontAwesomeIcon icon={faTimes} />}
             clickHandler={props.onCloseRequest} />
           <hr />
-          <Form action={"https://dublin.zhaw.ch/~bkrt/cgi/showenv.cgi"} method={"POST"}
+          <Form newIssueData={props.onNewIssueCreated}
             children={
               <>
                 <Input type={Input.types.title} id={"issueTitle"} autocomplete={"off"}
                   name={"issueTitle"} placeholder={"Name of new Issue"} required={true} label={"Title"} />
-                <label className="Label">Priority</label>
+                <label className="Label" htmlFor="issuePriority">Priority</label>
                 <div className="SingleInput">
-                  <select id="issuePriority" className="Input">
+                  <select id="issuePriority" name="issuePriority" className="Input" required={true}>
                     <option value="1">High</option>
                     <option value="2">Medium</option>
                     <option value="3">Low</option>
