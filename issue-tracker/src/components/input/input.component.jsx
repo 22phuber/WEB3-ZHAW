@@ -22,7 +22,8 @@ const types = {
   search: 'search',
   submit: 'submit',
   tel: 'tel',
-  test: 'text',
+  text: 'text',
+  title: 'text',
   time: 'time',
   url: 'url',
   week: 'week'
