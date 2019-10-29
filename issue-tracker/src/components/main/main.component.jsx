@@ -4,7 +4,7 @@ import Issues from "../issues/issues.component";
 
 import "./main.styles.css";
 
-import { PROJECT_DATA, client_uuid, herokuApi } from "../../data/project.data";
+import { client_uuid, herokuApi } from "../../data/project.data";
 
 class Main extends Component {
   constructor(props) {
