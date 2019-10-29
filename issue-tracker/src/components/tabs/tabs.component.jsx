@@ -34,7 +34,7 @@ class Tabs extends Component {
 
   createNewProject = (data) => {
     this.setPopupState(false);
-    console.log(data);
+    this.props.createRemoteProject(data);
   }
 
   onClickTabItem = tab => {
@@ -53,22 +53,21 @@ class Tabs extends Component {
       return (
         <div className="Tabs">
           <ol className="tab-list">
-            {children.map(child => {
+            {children.map((child,index) => {
               const { label } = child.props;
-
               return (
-                <>
+                <span key={index}>
                   <Tab
                     activeTab={activeTab}
                     key={label}
                     label={label}
                     onClick={onClickTabItem}
                   />
-                  <NewProjectPopup show={this.state.showPopup} title={"New Project"}
+                  <NewProjectPopup key={label+'-'+index} show={this.state.showPopup} title={"New Project"}
                     onCloseRequest={() => this.setPopupState(false)}
                     onNewProjectCreated={this.createNewProject}
                   />
-                </>
+                </span>
               );
             })}
             <li className="tab-list-item" onClick={onClickAddProject}>
@@ -76,7 +75,7 @@ class Tabs extends Component {
             </li>
           </ol>
           <div className="tab-content">
-            {children.map(child => {
+            {children.map((child) => {
               if (child.props.label !== activeTab) return undefined;
               return child.props.children;
             })}
@@ -95,7 +94,7 @@ class Tabs extends Component {
               <FontAwesomeIcon icon={faPlus} />
             </li>
           </ol>
-          <div className="tab-content">&nbsp;</div>
+          <div className="tab-content"><p>To start: create a project with the "+" and add issues...</p></div>
         </div>
       );
     }

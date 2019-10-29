@@ -29,15 +29,15 @@ class Issues extends Component {
   createdNewIssue = data => {
     this.setPopupState(false);
     this.createRemoteIssue(data);
-    this.fetchIssues();
+    this.fetchRemoteIssues();
   };
 
-  createRemoteIssue(data) {
+  createRemoteIssue(issueData) {
     // current
     var now = new Date();
     const currentISOTimeStamp = now.toISOString();
     // due date
-    var due = new Date(data.dueDate);
+    var due = new Date(issueData.dueDate);
     const dueISOTimeStamp = due.toISOString();
 
     fetch(herokuApi.projects + "/" + this.state.projectid + "/issues", {
@@ -48,19 +48,19 @@ class Issues extends Component {
       },
       body: JSON.stringify({
         ...payloads.issue,
-        title: data.issueTitle,
+        title: issueData.issueTitle,
         due_date: dueISOTimeStamp,
         created_at: currentISOTimeStamp,
         updated_at: currentISOTimeStamp,
-        priority: data.issuePriority
+        priority: issueData.issuePriority
       })
     })
       .then(response => response.json())
-      .then(this.fetchIssues())
+      .then(this.fetchRemoteIssues())
       .catch(error => console.log(error));
   }
 
-  fetchIssues() {
+  fetchRemoteIssues() {
     if (
       localStorage.getItem(client_uuid) &&
       localStorage.getItem(client_uuid) !== ""
@@ -79,7 +79,7 @@ class Issues extends Component {
   }
 
   componentDidMount() {
-    this.fetchIssues();
+    this.fetchRemoteIssues();
   }
 
   render() {
@@ -99,7 +99,7 @@ class Issues extends Component {
           />
           <h1>Issues</h1>
           <div>
-            Issue count {issues.length || "0"} for {projectid}
+            <p>Issue count {issues.length || "0"} for {projectid}</p>
           </div>
           <div>
             {issues.map(issue => (
