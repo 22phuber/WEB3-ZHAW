@@ -91,7 +91,7 @@ class Main extends Component {
         <div className="Main">
           <Tabs createRemoteProject={this.createRemoteProject}>
             {data.map((project,index) => (
-              <div key={project.id} label={project.title}>
+              <div key={project.id} label={project.title} projectId={project.id}>
                 <Issues key={project.id+'-'+index} project={project.title} projectId={project.id} />
               </div>
             ))}

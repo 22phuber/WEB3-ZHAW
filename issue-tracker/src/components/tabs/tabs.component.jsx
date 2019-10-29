@@ -26,16 +26,16 @@ class Tabs extends Component {
     this.setState({
       showPopup: value
     });
-  }
+  };
 
   onClickAddProject = () => {
     this.setPopupState(true);
   };
 
-  createNewProject = (data) => {
+  createNewProject = data => {
     this.setPopupState(false);
     this.props.createRemoteProject(data);
-  }
+  };
 
   onClickTabItem = tab => {
     this.setState({ activeTab: tab });
@@ -53,17 +53,21 @@ class Tabs extends Component {
       return (
         <div className="Tabs">
           <ol className="tab-list">
-            {children.map((child,index) => {
-              const { label } = child.props;
+            {children.map((child, index) => {
+              const { label, projectId } = child.props;
               return (
                 <span key={index}>
                   <Tab
+                    projectId={projectId}
                     activeTab={activeTab}
                     key={label}
                     label={label}
                     onClick={onClickTabItem}
                   />
-                  <NewProjectPopup key={label+'-'+index} show={this.state.showPopup} title={"New Project"}
+                  <NewProjectPopup
+                    key={label + "-" + index}
+                    show={this.state.showPopup}
+                    title={"New Project"}
                     onCloseRequest={() => this.setPopupState(false)}
                     onNewProjectCreated={this.createNewProject}
                   />
@@ -75,7 +79,7 @@ class Tabs extends Component {
             </li>
           </ol>
           <div className="tab-content">
-            {children.map((child) => {
+            {children.map(child => {
               if (child.props.label !== activeTab) return undefined;
               return child.props.children;
             })}
@@ -85,7 +89,9 @@ class Tabs extends Component {
     } else {
       return (
         <div className="Tabs">
-          <NewProjectPopup show={this.state.showPopup} title={"New Project"}
+          <NewProjectPopup
+            show={this.state.showPopup}
+            title={"New Project"}
             onCloseRequest={() => this.setPopupState(false)}
             onNewProjectCreated={this.createNewProject}
           />
@@ -94,7 +100,9 @@ class Tabs extends Component {
               <FontAwesomeIcon icon={faPlus} />
             </li>
           </ol>
-          <div className="tab-content"><p>To start: create a project with the "+" and add issues...</p></div>
+          <div className="tab-content">
+            <p>To start: create a project with the "+" and add issues...</p>
+          </div>
         </div>
       );
     }

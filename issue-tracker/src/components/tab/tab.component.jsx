@@ -28,7 +28,7 @@ class Tab extends Component {
     }
 
     return (
-      <li className={className} onClick={onClick}>
+      <li title={this.props.projectId} className={className} onClick={onClick}>
         {label}
       </li>
     );
