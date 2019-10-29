@@ -8,11 +8,9 @@ import NewIssuePopup from "../newIssuePopup/newIssuePopup.component";
 
 import "./issues.styles.css";
 
-import { client_uuid, herokuApi } from "../../data/project.data";
+import { payloads, client_uuid, herokuApi } from "../../data/project.data";
 
 class Issues extends Component {
-
-
   constructor(props) {
     super(props);
 
@@ -20,19 +18,46 @@ class Issues extends Component {
       projectid: this.props.projectId,
       showPopup: false
     };
-
   }
 
-  setPopupState = (value) => {
+  setPopupState = value => {
     this.setState({
-        showPopup: value
+      showPopup: value
     });
-  }
+  };
 
-  createdNewIssue = (data) => {
+  createdNewIssue = data => {
     this.setPopupState(false);
-    console.log(data);
+    this.createRemoteIssue(data);
     this.fetchIssues();
+  };
+
+  createRemoteIssue(data) {
+    // current
+    var now = new Date();
+    const currentISOTimeStamp = now.toISOString();
+    // due date
+    var due = new Date(data.dueDate);
+    const dueISOTimeStamp = due.toISOString();
+
+    fetch(herokuApi.projects + "/" + this.state.projectid + "/issues", {
+      method: "POST",
+      headers: {
+        Accept: herokuApi.contentType,
+        "Content-Type": herokuApi.contentType
+      },
+      body: JSON.stringify({
+        ...payloads.issue,
+        title: data.issueTitle,
+        due_date: dueISOTimeStamp,
+        created_at: currentISOTimeStamp,
+        updated_at: currentISOTimeStamp,
+        priority: data.issuePriority
+      })
+    })
+      .then(response => response.json())
+      .then(this.fetchIssues())
+      .catch(error => console.log(error));
   }
 
   fetchIssues() {
@@ -48,7 +73,8 @@ class Issues extends Component {
         }
       })
         .then(response => response.json())
-        .then(data => this.setState({ issues: data }));
+        .then(data => this.setState({ issues: data }))
+        .catch(error => console.log(error));
     }
   }
 
@@ -57,12 +83,17 @@ class Issues extends Component {
   }
 
   render() {
-    const { issues = this.state.issues, projectid = this.state.projectid } = this;
+    const {
+      issues = this.state.issues,
+      projectid = this.state.projectid
+    } = this;
 
     if (issues) {
       return (
         <div className="Issues">
-          <NewIssuePopup show={this.state.showPopup} title={"New issue"}
+          <NewIssuePopup
+            show={this.state.showPopup}
+            title={"New issue"}
             onCloseRequest={() => this.setPopupState(false)}
             onNewIssueCreated={this.createdNewIssue}
           />
@@ -75,15 +106,14 @@ class Issues extends Component {
               <Issue key={issue.id} issue={issue} />
             ))}
           </div>
-          <Button buttonText={<FontAwesomeIcon icon={faPlus}/>}
+          <Button
+            buttonText={<FontAwesomeIcon icon={faPlus} />}
             clickHandler={() => this.setPopupState(true)}
           />
         </div>
       );
     } else {
-      return (
-        <Loading />
-      );
+      return <Loading />;
     }
   }
 }
