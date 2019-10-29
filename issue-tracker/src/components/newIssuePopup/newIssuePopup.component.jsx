@@ -7,28 +7,35 @@ import Form from "../form/form.component";
 import Input from "../input/input.component";
 import Button from "../button/button.component";
 
+import '../input/input.styles.css';
 
 const NewIssuePopup = props => {
+
   if (props.show) {
     return (
       <>
-        <Modal show={props.show}/>
+        <Modal show={props.show} />
         <div className="Popup">
-        <h1>{props.title}</h1>
-        <Button buttonText={<FontAwesomeIcon icon={faTimes}/>}
-        clickHandler={props.onCloseRequest} />
-        <hr />
-          <Form action={"https://dublin.zhaw.ch/~bkrt/cgi/showenv.cgi"} method={"POST"}
+          <h1>{props.title}</h1>
+          <Button buttonText={<FontAwesomeIcon icon={faTimes} />}
+            clickHandler={props.onCloseRequest} />
+          <hr />
+          <Form newIssueData={props.onNewIssueCreated}
             children={
               <>
                 <Input type={Input.types.title} id={"issueTitle"} autocomplete={"off"}
-                  name={"issueTitle"} placeholder={"Name of new Issue"} required={true} label={"issueTitle"} />
-                <Input type={Input.types.date} id={"dateId"}
-                  name={"dateName"} required={false} label={"date"} autocomplete={"off"} />
-                  <Input type={Input.types.email} id={"secondEmail"} autocomplete={"off"}
-                  name={"emailName"} placeholder={"email@test.com"} required={true} label={"email"} />
-                <Input type={Input.types.date} id={"secondDateId"}
-                  name={"dateName"} required={false} label={"date"} autocomplete={"off"} />
+                  name={"issueTitle"} placeholder={"Name of new Issue"} required={true} label={"Title"} />
+                <label className="Label" htmlFor="issuePriority">Priority</label>
+                <div className="SingleInput">
+                  <select id="issuePriority" name="issuePriority" className="Input" required={true}>
+                    <option value="1">High</option>
+                    <option value="2">Medium</option>
+                    <option value="3">Low</option>
+                    <option value="4">Lowest</option>
+                  </select>
+                </div>
+                <Input type={Input.types.date} id={"dueDate"} autocomplete={"off"}
+                  name={"dueDate"} required={true} label={"Due date"} />
                 <Input type={Input.types.submit} id={"submit"} name={"submit"} value={"send"} />
               </>
             } />
