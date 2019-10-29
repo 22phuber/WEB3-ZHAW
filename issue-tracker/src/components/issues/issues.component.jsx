@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Issue from "../issue/issue.component";
+import Loading from "../loading/loading.component";
 
 import "./issues.styles.css";
 
@@ -54,11 +55,12 @@ class Issues extends Component {
       );
     } else {
       return (
-        <div className="Issues">
+        <Loading />
+        /*<div className="Issues">
           <h1>Issues</h1>
           <div>No Issues found</div>
           <div>Projectid: {projectid}</div>
-        </div>
+        </div>*/
       );
     }
   }
