@@ -6,8 +6,6 @@ import Main from './components/main/main.component';
 
 import Footer from './components/footer/footer.component';
 
-import Loading from './components/loading/loading.component';
-
 function App() {
 
   const colourModeKey = "cmk";
