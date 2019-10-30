@@ -8,7 +8,7 @@ import "./issue.styles.css";
 const Issue = ({ issue }) => {
   if (issue) {
     return (
-      <div key={issue.id} className="Issue">
+      <div className="Issue">
         <input type="checkbox" defaultChecked={issue.done} />
         <div>{issue.title}</div>
         <div>{issue.priority}</div>

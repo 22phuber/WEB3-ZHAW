@@ -4,7 +4,7 @@ import Issues from "../issues/issues.component";
 
 import "./main.styles.css";
 
-import { client_uuid, herokuApi } from "../../data/project.data";
+import { payloads, client_uuid, herokuApi } from "../../data/project.data";
 
 class Main extends Component {
   constructor(props) {
@@ -13,9 +13,48 @@ class Main extends Component {
     this.state = {
       data: null
     };
+    this.fetchRemoteProjects = this.fetchRemoteProjects.bind(this);
+    this.createRemoteProject = this.createRemoteProject.bind(this);
   }
 
-  fetchProjects() {
+  createRemoteProject(projectData) {
+    // current
+    var now = new Date();
+    const currentISOTimeStamp = now.toISOString();
+
+    fetch(herokuApi.projects, {
+      method: "POST",
+      headers: {
+        Accept: herokuApi.contentType,
+        "Content-Type": herokuApi.contentType
+      },
+      body: JSON.stringify({
+        ...payloads.project,
+        title: projectData.projectTitle,
+        created_at: currentISOTimeStamp,
+        updated_at: currentISOTimeStamp
+      })
+    })
+      .then(response => {
+        response
+          .json()
+          .then(responeJSON => {
+            // Add new id to localStorage
+            if (responeJSON.id) {
+              localStorage.setItem(
+                client_uuid,
+                (localStorage.getItem(client_uuid) || "") +
+                  JSON.stringify(responeJSON.id) +
+                  ","
+              );
+            }
+            this.fetchRemoteProjects();
+          });
+      })
+      .catch(error => console.log(error));
+  }
+
+  fetchRemoteProjects() {
     if (
       localStorage.getItem(client_uuid) &&
       localStorage.getItem(client_uuid) !== ""
@@ -42,7 +81,7 @@ class Main extends Component {
   }
 
   componentDidMount() {
-    this.fetchProjects();
+    this.fetchRemoteProjects();
   }
 
   render() {
@@ -50,20 +89,17 @@ class Main extends Component {
     if (data) {
       return (
         <div className="Main">
-          <Tabs>
-            {data.map(project => (
-              <div key={project.id} label={project.title}>
-                <Issues project={project.title} projectId={project.id}/>
+          <Tabs createRemoteProject={this.createRemoteProject}>
+            {data.map((project,index) => (
+              <div key={project.id} label={project.title} projectId={project.id}>
+                <Issues key={project.id+'-'+index} project={project.title} projectId={project.id} />
               </div>
             ))}
           </Tabs>
         </div>
       );
     } else {
-      return (
-        <div className="Main">
-        </div>
-      );
+      return <div className="Main"></div>;
     }
   }
 }
