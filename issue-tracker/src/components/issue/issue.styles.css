@@ -3,4 +3,14 @@
     height: 40px;
     display: flex;
     justify-content: center;
+    vertical-align: middle;
+}
+
+.Issue :last-child {
+    color: #ff0000;
+    cursor: pointer;
+}
+
+.Issue :first-child {
+    cursor: pointer;
 }

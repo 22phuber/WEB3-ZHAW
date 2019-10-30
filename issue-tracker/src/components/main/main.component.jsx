@@ -17,44 +17,43 @@ class Main extends Component {
     this.createRemoteProject = this.createRemoteProject.bind(this);
   }
 
-  createRemoteProject(projectData) {
-    // current
+  async createRemoteProject(projectData) {
     var now = new Date();
     const currentISOTimeStamp = now.toISOString();
-
-    fetch(herokuApi.projects, {
-      method: "POST",
-      headers: {
-        Accept: herokuApi.contentType,
-        "Content-Type": herokuApi.contentType
-      },
-      body: JSON.stringify({
-        ...payloads.project,
-        title: projectData.projectTitle,
-        created_at: currentISOTimeStamp,
-        updated_at: currentISOTimeStamp
-      })
-    })
-      .then(response => {
-        response
-          .json()
-          .then(responeJSON => {
-            // Add new id to localStorage
-            if (responeJSON.id) {
-              localStorage.setItem(
-                client_uuid,
-                (localStorage.getItem(client_uuid) || "") +
-                  JSON.stringify(responeJSON.id) +
-                  ","
-              );
-            }
-            this.fetchRemoteProjects();
-          });
-      })
-      .catch(error => console.log(error));
+    try {
+      const response = await fetch(herokuApi.projects, {
+        method: "POST",
+        headers: {
+          Accept: herokuApi.contentType,
+          "Content-Type": herokuApi.contentType
+        },
+        body: JSON.stringify({
+          ...payloads.project,
+          title: projectData.projectTitle,
+          created_at: currentISOTimeStamp,
+          updated_at: currentISOTimeStamp
+        })
+      });
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      const responseJson = await response.json();
+      // Add new id to localStorage
+      if (responseJson.id) {
+        localStorage.setItem(
+          client_uuid,
+          (localStorage.getItem(client_uuid) || "") +
+            JSON.stringify(responseJson.id) +
+            ","
+        );
+      }
+      this.fetchRemoteProjects();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  fetchRemoteProjects() {
+  async fetchRemoteProjects() {
     if (
       localStorage.getItem(client_uuid) &&
       localStorage.getItem(client_uuid) !== ""
@@ -65,18 +64,17 @@ class Main extends Component {
         .filter(Boolean)
         .map(Number);
 
-      const promises = projectIds.map(id =>
-        fetch(herokuApi.projects + "/" + id)
-      );
-
-      Promise.all(promises)
-        .then(res => {
-          const responses = res.map(response => response.json());
-          return Promise.all(responses);
-        })
-        .then(data => {
-          this.setState({ data: data });
-        });
+      try {
+        const responses = await Promise.all(
+          projectIds.map(async id => await fetch(herokuApi.projects + "/" + id))
+        );
+        const responsesJson = await Promise.all(
+          responses.map(async response => await response.json())
+        );
+        this.setState({ data: responsesJson });
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
@@ -90,9 +88,17 @@ class Main extends Component {
       return (
         <div className="Main">
           <Tabs createRemoteProject={this.createRemoteProject}>
-            {data.map((project,index) => (
-              <div key={project.id} label={project.title} projectId={project.id}>
-                <Issues key={project.id+'-'+index} project={project.title} projectId={project.id} />
+            {data.map((project, index) => (
+              <div
+                key={project.id}
+                label={project.title}
+                projectId={project.id}
+              >
+                <Issues
+                  key={project.id + "-" + index}
+                  project={project.title}
+                  projectId={project.id}
+                />
               </div>
             ))}
           </Tabs>
