@@ -31,10 +31,9 @@ const NewIssuePopup = props => {
                     <option value="1">High</option>
                     <option value="2">Medium</option>
                     <option value="3">Low</option>
-                    <option value="4">Lowest</option>
                   </select>
                 </div>
-                <Input type={Input.types.date} id={"dueDate"} autocomplete={"off"}
+                <Input type={Input.types.datetimelocal} id={"dueDate"} autocomplete={"off"}
                   name={"dueDate"} required={true} label={"Due date"} />
                 <Input type={Input.types.submit} id={"submit"} name={"submit"} value={"send"} />
               </>

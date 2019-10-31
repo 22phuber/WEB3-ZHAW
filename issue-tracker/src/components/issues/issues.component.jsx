@@ -18,6 +18,10 @@ class Issues extends Component {
       projectid: this.props.projectId,
       showPopup: false
     };
+    this.fetchRemoteIssues = this.fetchRemoteIssues.bind(this);
+    this.createRemoteIssue = this.createRemoteIssue.bind(this);
+    this.updateRemoteIssue = this.updateRemoteIssue.bind(this);
+    this.deleteRemoteIssue = this.deleteRemoteIssue.bind(this);
   }
 
   setPopupState = value => {
@@ -32,7 +36,7 @@ class Issues extends Component {
     this.fetchRemoteIssues();
   };
 
-  createRemoteIssue(issueData) {
+  async createRemoteIssue(issueData) {
     // current
     var now = new Date();
     const currentISOTimeStamp = now.toISOString();
@@ -40,41 +44,120 @@ class Issues extends Component {
     var due = new Date(issueData.dueDate);
     const dueISOTimeStamp = due.toISOString();
 
-    fetch(herokuApi.projects + "/" + this.state.projectid + "/issues", {
-      method: "POST",
-      headers: {
-        Accept: herokuApi.contentType,
-        "Content-Type": herokuApi.contentType
-      },
-      body: JSON.stringify({
-        ...payloads.issue,
-        title: issueData.issueTitle,
-        due_date: dueISOTimeStamp,
-        created_at: currentISOTimeStamp,
-        updated_at: currentISOTimeStamp,
-        priority: issueData.issuePriority
-      })
-    })
-      .then(response => response.json())
-      .then(this.fetchRemoteIssues())
-      .catch(error => console.log(error));
+    try {
+      const response = await fetch(
+        herokuApi.projects + "/" + this.state.projectid + "/issues",
+        {
+          method: "POST",
+          headers: {
+            Accept: herokuApi.contentType,
+            "Content-Type": herokuApi.contentType
+          },
+          body: JSON.stringify({
+            ...payloads.issue,
+            title: issueData.issueTitle,
+            due_date: dueISOTimeStamp,
+            created_at: currentISOTimeStamp,
+            updated_at: currentISOTimeStamp,
+            priority: issueData.issuePriority
+          })
+        }
+      );
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      this.fetchRemoteIssues();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  fetchRemoteIssues() {
+  async fetchRemoteIssues() {
     if (
       localStorage.getItem(client_uuid) &&
       localStorage.getItem(client_uuid) !== ""
     ) {
-      fetch(herokuApi.projects + "/" + this.state.projectid + "/issues", {
-        method: "GET",
-        headers: {
-          Accept: herokuApi.contentType,
-          "Content-Type": herokuApi.contentType
+      try {
+        const response = await fetch(
+          herokuApi.projects + "/" + this.state.projectid + "/issues",
+          {
+            method: "GET",
+            headers: {
+              Accept: herokuApi.contentType,
+              "Content-Type": herokuApi.contentType
+            }
+          }
+        );
+        if (!response.ok) {
+          throw Error(response.statusText);
         }
-      })
-        .then(response => response.json())
-        .then(data => this.setState({ issues: data }))
-        .catch(error => console.log(error));
+        const responseJson = await response.json();
+        this.setState({ issues: responseJson });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
+  async updateRemoteIssue(issueData) {
+    var now = new Date();
+    const currentISOTimeStamp = now.toISOString();
+
+    try {
+      const response = await fetch(
+        herokuApi.projects +
+          "/" +
+          issueData.project_id +
+          "/issues/" +
+          issueData.id,
+        {
+          method: "PUT",
+          headers: {
+            Accept: herokuApi.contentType,
+            "Content-Type": herokuApi.contentType
+          },
+          body: JSON.stringify({
+            ...issueData,
+            done: issueData.done,
+            title: issueData.title,
+            due_date: issueData.due_date,
+            created_at: issueData.created_at,
+            updated_at: currentISOTimeStamp,
+            priority: issueData.priority
+          })
+        }
+      );
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      this.fetchRemoteIssues();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async deleteRemoteIssue(issueData) {
+    try {
+      const response = await fetch(
+        herokuApi.projects +
+          "/" +
+          issueData.project_id +
+          "/issues/" +
+          issueData.id,
+        {
+          method: "DELETE",
+          headers: {
+            Accept: herokuApi.contentType,
+            "Content-Type": herokuApi.contentType
+          }
+        }
+      );
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      this.fetchRemoteIssues();
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -99,11 +182,18 @@ class Issues extends Component {
           />
           <h1>Issues</h1>
           <div>
-            <p>Issue count {issues.length || "0"} for {projectid}</p>
+            <p>
+              Issue count {issues.length || "0"} for {projectid}
+            </p>
           </div>
           <div>
             {issues.map(issue => (
-              <Issue key={issue.id} issue={issue} />
+              <Issue
+                updateRemoteIssue={this.updateRemoteIssue}
+                deleteRemoteIssue={this.deleteRemoteIssue}
+                key={issue.id}
+                issue={issue}
+              />
             ))}
           </div>
           <Button
