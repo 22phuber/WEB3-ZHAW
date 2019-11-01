@@ -1,18 +1,17 @@
 import React from "react";
-import Clock from '../clock/clock.component';
+import Clock from "../clock/clock.component";
 
-import './header.styles.css';
+import "./header.styles.css";
 
 const Header = props => {
   return (
     <div className={"Header" + props.colourMode}>
-        <h1 className="">{props.appTitle}</h1> 
-        <Clock className="" />
+      <h1>{props.appTitle}</h1>
+      <div>
+        <Clock />
+      </div>
     </div>
   );
 };
-
-
-
 
 export default Header;

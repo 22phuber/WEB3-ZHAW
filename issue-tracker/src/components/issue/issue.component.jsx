@@ -1,11 +1,17 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+// material-ui
+import IconButton from "@material-ui/core/IconButton";
+import Checkbox from "@material-ui/core/Checkbox";
+import DeleteForever from "@material-ui/icons/DeleteForever";
+import { makeStyles } from "@material-ui/core/styles";
 
 import "./issue.styles.css";
 
-const Issue = ({ issue, updateRemoteIssue, deleteRemoteIssue }) => {
+const useStyles = makeStyles(theme => ({
+  button: {}
+}));
 
+const Issue = ({ issue, updateRemoteIssue, deleteRemoteIssue }) => {
   const updateIssue = issueData => {
     updateRemoteIssue(issueData);
   };
@@ -14,19 +20,45 @@ const Issue = ({ issue, updateRemoteIssue, deleteRemoteIssue }) => {
     deleteRemoteIssue(issueData);
   };
 
+  const classes = useStyles();
+
   if (issue) {
+    const dateOptions = {
+      timeZone: "Europe/Zurich",
+      hour12: false
+    };
+    const prettyDueDate = new Date(issue.due_date)
+      .toLocaleString("de-DE", dateOptions)
+      .replace(/(.*)\D\d+/, "$1");
     return (
       <div className="Issue">
-        <input
-          type="checkbox"
-          defaultChecked={issue.done}
-          onChange={(event) => updateIssue({...issue,done:event.target.checked})}
-        />
-        <div>{issue.title}</div>
-        <div>{issue.priority}</div>
-        <div>{issue.due_date}</div>
-        <div onClick={() => deleteIssue(issue)} title="Delete this issue">
-          <FontAwesomeIcon icon={faTrashAlt} />
+        <div className="issue-done">
+          <Checkbox
+            color="primary"
+            defaultChecked={issue.done}
+            onChange={event =>
+              updateIssue({ ...issue, done: event.target.checked })
+            }
+            value="done"
+            title="Set issue to done/undone"
+            inputProps={{
+              "aria-label": "Set issue to done/undone"
+            }}
+          />
+        </div>
+        <div className="issue-title">{issue.title}</div>
+        <div className="issue-priority">{issue.priority}</div>
+        <div className="issue-due">{prettyDueDate}</div>
+        <div className="issue-delete">
+          <IconButton
+            className={classes.button}
+            color="secondary"
+            aria-label="delete"
+            onClick={() => deleteIssue(issue)}
+            title="Delete Issue"
+          >
+            <DeleteForever />
+          </IconButton>
         </div>
       </div>
     );
