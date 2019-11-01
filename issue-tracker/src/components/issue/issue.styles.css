@@ -1,16 +1,32 @@
 .Issue {
-    width: 100%;
-    height: 40px;
+    border-bottom: solid 1px #efefef;
     display: flex;
-    justify-content: center;
-    vertical-align: middle;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.Issue :last-child {
-    color: #ff0000;
-    cursor: pointer;
+.Issue div {
+    padding: 10px;
 }
 
-.Issue :first-child {
-    cursor: pointer;
+.issue-done { 
+    flex-basis: 20px; 
+}
+
+.issue-title {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.issue-priority {
+    flex-basis: 30px;
+}
+
+.issue-due {
+    flex-basis: 150px;
+    text-align: left;
+}
+
+.issue-delete { 
+    flex-basis: 20px; 
 }

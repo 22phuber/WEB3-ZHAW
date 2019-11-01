@@ -1,14 +1,19 @@
 import React, { Component } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+// material-ui
+import Button from "@material-ui/core/Button";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import { withStyles } from "@material-ui/core/styles";
+
 import Issue from "../issue/issue.component";
 import Loading from "../loading/loading.component";
-import Button from "../button/button.component";
 import NewIssuePopup from "../newIssuePopup/newIssuePopup.component";
-
 import "./issues.styles.css";
 
 import { payloads, client_uuid, herokuApi } from "../../data/project.data";
+
+const styles = {
+  button: {}
+};
 
 class Issues extends Component {
   constructor(props) {
@@ -166,41 +171,51 @@ class Issues extends Component {
   }
 
   render() {
-    const {
-      issues = this.state.issues,
-      projectid = this.state.projectid
-    } = this;
+    const { issues = this.state.issues } = this;
 
     if (issues) {
+      const { classes } = this.props;
       return (
-        <div className="Issues">
+        <>
           <NewIssuePopup
             show={this.state.showPopup}
             title={"New issue"}
             onCloseRequest={() => this.setPopupState(false)}
             onNewIssueCreated={this.createdNewIssue}
           />
-          <h1>Issues</h1>
-          <div>
-            <p>
-              Issue count {issues.length || "0"} for {projectid}
-            </p>
+          <div className="Issues">
+            <div className="issues-header">
+              <h1>Issues [{issues.length || "0"}]</h1>
+              <Button
+                variant="contained"
+                color="primary"
+                size="medium"
+                className={classes.button}
+                startIcon={<AddCircleOutlineIcon />}
+                onClick={() => this.setPopupState(true)}
+              >
+                Create Issue
+              </Button>
+            </div>
+            <div>
+              <div className="issues-heading-table">
+                <div className="issues-heading-done">Done</div>
+                <div className="issues-heading-desc">Description</div>
+                <div className="issues-heading-prio">Prio</div>
+                <div className="issues-heading-due">Due date</div>
+                <div className="issues-heading-delete">Delete</div>
+              </div>
+              {issues.map(issue => (
+                <Issue
+                  updateRemoteIssue={this.updateRemoteIssue}
+                  deleteRemoteIssue={this.deleteRemoteIssue}
+                  key={issue.id}
+                  issue={issue}
+                />
+              ))}
+            </div>
           </div>
-          <div>
-            {issues.map(issue => (
-              <Issue
-                updateRemoteIssue={this.updateRemoteIssue}
-                deleteRemoteIssue={this.deleteRemoteIssue}
-                key={issue.id}
-                issue={issue}
-              />
-            ))}
-          </div>
-          <Button
-            buttonText={<FontAwesomeIcon icon={faPlus} />}
-            clickHandler={() => this.setPopupState(true)}
-          />
-        </div>
+        </>
       );
     } else {
       return <Loading />;
@@ -208,4 +223,4 @@ class Issues extends Component {
   }
 }
 
-export default Issues;
+export default withStyles(styles)(Issues);

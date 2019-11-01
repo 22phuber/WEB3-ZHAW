@@ -3,8 +3,9 @@ import React from "react";
 import './button.styles.css';
 
 const Button = ({ clickHandler, className, buttonText, ...otherProps }) => {
+  const addClassNames = (className===undefined)?"":className;
   return (
-    <button onClick={clickHandler} className={"Button "+className} {...otherProps}>{buttonText}</button>
+    <button onClick={clickHandler} className={"Button "+addClassNames} {...otherProps}>{buttonText}</button>
   )
 }
 

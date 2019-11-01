@@ -28,9 +28,9 @@ const NewIssuePopup = props => {
                 <label className="Label" htmlFor="issuePriority">Priority</label>
                 <div className="SingleInput">
                   <select id="issuePriority" name="issuePriority" className="Input" required={true}>
-                    <option value="1">High</option>
+                    <option value="3" selected>Low</option>
                     <option value="2">Medium</option>
-                    <option value="3">Low</option>
+                    <option value="1">High</option>
                   </select>
                 </div>
                 <Input type={Input.types.datetimelocal} id={"dueDate"} autocomplete={"off"}
