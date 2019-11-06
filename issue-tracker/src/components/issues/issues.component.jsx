@@ -9,7 +9,7 @@ import Loading from "../loading/loading.component";
 import NewIssuePopup from "../newIssuePopup/newIssuePopup.component";
 import "./issues.styles.css";
 
-import { payloads, client_uuid, herokuApi } from "../../data/project.data";
+import { payloads, client_uuid, herokuApi } from "../../data/heroku.api";
 
 const styles = {
   button: {}
