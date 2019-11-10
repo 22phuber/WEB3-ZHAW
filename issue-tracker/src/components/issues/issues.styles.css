@@ -44,3 +44,13 @@
 .issues-heading-delete {
     flex-basis: 20px;
 }
+
+.IssueForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+.IssueForm > * {
+    margin:  3px;
+}
