@@ -1,10 +1,20 @@
 import React, { Component } from "react";
 import Tabs from "../tabs/tabs.component";
 import Issues from "../issues/issues.component";
+/* material-ui */
+import TextField from "@material-ui/core/TextField";
+import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
 import "./main.styles.css";
 
 import { payloads, client_uuid, herokuApi } from "../../data/heroku.api";
+
+const styles = {
+  textField: {},
+  button: {}
+};
 
 class Main extends Component {
   constructor(props) {
@@ -82,8 +92,18 @@ class Main extends Component {
     this.fetchRemoteProjects();
   }
 
+  handleSubmit = event => {
+    event.preventDefault();
+    let jsonObject = {};
+    for (const [key, value] of new FormData(event.target).entries()) {
+      jsonObject[key] = value;
+    }
+    this.createRemoteProject(jsonObject);
+  };
+
   render() {
     const { data } = this.state;
+    const { classes } = this.props;
     if (data) {
       return (
         <div className="Main">
@@ -105,9 +125,40 @@ class Main extends Component {
         </div>
       );
     } else {
-      return <div className="Main"></div>;
+      return (
+        <div className="Main">
+          <h2>Create your first Project</h2>
+          <form onSubmit={this.handleSubmit} method="POST">
+            <div>
+              <div>
+                <TextField
+                  type="text"
+                  required
+                  name="projectTitle"
+                  id="standard-basic"
+                  className={classes.textField}
+                  label="Project Name"
+                  margin="normal"
+                />
+              </div>
+              <div>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="medium"
+                  type="submit"
+                  className={classes.button}
+                  startIcon={<AddCircleOutlineIcon />}
+                >
+                  Create
+                </Button>
+              </div>
+            </div>
+          </form>
+        </div>
+      );
     }
   }
 }
 
-export default Main;
+export default withStyles(styles)(Main);

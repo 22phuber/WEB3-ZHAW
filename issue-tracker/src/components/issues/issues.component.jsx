@@ -1,8 +1,12 @@
 import React, { Component } from "react";
-// material-ui
+/* material-ui */
 import Button from "@material-ui/core/Button";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import { withStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
 
 import Issue from "../issue/issue.component";
 import Loading from "../loading/loading.component";
@@ -12,7 +16,10 @@ import "./issues.styles.css";
 import { payloads, client_uuid, herokuApi } from "../../data/heroku.api";
 
 const styles = {
-  button: {}
+  titleTextField: { width: "300px" },
+  textField: {},
+  button: {},
+  formControl: { width: "150px" }
 };
 
 class Issues extends Component {
@@ -46,7 +53,8 @@ class Issues extends Component {
     var now = new Date();
     const currentISOTimeStamp = now.toISOString();
     // due date
-    var due = new Date(issueData.dueDate);
+    console.log(issueData.dueDate);
+    var due = new Date(issueData.dueDate + ":00");
     const dueISOTimeStamp = due.toISOString();
 
     try {
@@ -170,11 +178,36 @@ class Issues extends Component {
     this.fetchRemoteIssues();
   }
 
+  handleChange = name => event => {
+    console.log([name] + ": " + event.target.value);
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+    let jsonObject = {};
+    for (const [key, value] of new FormData(event.target).entries()) {
+      jsonObject[key] = value;
+    }
+    this.createRemoteIssue(jsonObject);
+  };
+
   render() {
     const { issues = this.state.issues } = this;
+    const { classes } = this.props;
+    const dateOptions = {
+      timeZone: "Europe/Zurich",
+      hour12: false
+    };
+    // Crate date and 1 one day => Tomorrow
+    var tmrw = new Date();
+    tmrw.setDate(tmrw.getDate() + 1);
+    // Create due date from Tomorrow
+    var nowDueDate = new Date(tmrw)
+      .toISOString()
+      .toLocaleString("de-DE", dateOptions)
+      .replace(/(.*):\d+\D\d+Z/, "$1");
 
-    if (issues) {
-      const { classes } = this.props;
+    if (issues && issues.length > 0) {
       return (
         <>
           <NewIssuePopup
@@ -216,6 +249,74 @@ class Issues extends Component {
             </div>
           </div>
         </>
+      );
+    } else if (issues && issues.length === 0) {
+      return (
+        <div>
+          <h2>Create your first Issue</h2>
+          <form
+            onSubmit={this.handleSubmit}
+            method="POST"
+            className="IssueForm"
+          >
+            <div>
+              <TextField
+                required
+                type="text"
+                name="issueTitle"
+                id="standard-basic"
+                className={classes.titleTextField}
+                label="Issue Name"
+                margin="normal"
+              />
+            </div>
+            <div>
+              <FormControl className={classes.formControl}>
+                <InputLabel htmlFor="age-native-simple">Priority</InputLabel>
+                <Select
+                  required
+                  native
+                  value={issues.priority}
+                  onChange={this.handleChange("age")}
+                  inputProps={{
+                    name: "issuePriority",
+                    id: "priority-native-simple"
+                  }}
+                >
+                  <option value={3}>Low</option>
+                  <option value={2}>Middle</option>
+                  <option value={1}>High</option>
+                </Select>
+              </FormControl>
+            </div>
+            <div>
+              <TextField
+                required
+                name="dueDate"
+                id="datetime-local"
+                label="Due date"
+                type="datetime-local"
+                defaultValue={nowDueDate}
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+            </div>
+            <div>
+              <Button
+                variant="contained"
+                color="primary"
+                size="medium"
+                type="submit"
+                className={classes.button}
+                startIcon={<AddCircleOutlineIcon />}
+              >
+                Create
+              </Button>
+            </div>
+          </form>
+        </div>
       );
     } else {
       return <Loading />;
