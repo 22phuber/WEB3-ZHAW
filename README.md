@@ -10,11 +10,7 @@ yarn install
 yarn start # Start server on localhost:3000
 ```
 ## Add dependencies like
-### Package: local-storage
-https://www.npmjs.com/package/local-storage
-```shell
-yarn add local-storage --save
-```
+
 ### Package: React-FontAwesome
 https://github.com/FortAwesome/react-fontawesome
 ```shell
@@ -31,30 +27,7 @@ Once added you should only run `yarn install` to update latest added packages
 
 ![Mockup and Components](assets/mockup.png)
 
-## Components: naming & css
-#### Header
-- Header { property: appTitle }
-- Clock
-
-#### Main
-- Main
-- Tab
-- List
-
-#### Footer
-- Footer
-- NightMode
-
-#### Buttons
-- Button
-- AddButton
-- CloseButton
-
-#### Modal
-- Modal
-- DatePicker
-- PrioritySelector
-- TextInputField
+## Dark mode
 
 css is set using a file name equal to the component name.
 To enable light and dark switch mode, set the changing attributes in .css classes called:
@@ -80,6 +53,7 @@ To enable light and dark switch mode, set the changing attributes in .css classe
 * [React Tutorial 2: Components, Hooks, and Performance](https://www.toptal.com/react/react-tutorial-pt2)
 * [Tutorial: Intro to React](https://reactjs.org/tutorial/tutorial.html)
 * [https://fullstackopen.com](https://fullstackopen.com/en/part0)
+
 ### More specific articles
 
 * [Functional vs Class-Components in React](https://medium.com/@Zwenza/functional-vs-class-components-in-react-231e3fbd7108)

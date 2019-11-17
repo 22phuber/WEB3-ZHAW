@@ -53,7 +53,6 @@ class Issues extends Component {
     var now = new Date();
     const currentISOTimeStamp = now.toISOString();
     // due date
-    console.log(issueData.dueDate);
     var due = new Date(issueData.dueDate + ":00");
     const dueISOTimeStamp = due.toISOString();
 
@@ -277,7 +276,6 @@ class Issues extends Component {
                   required
                   native
                   value={issues.priority}
-                  onChange={this.handleChange("age")}
                   inputProps={{
                     name: "issuePriority",
                     id: "priority-native-simple"
