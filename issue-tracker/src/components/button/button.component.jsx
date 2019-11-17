@@ -2,17 +2,10 @@ import React from "react";
 
 import './button.styles.css';
 
-const Button = (props) => {
+const Button = ({ clickHandler, className, buttonText, ...otherProps }) => {
+  const addClassNames = (className===undefined)?"":className;
   return (
-    <button 
-      id={props.elementId} 
-      className={"Button "+props.classes} 
-      type={props.type} 
-      disabled={props.disabled||false} 
-      name={props.name} 
-      onClick={props.clickHandler}>
-    {props.text}
-    </button>
+    <button onClick={clickHandler} className={"Button "+addClassNames} {...otherProps}>{buttonText}</button>
   )
 }
 

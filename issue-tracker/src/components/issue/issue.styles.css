@@ -1,0 +1,32 @@
+.Issue {
+    border-bottom: solid 1px #efefef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Issue div {
+    padding: 10px;
+}
+
+.issue-done { 
+    flex-basis: 20px; 
+}
+
+.issue-title {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.issue-priority {
+    flex-basis: 30px;
+}
+
+.issue-due {
+    flex-basis: 150px;
+    text-align: left;
+}
+
+.issue-delete { 
+    flex-basis: 20px; 
+}

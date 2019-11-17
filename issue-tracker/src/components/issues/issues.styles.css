@@ -1,0 +1,56 @@
+.Issues {
+    margin-left: auto;
+    margin-right: auto;
+    margin:3%;
+    padding: 3%;
+}
+
+.issues-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.issues-heading-table {
+    font-weight: bold;
+    color: #999;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 50px;
+    border-bottom: solid 1px #aaa;
+}
+
+.issues-heading-table div {
+    padding: 10px;
+}
+
+.issues-heading-done {
+    flex-basis: 20px;
+}
+.issues-heading-desc {
+    flex-grow: 1;
+    text-align: left;
+}
+.issues-heading-prio {
+    flex-basis: 20px;
+}
+.issues-heading-due {
+    flex-basis: 150px;
+    
+    text-align: left;
+}
+.issues-heading-delete {
+    flex-basis: 20px;
+}
+
+.IssueForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+.IssueForm > * {
+    margin:  3px;
+}
