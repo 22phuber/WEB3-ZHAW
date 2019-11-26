@@ -3,8 +3,10 @@ import TabsPane from "../tabs/tabspane.component";
 import Issues from "../issues/issues.component";
 /* material-ui */
 import TextField from "@material-ui/core/TextField";
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import Fab from "@material-ui/core/Fab";
+import EditIcon from '@material-ui/icons/Edit';
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
 import "./main.styles.css";
@@ -45,13 +47,24 @@ const Main = props => {
     }
   },[projectData]);
 
+  const useStyles = makeStyles(theme => ({
+    fab: {
+      position: 'absolute',
+      bottom: theme.spacing(10),
+      right: theme.spacing(3),
+    },
+  }));
+  const classes = useStyles();
+
   if (projectData) {
     return (
       <div className="Main">
         <TabsPane data={projectData} />
+        <Fab aria-label={'Edit'} className={classes.fab} color={'primary'}>
+            <EditIcon />
+          </Fab>
       </div>
     );
-
   } else if (getProjectStatus === HerokuAPI.loadingState.finished) {
     return (
       <div className="Main">
