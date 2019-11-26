@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Tabs from "../tabs/tabs.component";
+import TabsPane from "../tabs/tabspane.component";
 import Issues from "../issues/issues.component";
 /* material-ui */
 import TextField from "@material-ui/core/TextField";
@@ -107,21 +107,31 @@ class Main extends Component {
     if (data) {
       return (
         <div className="Main">
-          <Tabs createRemoteProject={this.createRemoteProject}>
-            {data.map((project, index) => (
-              <div
-                key={project.id}
-                label={project.title}
-                projectId={project.id}
-              >
-                <Issues
-                  key={project.id + "-" + index}
-                  project={project.title}
-                  projectId={project.id}
-                />
-              </div>
-            ))}
-          </Tabs>
+          <TabsPane data={
+            {
+              projects: [
+                {id: 1,
+                title: "test"},
+                {id: 1,
+                  title: "test"},
+                  {id: 1,
+                    title: "test"},
+                    {id: 1,
+                      title: "test"},
+                      {id: 1,
+                        title: "test"},
+                        {id: 1,
+                          title: "test"},
+                          {id: 1,
+                            title: "test"},
+                            {id: 1,
+                              title: "test"},
+                              {id: 1,
+                                title: "test"}
+              ]
+            }
+          }
+          />
         </div>
       );
     } else {
