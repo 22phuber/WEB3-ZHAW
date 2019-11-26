@@ -11,6 +11,8 @@ import "./main.styles.css";
 
 import { payloads, client_uuid, herokuApi } from "../../data/heroku.api";
 
+import * as api from "../api/heroku.api.js";
+
 const styles = {
   textField: {},
   button: {}
@@ -89,7 +91,8 @@ class Main extends Component {
   }
 
   componentDidMount() {
-    this.fetchRemoteProjects();
+    api.fetchRemoteProjects();
+    //this.fetchRemoteProjects();
   }
 
   handleSubmit = event => {
@@ -130,8 +133,7 @@ class Main extends Component {
                                 title: "test"}
               ]
             }
-          }
-          />
+          }/>
         </div>
       );
     } else {

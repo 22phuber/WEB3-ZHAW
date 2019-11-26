@@ -1,5 +1,3 @@
-import React, { useState } from "React";
-
 /**
  * These loadingStates can and should be used to display dynamic icons to the user,
  * that resembles the current state. For example, loading could be used to show a spinning
@@ -11,30 +9,6 @@ const loadingState = {
   finished: 2,
   error: 4
 }
-
-/**
- * States for the single operations like:
- * get project
- * put project
- * post project
- * delete project
- * get issue
- * put issue
- * post issue
- * delete issue
- */
-const [projectGet, setProjectGetState] = useState(loadingState.waiting);
-const [projectPut, setProjectPutState] = useState(loadingState.waiting);
-const [projectPost, setProjectPostState] = useState(loadingState.waiting);
-const [projectDelete, setProjectDeleteState] = useState(loadingState.waiting);
-
-const[issuesGet, setIssuesGetState] = useState(loadingState.waiting);
-
-const [issuePut, setIssuePutState] = useState(loadingState.waiting);
-const [issuePost, setIssuePostState] = useState(loadingState.waiting);
-const [issueDelete, setIssueDeleteState] = useState(loadingState.waiting);
-
-
 
 /**
  * The UUID that resembles a client on the Heroku REST API.
@@ -92,14 +66,10 @@ function generateID() {
  */
 function getLocalStorageData(key) {
   if (localStorage.getItem(key)
-    && localStorage.getItem(key) != "") {
-    return JSON.parse(localStorage.getItem(key));
+    && localStorage.getItem(key) !== "") {
+    return localStorage.getItem(key);
   } else {
-    return {
-      projects: [
-
-      ]
-    };
+    return null;
   }
 }
 
@@ -127,10 +97,10 @@ function saveProjectIdToLocalStorage(id, title) {
  * @param {int} id 
  * @param {String} title 
  */
-function changProjectDataInLocalStorage(id, title) {
-  var projectData = getLocalStorageData(clien_uuid);
+function changeProjectDataInLocalStorage(id, title) {
+  var projectData = getLocalStorageData(client_uuid);
   projectData.projects.forEach(project => {
-    if (project.id == id) {
+    if (project.id === id) {
       project.title = title;
     }
   });
@@ -164,7 +134,6 @@ function writeProjectDataToLocalStorage(projectData) {
  * 
  */
 async function postNewProject(title) {
-  setProjectPostState(loadingState.loading);
   fetch(herokuApi.projectsUrl,
     {
       method: 'POST',
@@ -178,16 +147,13 @@ async function postNewProject(title) {
       }
     })
     .then(res => {
-      setProjectPostState(loadingState.done)
       res.json();
     })
     .then(data => {
       saveProjectIdToLocalStorage(data.id, title);
-      setProjectPostState(loadingState.waiting);
     })
     .catch(error => {
       console.log(error);
-      setProjectPostState(loadingState.error);
     })
 }
 
@@ -196,8 +162,7 @@ async function postNewProject(title) {
  * and removes it from the localStorage
  */
 async function deleteProject(id) {
-  setProjectDeleteState(loadingState.loading);
-  fetch(str.concat(herokuApi.projectsUrl, "/", id),
+  fetch(herokuApi.projectsUrl.concat("/", id),
     {
       method: 'DELETE',
       headers: {
@@ -206,14 +171,11 @@ async function deleteProject(id) {
       }
     })
     .then(res => {
-      setProjectDeleteState(loadingState.done)
     })
     .then(data => {
-      setProjectDeleteState(loadingState.waiting);
     })
     .catch(error => {
       console.log(error);
-      setProjectDeleteState(loadingState.error);
     })
 }
 
@@ -225,8 +187,7 @@ async function deleteProject(id) {
  * @param {boolean} active 
  */
 async function putProject(id, title, active) {
-  setProjectPutState(loadingState.loading);
-  fetch(str.concat(herokuApi.projectsUrl, "/", id),
+  fetch(herokuApi.projectsUrl.concat("/", id),
     {
       method: 'PUT',
       headers: {
@@ -240,33 +201,48 @@ async function putProject(id, title, active) {
       }
     })
     .then(res => {
-      setProjectPutState(loadingState.done)
       res.json();
     })
     .then(data => {
-      changProjectDataInLocalStorage(id, title);
-      setProjectPutState(loadingState.waiting);
+      changeProjectDataInLocalStorage(id, title);
     })
     .catch(error => {
       console.log(error);
-      setProjectPutState(loadingState.error);
     })
 }
 
-async function getProject(id){
-  setProjectGetState(loadingState.loading);
-  fetch(str.concat(herokuApi.projectsUrl, "/", id))
+async function getProject(id) {
+  fetch(herokuApi.projectsUrl.concat("/", id))
     .then(res => {
-      setProjectGetState(loadingState.done)
       res.json();
     })
     .then(data => {
-      setProjectGetState(loadingState.waiting);
     })
     .catch(error => {
       console.log(error);
-      setProjectGetState(loadingState.error);
     })
+}
+
+export async function fetchRemoteProjects(callback) {
+  const localData = getLocalStorageData(client_uuid);
+  if (localData) {
+    const projectIds = localData
+      .split(",")
+      .filter(Boolean)
+      .map(Number);
+
+    try {
+      const responses = await Promise.all(
+        projectIds.map(async id =>
+          await fetch(herokuApi.projectsUrl + "/" + id)));
+      const responsesJson = await Promise.all(
+        responses.map(async response => await response.json())
+      );
+      callback(repsonsesJson);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 /**
@@ -274,19 +250,15 @@ async function getProject(id){
  * in the heroku service
  * @param {int} id 
  */
-async function getProjectIssues(id){
-  setIssuesGetState(loadingState.loading);
-  fetch(str.concat(herokuApi.projectsUrl, "/", id, "/issues"))
+async function getProjectIssues(id) {
+  fetch(herokuApi.projectsUrl.concat("/", id, "/issues"))
     .then(res => {
-      setIssuesGetState(loadingState.done)
       res.json();
     })
     .then(data => {
-      setIssuesGetState(loadingState.waiting);
     })
     .catch(error => {
       console.log(error);
-      setIssuesGetState(loadingState.error);
     })
 }
 
@@ -299,9 +271,8 @@ async function getProjectIssues(id){
  * @param {String} priority
  * @param {boolean} done
  */
-async function postNewIssue(projectId, issueTitle, dueDate, priority){
-  setIssuePostState(loadingState.loading);
-  fetch(str.concat(herokuApi.projectsUrl, "/", projectId, "/issues"),
+async function postNewIssue(projectId, issueTitle, dueDate, priority) {
+  fetch(herokuApi.projectsUrl.concat("/", projectId, "/issues"),
     {
       method: 'POST',
       headers: {
@@ -317,15 +288,12 @@ async function postNewIssue(projectId, issueTitle, dueDate, priority){
       }
     })
     .then(res => {
-      setIssuePostState(loadingState.done)
       res.json();
     })
     .then(data => {
-      setIssuePostState(loadingState.waiting);
     })
     .catch(error => {
       console.log(error);
-      setIssuePostState(loadingState.error);
     })
 }
 
@@ -339,9 +307,8 @@ async function postNewIssue(projectId, issueTitle, dueDate, priority){
  * @param {String} priority
  * @param {boolean} done
  */
-async function putIssue(projectId, issueId, issueTitle, dueDate, priority, done){
-  setIssuePutState(loadingState.loading);
-  fetch(str.concat(herokuApi.projectsUrl, "/", projectId, "/issues/", issueId),
+async function putIssue(projectId, issueId, issueTitle, dueDate, priority, done) {
+  fetch(herokuApi.projectsUrl.concat("/", projectId, "/issues/", issueId),
     {
       method: 'PUT',
       headers: {
@@ -357,15 +324,12 @@ async function putIssue(projectId, issueId, issueTitle, dueDate, priority, done)
       }
     })
     .then(res => {
-      setIssuePutState(loadingState.done)
       res.json();
     })
     .then(data => {
-      setIssuePutState(loadingState.waiting);
     })
     .catch(error => {
       console.log(error);
-      setIssuePutState(loadingState.error);
     })
 }
 
@@ -374,9 +338,8 @@ async function putIssue(projectId, issueId, issueTitle, dueDate, priority, done)
  * @param {int} projectId 
  * @param {int} issueId 
  */
-async function deleteIssue(projectId, issueId){
-  setIssueDeleteState(loadingState.loading);
-  fetch(str.concat(herokuApi.projectsUrl, "/", projectId, "/issues/", issueId),
+async function deleteIssue(projectId, issueId) {
+  fetch(herokuApi.projectsUrl.concat("/", projectId, "/issues/", issueId),
     {
       method: 'DELETE',
       headers: {
@@ -385,21 +348,11 @@ async function deleteIssue(projectId, issueId){
       }
     })
     .then(res => {
-      setIssueDeleteState(loadingState.done)
       res.json();
     })
     .then(data => {
-      setIssueDeleteState(loadingState.waiting);
     })
     .catch(error => {
       console.log(error);
-      setIssueDeleteState(loadingState.error);
     })
 }
-
-
-
-
-
-
-export default HerokuAPI;

@@ -9,7 +9,7 @@ import Footer from './components/footer/footer.component';
 function App() {
 
   const colourModeKey = "cmk";
-  const [colourMode, setColourMode] = useState(localStorage.getItem(colourModeKey) || "-light");
+  const [colourMode, setColourMode] = useState(localStorage.getItem(colourModeKey)|| "-light");
 
   const changeColourMode = () => {
     if(colourMode === "-light"){
