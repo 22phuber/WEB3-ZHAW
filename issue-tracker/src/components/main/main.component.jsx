@@ -76,6 +76,7 @@ const Main = props => {
       position: 'absolute',
       bottom: theme.spacing(10),
       right: theme.spacing(2),
+      'white-space': 'nowrap'
     },
   }));
   const classes = useStyles();
