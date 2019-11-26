@@ -31,7 +31,7 @@ const TabsPane = props => {
   }
 
   useEffect(() => {
-    willOverflow(props.data.projects.length);
+    willOverflow(props.data.length);
   })
 
   function a11yProps(index) {
@@ -54,7 +54,7 @@ const TabsPane = props => {
           centered={!overflow}
           aria-label="scrollable prevent tabs example"
         >
-          {props.data.projects.map((project, index) => (
+          {props.data.map((project, index) => (
             <Tab label={["Item ", index].join(' ')} {...a11yProps(index)} />
           ))}
         </Tabs>

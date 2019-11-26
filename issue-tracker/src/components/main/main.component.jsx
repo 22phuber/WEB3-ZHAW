@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, {  useState, useEffect } from "react";
 import TabsPane from "../tabs/tabspane.component";
 import Issues from "../issues/issues.component";
 /* material-ui */
@@ -18,17 +18,57 @@ const styles = {
   button: {}
 };
 
-class Main extends Component {
-  constructor(props) {
-    super(props);
+const Main = props => {
 
-    this.state = {
-      data: null
-    };
-    this.fetchRemoteProjects = this.fetchRemoteProjects.bind(this);
-    this.createRemoteProject = this.createRemoteProject.bind(this);
+  const[projectData, setProjectData] = useState(null);
+
+  useEffect(() =>{
+    api.fetchRemoteProjects(setProjectData);
+  });
+  
+  if (projectData) {
+    return (
+      <div className="Main">
+        <TabsPane data={projectData}/>
+      </div>
+    );
+  } else {
+    return (
+      <div className="Main">
+        <h2>Create your first Project</h2>
+        <form>
+          <div>
+            <div>
+              <TextField
+                type="text"
+                required
+                name="projectTitle"
+                id="standard-basic"
+                //className={classes.textField}
+                label="Project Name"
+                margin="normal"
+              />
+            </div>
+            <div>
+              <Button
+                variant="contained"
+                color="primary"
+                size="medium"
+                type="submit"
+                //className={classes.button}
+                startIcon={<AddCircleOutlineIcon />}
+              >
+                Create
+              </Button>
+            </div>
+          </div>
+        </form>
+      </div>
+    );
   }
+}
 
+/**
   async createRemoteProject(projectData) {
     var now = new Date();
     const currentISOTimeStamp = now.toISOString();
@@ -89,11 +129,7 @@ class Main extends Component {
       }
     }
   }
-
-  componentDidMount() {
-    api.fetchRemoteProjects();
-    //this.fetchRemoteProjects();
-  }
+    
 
   handleSubmit = event => {
     event.preventDefault();
@@ -150,4 +186,5 @@ class Main extends Component {
   }
 }
 
-export default withStyles(styles)(Main);
+ */
+export default Main;
