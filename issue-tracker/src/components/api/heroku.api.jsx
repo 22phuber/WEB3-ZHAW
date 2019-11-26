@@ -30,7 +30,6 @@ const [projectDelete, setProjectDeleteState] = useState(loadingState.waiting);
 
 const[issuesGet, setIssuesGetState] = useState(loadingState.waiting);
 
-const [issueGet, setIssueGetState] = useState(loadingState.waiting);
 const [issuePut, setIssuePutState] = useState(loadingState.waiting);
 const [issuePost, setIssuePostState] = useState(loadingState.waiting);
 const [issueDelete, setIssueDeleteState] = useState(loadingState.waiting);
