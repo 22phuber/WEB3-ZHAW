@@ -28,6 +28,8 @@ const [projectPut, setProjectPutState] = useState(loadingState.waiting);
 const [projectPost, setProjectPostState] = useState(loadingState.waiting);
 const [projectDelete, setProjectDeleteState] = useState(loadingState.waiting);
 
+const[issuesGet, setIssuesGetState] = useState(loadingState.waiting);
+
 const [issueGet, setIssueGetState] = useState(loadingState.waiting);
 const [issuePut, setIssuePutState] = useState(loadingState.waiting);
 const [issuePost, setIssuePostState] = useState(loadingState.waiting);
@@ -269,6 +271,27 @@ async function getProject(id){
 }
 
 /**
+ * Gets all issues stored on the given project id
+ * in the heroku service
+ * @param {int} id 
+ */
+async function getProjectIssues(id){
+  setIssuesGetState(loadingState.loading);
+  fetch(str.concat(herokuApi.projectsUrl, "/", id, "/issues"))
+    .then(res => {
+      setIssuesGetState(loadingState.done)
+      res.json();
+    })
+    .then(data => {
+      setIssuesGetState(loadingState.waiting);
+    })
+    .catch(error => {
+      console.log(error);
+      setIssuesGetState(loadingState.error);
+    })
+}
+
+/**
  * Function to post a new issue to a certain projectId on
  * the heroku API service
  * @param {int} projectId
@@ -304,6 +327,8 @@ async function postNewIssue(projectId, issueTitle, dueDate, priority){
       setIssuePostState(loadingState.error);
     })
 }
+
+
 
 
 
