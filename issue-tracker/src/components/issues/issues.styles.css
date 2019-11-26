@@ -12,6 +12,10 @@
     align-items: center;
 }
 
+.issue-list {
+    overflow-y: auto;
+}
+
 .issues-heading-table {
     font-weight: bold;
     color: #999;
