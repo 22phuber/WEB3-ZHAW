@@ -27,6 +27,17 @@ const Main = props => {
     setGetProjectStatus(HerokuAPI.loadingState.finished);
   }
 
+  function submitNewProject(event){
+    
+    event.preventDefault();
+    let jsonObject = {};
+    for (const [key, value] of new FormData(event.target).entries()) {
+      jsonObject[key] = value;
+    }
+    setGetProjectStatus(HerokuAPI.loadingState.loading);
+    HerokuAPI.postNewProject(jsonObject.projectTitle, setProjectData);
+  }
+
   useEffect(() => {
     if (!projectData) {
       setGetProjectStatus(HerokuAPI.loadingState.loading);
@@ -45,7 +56,7 @@ const Main = props => {
     return (
       <div className="Main">
         <h2>Create your first Project</h2>
-        <form>
+        <form onSubmit={submitNewProject}>
           <div>
             <div>
               <TextField
@@ -53,7 +64,6 @@ const Main = props => {
                 required
                 name="projectTitle"
                 id="standard-basic"
-                //className={classes.textField}
                 label="Project Name"
                 margin="normal"
               />
@@ -64,7 +74,6 @@ const Main = props => {
                 color="primary"
                 size="medium"
                 type="submit"
-                //className={classes.button}
                 startIcon={<AddCircleOutlineIcon />}
               >
                 Create

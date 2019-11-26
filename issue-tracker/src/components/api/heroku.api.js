@@ -1,3 +1,5 @@
+import { payloads } from "../../data/heroku.api";
+
 /**
  * These loadingStates can and should be used to display dynamic icons to the user,
  * that resembles the current state. For example, loading could be used to show a spinning
@@ -39,7 +41,7 @@ const standardPayload = {
 
 // API related informations: Endpoint and JSON payload
 const herokuApi = {
-  projectsUrl: "http://zhaw-issue-tracker-api.herokuapp.com/api/projects",
+  projectsUrl: "https://zhaw-issue-tracker-api.herokuapp.com/api/projects",
   contentType: "application/json"
 };
 
@@ -80,14 +82,21 @@ function getLocalStorageData(key) {
  * @param {int} id 
  * @param {String} title 
  */
-function saveProjectIdToLocalStorage(id, title) {
+function saveProjectIdToLocalStorage(id, projectTitle) {
   var projectData = getLocalStorageData(client_uuid);
-  projectData.projects.push(JSON.parse(
+  if (!projectData) {
+    projectData = {
+      projects: [
+
+      ]
+    }
+  }
+  projectData.projects.push(
     {
-      title: title,
+      title: projectTitle,
       id: id
     }
-  ));
+  );
   writeProjectDataToLocalStorage(projectData);
 }
 
@@ -133,7 +142,7 @@ function writeProjectDataToLocalStorage(projectData) {
  * were saved to the localStorage and can be pulled again.
  * 
  */
-async function postNewProject(title) {
+export async function postNewProject(projectTitle, callback) {
   fetch(herokuApi.projectsUrl,
     {
       method: 'POST',
@@ -141,16 +150,21 @@ async function postNewProject(title) {
         Accept: herokuApi.contentType,
         "Content-Type": herokuApi.contentType
       },
-      body: {
+      body: JSON.stringify({
         ...standardPayload.project,
-        title: title
-      }
+        title: projectTitle,
+        created_at: getCurrentTime(),
+        updated_at: getCurrentTime()
+      })
     })
     .then(res => {
-      res.json();
+      return res.json();
     })
     .then(data => {
-      saveProjectIdToLocalStorage(data.id, title);
+      saveProjectIdToLocalStorage(data.id, projectTitle);
+      if (callback) {
+        callback()
+      }
     })
     .catch(error => {
       console.log(error);
@@ -224,17 +238,12 @@ async function getProject(id) {
 }
 
 export async function fetchRemoteProjects(callback) {
-  const localData = getLocalStorageData(client_uuid);
+  const localData = JSON.parse(getLocalStorageData(client_uuid));
   if (localData) {
-    const projectIds = localData
-      .split(",")
-      .filter(Boolean)
-      .map(Number);
-
     try {
       const responses = await Promise.all(
-        projectIds.map(async id =>
-          await fetch(herokuApi.projectsUrl + "/" + id)));
+        localData.projects.map(async project =>
+          await fetch(herokuApi.projectsUrl + "/" + project.id)));
       const responsesJson = await Promise.all(
         responses.map(async response => await response.json())
       );
@@ -242,6 +251,8 @@ export async function fetchRemoteProjects(callback) {
     } catch (error) {
       console.log(error);
     }
+  } else {
+    callback(null);
   }
 }
 
