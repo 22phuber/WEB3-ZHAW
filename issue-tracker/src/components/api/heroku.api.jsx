@@ -77,16 +77,38 @@ function generateID() {
 }
 
 /**
- * Checks if the key returns any data. If not, you get an empty object.
+ * Checks if the key returns any data. If not, you get an object with
+ * and empty projectIds array.
  * @param {String} key They key value for the data in the local Storage
  */
 function getLocalStorageData(key) {
   if(localStorage.getItem(key)
   && localStorage.getItem(key) != ""){
-    return localStorage.getItem(key);
+    return JSON.parse(localStorage.getItem(key));
   } else {
-    return [];
+    return {
+      projectIds: [
+
+      ]
+        };
   }
+}
+
+/**
+ * Due to the fact that the Heroku API does not offer any form of fetching 
+ * projects based on UUID, we have to locally save the project IDs to be 
+ * able to fetch them at a later date.
+ * @param {int} id 
+ */
+function saveProjectIdToLocalStorage(id){
+  var projectData = getLocalStorageData(client_uuid);
+  projectData.projectIds.push(id);
+  localStorage.setItem(client_uuid,
+    JSON.stringify(projectData));
+}
+
+async function postNewProject(title) {
+  
 }
 
 async function getProjectIds(){
