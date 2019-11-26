@@ -55,7 +55,7 @@ const TabsPane = props => {
           aria-label="scrollable prevent tabs example"
         >
           {props.data.map((project, index) => (
-            <Tab label={["Item ", index].join(' ')} {...a11yProps(index)} />
+            <Tab label={project.title} {...a11yProps(index)} />
           ))}
         </Tabs>
       </AppBar>
