@@ -14,17 +14,26 @@ const loadingState = {
 
 /**
  * States for the single operations like:
- * get projects
+ * get project
+ * put project
  * post project
- * get issues
+ * delete project
+ * get issue
+ * put issue
  * post issue
+ * delete issue
  */
 const [projectGet, setProjectGetState] = useState(loadingState.waiting);
 const [projectPut, setProjectPutState] = useState(loadingState.waiting);
-const [projectDelete, setProjectDeleteState] = useState(loadingState.waiting);
 const [projectPost, setProjectPostState] = useState(loadingState.waiting);
+const [projectDelete, setProjectDeleteState] = useState(loadingState.waiting);
+
 const [issueGet, setIssueGetState] = useState(loadingState.waiting);
+const [issuePut, setIssuePutState] = useState(loadingState.waiting);
 const [issuePost, setIssuePostState] = useState(loadingState.waiting);
+const [issueDelete, setIssueDeleteState] = useState(loadingState.waiting);
+
+
 
 /**
  * The UUID that resembles a client on the Heroku REST API.
@@ -127,10 +136,6 @@ function changProjectDataInLocalStorage(id, title) {
   writeProjectDataToLocalStorage(projectData);
 }
 
-function writeProjectDataToLocalStorage(projectData) {
-  localStorage.setItem(client_uuid, JSON.stringify(projectData));
-}
-
 /**
  * Removes a project from the local Storage. Only call this
  * if the project was also removed from the heroku service,
@@ -142,6 +147,10 @@ function removeProjectIdFromLocalStorage(id) {
   projectData.projects = projectData.projects
     .filter(project => project.id = id);
   writeProjectDataToLocalStorage(projectData);
+}
+
+function writeProjectDataToLocalStorage(projectData) {
+  localStorage.setItem(client_uuid, JSON.stringify(projectData));
 }
 
 /**
@@ -199,7 +208,6 @@ async function deleteProject(id) {
       setProjectDeleteState(loadingState.done)
     })
     .then(data => {
-
       setProjectDeleteState(loadingState.waiting);
     })
     .catch(error => {
@@ -208,35 +216,30 @@ async function deleteProject(id) {
     })
 }
 
+/**
+ * This function uses a PUT request to change the project data
+ * on the heroku API
+ * @param {int} id 
+ * @param {String} title 
+ * @param {boolean} active 
+ */
 async function putProject(id, title, active) {
-  setProjectPutState(loadingState.loading);
-  fetch(str.concat(herokuApi.projectsUrl, "/", id),
-    {
-      method: 'PUT',
-      headers: {
-        Accept: herokuApi.contentType,
-        "Content-Type": herokuApi.contentType
-      },
-      body: {
-        ...standardPayload.project,
-        title: title,
-        active: active
-      }
-    })
+  setProjectGetState(loadingState.loading);
+  fetch(str.concat(herokuApi.projectsUrl, "/", id))
     .then(res => {
-      setProjectPutState(loadingState.done)
+      setProjectGetState(loadingState.done)
       res.json();
     })
     .then(data => {
-      changProjectDataInLocalStorage(id, title);
-      setProjectPutState(loadingState.waiting);
+      setProjectGetState(loadingState.waiting);
     })
     .catch(error => {
       console.log(error);
-      setProjectPutState(loadingState.error);
+      setProjectGetState(loadingState.error);
     })
 }
-async function getProjectIds() {
+
+async function getProject(id){
 
 }
 
