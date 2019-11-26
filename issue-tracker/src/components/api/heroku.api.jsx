@@ -298,6 +298,7 @@ async function getProjectIssues(id){
  * @param {String} issueTitle
  * @param {String} dueDate
  * @param {String} priority
+ * @param {boolean} done
  */
 async function postNewIssue(projectId, issueTitle, dueDate, priority){
   setIssuePostState(loadingState.loading);
@@ -310,6 +311,7 @@ async function postNewIssue(projectId, issueTitle, dueDate, priority){
       },
       body: {
         ...standardPayload.issue,
+        done: false,
         title: issueTitle,
         due_date: dueDate,
         priority: priority
@@ -325,6 +327,74 @@ async function postNewIssue(projectId, issueTitle, dueDate, priority){
     .catch(error => {
       console.log(error);
       setIssuePostState(loadingState.error);
+    })
+}
+
+/**
+ * Function to update an issue
+ * the heroku API service
+ * @param {int} projectId
+ * @param {int} issueId
+ * @param {String} issueTitle
+ * @param {String} dueDate
+ * @param {String} priority
+ * @param {boolean} done
+ */
+async function putIssue(projectId, issueId, issueTitle, dueDate, priority, done){
+  setIssuePutState(loadingState.loading);
+  fetch(str.concat(herokuApi.projectsUrl, "/", projectId, "/issues/", issueId),
+    {
+      method: 'PUT',
+      headers: {
+        Accept: herokuApi.contentType,
+        "Content-Type": herokuApi.contentType
+      },
+      body: {
+        ...standardPayload.issue,
+        done: done,
+        title: issueTitle,
+        due_date: dueDate,
+        priority: priority
+      }
+    })
+    .then(res => {
+      setIssuePutState(loadingState.done)
+      res.json();
+    })
+    .then(data => {
+      setIssuePutState(loadingState.waiting);
+    })
+    .catch(error => {
+      console.log(error);
+      setIssuePutState(loadingState.error);
+    })
+}
+
+/**
+ * Deletes an issue in the heroku service
+ * @param {int} projectId 
+ * @param {int} issueId 
+ */
+async function deleteIssue(projectId, issueId){
+  setIssueDeleteState(loadingState.loading);
+  fetch(str.concat(herokuApi.projectsUrl, "/", projectId, "/issues/", issueId),
+    {
+      method: 'DELETE',
+      headers: {
+        Accept: herokuApi.contentType,
+        "Content-Type": herokuApi.contentType
+      }
+    })
+    .then(res => {
+      setIssueDeleteState(loadingState.done)
+      res.json();
+    })
+    .then(data => {
+      setIssueDeleteState(loadingState.waiting);
+    })
+    .catch(error => {
+      console.log(error);
+      setIssueDeleteState(loadingState.error);
     })
 }
 
