@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import TabsPane from "../tabs/tabspane.component";
 import Issues from "../issues/issues.component";
 /* material-ui */
@@ -110,30 +110,7 @@ class Main extends Component {
     if (data) {
       return (
         <div className="Main">
-          <TabsPane data={
-            {
-              projects: [
-                {id: 1,
-                title: "test"},
-                {id: 1,
-                  title: "test"},
-                  {id: 1,
-                    title: "test"},
-                    {id: 1,
-                      title: "test"},
-                      {id: 1,
-                        title: "test"},
-                        {id: 1,
-                          title: "test"},
-                          {id: 1,
-                            title: "test"},
-                            {id: 1,
-                              title: "test"},
-                              {id: 1,
-                                title: "test"}
-              ]
-            }
-          }/>
+          <TabsPane data={null}/>
         </div>
       );
     } else {

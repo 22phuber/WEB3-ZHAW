@@ -238,7 +238,7 @@ export async function fetchRemoteProjects(callback) {
       const responsesJson = await Promise.all(
         responses.map(async response => await response.json())
       );
-      callback(repsonsesJson);
+      callback(responsesJson);
     } catch (error) {
       console.log(error);
     }
