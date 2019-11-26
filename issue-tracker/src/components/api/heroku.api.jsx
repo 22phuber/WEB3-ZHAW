@@ -1,5 +1,10 @@
 import React, { useState } from "React";
 
+/**
+ * These loadingStates can and should be used to display dynamic icons to the user,
+ * that resembles the current state. For example, loading could be used to show a spinning
+ * Icon so the user sees that something is happening in the background.
+ */
 const loadingState = {
     waiting: 0,
     loading: 1,
@@ -7,6 +12,23 @@ const loadingState = {
     error: 4
 }
 
+/**
+ * States for the single operations like:
+ * get projects
+ * post project
+ * get issues
+ * post issue
+ */
+const [projectGet, setProjectGetState] = useState(loadingState.waiting);
+const [projectPost, setProjectPostState] = useState(loadingState.waiting);
+const [issueGet, setIssueGetState] = useState(loadingState.waiting);
+const [issuePost, setIssuePostState] = useState(loadingState.waiting);
+
+/**
+ * The UUID that resembles a client on the Heroku REST API.
+ * 
+ */
+//TODO Replace with some kind of *.env variable
 const client_uuid = "0772c89a-7790-4532-a700-b840ea69e31b";
 
 const standardPayload = {
@@ -66,12 +88,6 @@ function getLocalStorageData(key) {
     return [];
   }
 }
-
-
-const [projectGet, setProjectGetState] = useState(loadingState.waiting);
-const [projectPush, setProjectPostState] = useState(loadingState.waiting);
-const [issueGet, setIssueGetState] = useState(loadingState.waiting);
-const [issuePost, setIssuePostState] = useState(loadingState.waiting);
 
 async function getProjectIds(){
 
