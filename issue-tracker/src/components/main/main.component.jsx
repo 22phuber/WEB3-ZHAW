@@ -43,7 +43,7 @@ const Main = props => {
       setGetProjectStatus(HerokuAPI.loadingState.loading);
       HerokuAPI.fetchRemoteProjects(finishLoadingProjects);
     }
-  });
+  },[projectData]);
 
   if (projectData) {
     return (
