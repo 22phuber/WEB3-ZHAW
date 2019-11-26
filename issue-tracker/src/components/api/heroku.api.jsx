@@ -108,7 +108,33 @@ function saveProjectIdToLocalStorage(id){
 }
 
 async function postNewProject(title) {
-  
+  setProjectPostState(loadingState.loading);
+  fetch(herokuApi.projectsUrl,
+    {
+      method: 'POST',
+      headers: {
+        Accept: herokuApi.contentType,
+        "Content-Type": herokuApi.contentType
+      },
+      body: {
+        ...standardPayload.project,
+        created_at: getCurrentTime(),
+        updated_at: getCurrentTime(),
+        title: title
+      }
+    })
+    .then(res => {
+      setProjectPostState(loadingState.done)
+      res.json();
+    })
+    .then(data => {
+      saveProjectIdToLocalStorage(data.id);
+      setProjectPostState(loadingState.waiting);
+    })
+    .catch(error => {
+      console.log(error);
+      setProjectPostState(loadingState.error);
+    })
 }
 
 async function getProjectIds(){
