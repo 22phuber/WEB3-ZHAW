@@ -34,16 +34,48 @@ const standardPayload = {
 
 // API related informations: Endpoint and JSON payload
 const herokuApi = {
-    projects: "http://zhaw-issue-tracker-api.herokuapp.com/api/projects",
+    projectsUrl: "http://zhaw-issue-tracker-api.herokuapp.com/api/projects",
     contentType: "application/json"
   };
+
+/**
+ * returns the current timestamp in the ISO format.
+ */
+function getCurrentTime() {
+  return new Date().toISOString();
+}
+
+/**
+ * Generates a random ID.
+ */
+function generateID() {
+  return Math.random()
+    .toString(36)
+    .substr(2, 9);
+}
+
+/**
+ * Checks if the key returns any data. If not, you get an empty object.
+ * @param {String} key They key value for the data in the local Storage
+ */
+function getLocalStorageData(key) {
+  if(localStorage.getItem(key)
+  && localStorage.getItem(key) != ""){
+    return localStorage.getItem(key);
+  } else {
+    return [];
+  }
+}
+
 
 const [projectGet, setProjectGetState] = useState(loadingState.waiting);
 const [projectPush, setProjectPostState] = useState(loadingState.waiting);
 const [issueGet, setIssueGetState] = useState(loadingState.waiting);
 const [issuePost, setIssuePostState] = useState(loadingState.waiting);
 
+async function getProjectIds(){
 
+}
 
 
 
