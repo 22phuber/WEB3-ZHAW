@@ -19,7 +19,7 @@ const styles = {
   titleTextField: { width: "300px" },
   textField: {},
   button: {},
-  formControl: { width: "150px" }
+  formControl: { width: "150px" },
 };
 
 class Issues extends Component {
@@ -28,7 +28,7 @@ class Issues extends Component {
 
     this.state = {
       projectid: this.props.projectId,
-      showPopup: false
+      showPopup: false,
     };
     this.fetchRemoteIssues = this.fetchRemoteIssues.bind(this);
     this.createRemoteIssue = this.createRemoteIssue.bind(this);
@@ -38,7 +38,7 @@ class Issues extends Component {
 
   setPopupState = value => {
     this.setState({
-      showPopup: value
+      showPopup: value,
     });
   };
 
@@ -63,7 +63,7 @@ class Issues extends Component {
           method: "POST",
           headers: {
             Accept: herokuApi.contentType,
-            "Content-Type": herokuApi.contentType
+            "Content-Type": herokuApi.contentType,
           },
           body: JSON.stringify({
             ...payloads.issue,
@@ -71,8 +71,8 @@ class Issues extends Component {
             due_date: dueISOTimeStamp,
             created_at: currentISOTimeStamp,
             updated_at: currentISOTimeStamp,
-            priority: issueData.issuePriority
-          })
+            priority: issueData.issuePriority,
+          }),
         }
       );
       if (!response.ok) {
@@ -96,8 +96,8 @@ class Issues extends Component {
             method: "GET",
             headers: {
               Accept: herokuApi.contentType,
-              "Content-Type": herokuApi.contentType
-            }
+              "Content-Type": herokuApi.contentType,
+            },
           }
         );
         if (!response.ok) {
@@ -126,7 +126,7 @@ class Issues extends Component {
           method: "PUT",
           headers: {
             Accept: herokuApi.contentType,
-            "Content-Type": herokuApi.contentType
+            "Content-Type": herokuApi.contentType,
           },
           body: JSON.stringify({
             ...issueData,
@@ -135,8 +135,8 @@ class Issues extends Component {
             due_date: issueData.due_date,
             created_at: issueData.created_at,
             updated_at: currentISOTimeStamp,
-            priority: issueData.priority
-          })
+            priority: issueData.priority,
+          }),
         }
       );
       if (!response.ok) {
@@ -160,8 +160,8 @@ class Issues extends Component {
           method: "DELETE",
           headers: {
             Accept: herokuApi.contentType,
-            "Content-Type": herokuApi.contentType
-          }
+            "Content-Type": herokuApi.contentType,
+          },
         }
       );
       if (!response.ok) {
@@ -195,7 +195,7 @@ class Issues extends Component {
     const { classes } = this.props;
     const dateOptions = {
       timeZone: "Europe/Zurich",
-      hour12: false
+      hour12: false,
     };
     // Crate date and 1 one day => Tomorrow
     var tmrw = new Date();
@@ -237,14 +237,16 @@ class Issues extends Component {
                 <div className="issues-heading-due">Due date</div>
                 <div className="issues-heading-delete">Delete</div>
               </div>
-              {issues.map(issue => (
-                <Issue
-                  updateRemoteIssue={this.updateRemoteIssue}
-                  deleteRemoteIssue={this.deleteRemoteIssue}
-                  key={issue.id}
-                  issue={issue}
-                />
-              ))}
+              <div className="issue-list">
+                {issues.map(issue => (
+                  <Issue
+                    updateRemoteIssue={this.updateRemoteIssue}
+                    deleteRemoteIssue={this.deleteRemoteIssue}
+                    key={issue.id}
+                    issue={issue}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </>
@@ -278,7 +280,7 @@ class Issues extends Component {
                   value={issues.priority}
                   inputProps={{
                     name: "issuePriority",
-                    id: "priority-native-simple"
+                    id: "priority-native-simple",
                   }}
                 >
                   <option value={3}>Low</option>
@@ -297,7 +299,7 @@ class Issues extends Component {
                 defaultValue={nowDueDate}
                 className={classes.textField}
                 InputLabelProps={{
-                  shrink: true
+                  shrink: true,
                 }}
               />
             </div>
