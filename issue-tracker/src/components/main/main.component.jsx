@@ -1,4 +1,4 @@
-import React, {  useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import TabsPane from "../tabs/tabspane.component";
 import Issues from "../issues/issues.component";
 /* material-ui */
@@ -9,9 +9,8 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
 import "./main.styles.css";
 
-import { payloads, client_uuid, herokuApi } from "../../data/heroku.api";
-
-import * as api from "../api/heroku.api.js";
+import * as HerokuAPI from "../api/heroku.api.js";
+import Loading from "../loading/loading.component";
 
 const styles = {
   textField: {},
@@ -20,19 +19,29 @@ const styles = {
 
 const Main = props => {
 
-  const[projectData, setProjectData] = useState(null);
+  const [projectData, setProjectData] = useState(null);
+  const [getProjectStatus, setGetProjectStatus] = useState(HerokuAPI.loadingState.waiting)
 
-  useEffect(() =>{
-    api.fetchRemoteProjects(setProjectData);
+  function finishLoadingProjects(projectData) {
+    setProjectData(projectData);
+    setGetProjectStatus(HerokuAPI.loadingState.finished);
+  }
+
+  useEffect(() => {
+    if (!projectData) {
+      setGetProjectStatus(HerokuAPI.loadingState.loading);
+      HerokuAPI.fetchRemoteProjects(finishLoadingProjects);
+    }
   });
-  
+
   if (projectData) {
     return (
       <div className="Main">
-        <TabsPane data={projectData}/>
+        <TabsPane data={projectData} />
       </div>
     );
-  } else {
+
+  } else if (getProjectStatus === HerokuAPI.loadingState.finished) {
     return (
       <div className="Main">
         <h2>Create your first Project</h2>
@@ -65,7 +74,14 @@ const Main = props => {
         </form>
       </div>
     );
+  } else {
+    return (
+      <div className="Main">
+        <Loading />
+      </div>
+    );
   }
+
 }
 
 /**

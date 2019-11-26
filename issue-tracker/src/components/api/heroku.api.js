@@ -3,7 +3,7 @@
  * that resembles the current state. For example, loading could be used to show a spinning
  * Icon so the user sees that something is happening in the background.
  */
-const loadingState = {
+export const loadingState = {
   waiting: 0,
   loading: 1,
   finished: 2,

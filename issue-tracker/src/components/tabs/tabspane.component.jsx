@@ -9,7 +9,6 @@ const TabsPane = props => {
   const [currentTab, setCurrentTab] = useState(0);
   const [overflow, setOverflow] = useState(false);
 
-
   const useStyles = makeStyles(theme => ({
     root: {
       flexGrow: 1,
