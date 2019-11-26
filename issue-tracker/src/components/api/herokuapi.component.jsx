@@ -43,9 +43,6 @@ const [projectPush, setProjectPostState] = useState(loadingState.waiting);
 const [issueGet, setIssueGetState] = useState(loadingState.waiting);
 const [issuePost, setIssuePostState] = useState(loadingState.waiting);
 
-async function getAvaliableProjects() => {
-
-}
 
 
 
