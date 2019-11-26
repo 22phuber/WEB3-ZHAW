@@ -224,6 +224,35 @@ async function deleteProject(id) {
  * @param {boolean} active 
  */
 async function putProject(id, title, active) {
+  setProjectPutState(loadingState.loading);
+  fetch(str.concat(herokuApi.projectsUrl, "/", id),
+    {
+      method: 'PUT',
+      headers: {
+        Accept: herokuApi.contentType,
+        "Content-Type": herokuApi.contentType
+      },
+      body: {
+        ...standardPayload.project,
+        title: title,
+        active: active
+      }
+    })
+    .then(res => {
+      setProjectPutState(loadingState.done)
+      res.json();
+    })
+    .then(data => {
+      changProjectDataInLocalStorage(id, title);
+      setProjectPutState(loadingState.waiting);
+    })
+    .catch(error => {
+      console.log(error);
+      setProjectPutState(loadingState.error);
+    })
+}
+
+async function getProject(id){
   setProjectGetState(loadingState.loading);
   fetch(str.concat(herokuApi.projectsUrl, "/", id))
     .then(res => {
@@ -237,10 +266,6 @@ async function putProject(id, title, active) {
       console.log(error);
       setProjectGetState(loadingState.error);
     })
-}
-
-async function getProject(id){
-
 }
 
 
