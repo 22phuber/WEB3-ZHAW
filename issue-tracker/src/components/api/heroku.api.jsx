@@ -268,6 +268,43 @@ async function getProject(id){
     })
 }
 
+/**
+ * Function to post a new issue to a certain projectId on
+ * the heroku API service
+ * @param {int} projectId
+ * @param {String} issueTitle
+ * @param {String} dueDate
+ * @param {String} priority
+ */
+async function postNewIssue(projectId, issueTitle, dueDate, priority){
+  setIssuePostState(loadingState.loading);
+  fetch(str.concat(herokuApi.projectsUrl, "/", projectId, "/issues"),
+    {
+      method: 'POST',
+      headers: {
+        Accept: herokuApi.contentType,
+        "Content-Type": herokuApi.contentType
+      },
+      body: {
+        ...standardPayload.issue,
+        title: issueTitle,
+        due_date: dueDate,
+        priority: priority
+      }
+    })
+    .then(res => {
+      setIssuePostState(loadingState.done)
+      res.json();
+    })
+    .then(data => {
+      setIssuePostState(loadingState.waiting);
+    })
+    .catch(error => {
+      console.log(error);
+      setIssuePostState(loadingState.error);
+    })
+}
+
 
 
 
