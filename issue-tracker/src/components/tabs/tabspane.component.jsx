@@ -20,7 +20,7 @@ const TabsPane = props => {
   }));
 
   const handleChange = (event, newValue) => {
-    props.onChangecurrentTabId(newValue);
+    props.onChangeCurrentTabId(newValue);
     setCurrentTab(newValue);
   };
 

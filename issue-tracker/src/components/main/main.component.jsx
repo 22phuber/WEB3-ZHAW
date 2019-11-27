@@ -88,7 +88,7 @@ const Main = props => {
   if (projectData) {
     return (
       <div className="Main">
-        <TabsPane data={projectData} currentTabId={setCurrentProjectTab} />
+        <TabsPane data={projectData} onChangeCurrentTabId={setCurrentProjectTab} />
         <SpeedDial
           ariaLabel="SpeedDial tooltip example"
           className={classes.speedDial}
