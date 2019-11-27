@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import TabsPane from "../tabs/tabspane.component";
-import Issues from "../issues/issues.component";
 /* material-ui */
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import Fab from "@material-ui/core/Fab";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
 import SpeedDial from '@material-ui/lab/SpeedDial';
@@ -13,6 +11,7 @@ import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import "./main.styles.css";
 
@@ -27,14 +26,14 @@ const styles = {
 const Main = props => {
 
   const [projectData, setProjectData] = useState(null);
+  const [currentTab, setCurrentTab] = useState(0);
   const [getProjectStatus, setGetProjectStatus] = useState(HerokuAPI.loadingState.waiting)
   const [open, setOpen] = React.useState(false);
   const [hidden, setHidden] = React.useState(false);
 
-  const actions = [
-    { icon: <AddIcon  />, name: 'New Project' },
-    { icon: <EditIcon />, name: 'New Issue' },
-  ];
+  function setCurrentProjectTab(id) {
+    setCurrentTab(id);
+  }
 
   const handleVisibility = () => {
     setHidden(prevHidden => !prevHidden);
@@ -53,8 +52,8 @@ const Main = props => {
     setGetProjectStatus(HerokuAPI.loadingState.finished);
   }
 
-  function submitNewProject(event){
-    
+  function submitNewProject(event) {
+
     event.preventDefault();
     let jsonObject = {};
     for (const [key, value] of new FormData(event.target).entries()) {
@@ -64,12 +63,17 @@ const Main = props => {
     HerokuAPI.postNewProject(jsonObject.projectTitle, setProjectData);
   }
 
+  function deleteCurrentProject() {
+    handleClose();
+    HerokuAPI.deleteAllIssuesAndProjectId(currentTab);
+  }
+
   useEffect(() => {
     if (!projectData) {
       setGetProjectStatus(HerokuAPI.loadingState.loading);
       HerokuAPI.fetchRemoteProjects(finishLoadingProjects);
     }
-  },[projectData]);
+  }, [projectData]);
 
   const useStyles = makeStyles(theme => ({
     speedDial: {
@@ -84,26 +88,38 @@ const Main = props => {
   if (projectData) {
     return (
       <div className="Main">
-        <TabsPane data={projectData} />
+        <TabsPane data={projectData} currentTabId={setCurrentProjectTab} />
         <SpeedDial
-        ariaLabel="SpeedDial tooltip example"
-        className={classes.speedDial}
-        hidden={hidden}
-        icon={<SpeedDialIcon />}
-        onClose={handleClose}
-        onOpen={handleOpen}
-        open={open}
-      >
-        {actions.map(action => (
+          ariaLabel="SpeedDial tooltip example"
+          className={classes.speedDial}
+          hidden={hidden}
+          icon={<SpeedDialIcon />}
+          onClose={handleClose}
+          onOpen={handleOpen}
+          open={open}
+        >
           <SpeedDialAction
-            key={action.name}
-            icon={action.icon}
-            tooltipTitle={action.name}
-            tooltipOpen
+            key={'New Project'}
+            icon={<AddIcon />}
+            tooltipTitle={'New Project'}
+            tooltipOpen={true}
             onClick={handleClose}
           />
-        ))}
-      </SpeedDial>
+          <SpeedDialAction
+            key={'Delete Project'}
+            icon={<DeleteIcon />}
+            tooltipTitle={'Delete Project'}
+            tooltipOpen={true}
+            onClick={deleteCurrentProject}
+          />
+          <SpeedDialAction
+            key={'New Issue'}
+            icon={<EditIcon />}
+            tooltipTitle={'New Issue'}
+            tooltipOpen={true}
+            onClick={handleClose}
+          />
+        </SpeedDial>
       </div>
     );
   } else if (getProjectStatus === HerokuAPI.loadingState.finished) {

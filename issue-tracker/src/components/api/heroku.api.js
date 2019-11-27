@@ -1,5 +1,3 @@
-import { payloads } from "../../data/heroku.api";
-
 /**
  * These loadingStates can and should be used to display dynamic icons to the user,
  * that resembles the current state. For example, loading could be used to show a spinning
@@ -83,7 +81,7 @@ function getLocalStorageData(key) {
  * @param {String} title 
  */
 function saveProjectIdToLocalStorage(id, projectTitle) {
-  var projectData = getLocalStorageData(client_uuid);
+  var projectData = JSON.parse(getLocalStorageData(client_uuid));
   if (!projectData) {
     projectData = {
       projects: [
@@ -123,9 +121,11 @@ function changeProjectDataInLocalStorage(id, title) {
  * @param {int} id 
  */
 function removeProjectIdFromLocalStorage(id) {
-  var projectData = getLocalStorageData(client_uuid);
+  var projectData = JSON.parse(getLocalStorageData(client_uuid));
+  console.log(projectData);
   projectData.projects = projectData.projects
-    .filter(project => project.id = id);
+    .filter(project => project.id !== id);
+  console.log(projectData);
   writeProjectDataToLocalStorage(projectData);
 }
 
@@ -142,7 +142,7 @@ function writeProjectDataToLocalStorage(projectData) {
  * were saved to the localStorage and can be pulled again.
  * 
  */
-export async function postNewProject(projectTitle, callback) {
+export async function postNewProject(projectTitle, callback) { 
   fetch(herokuApi.projectsUrl,
     {
       method: 'POST',
@@ -171,26 +171,8 @@ export async function postNewProject(projectTitle, callback) {
     })
 }
 
-/**
- * Deletes a project on the heroku service
- * and removes it from the localStorage
- */
-async function deleteProject(id) {
-  fetch(herokuApi.projectsUrl.concat("/", id),
-    {
-      method: 'DELETE',
-      headers: {
-        Accept: herokuApi.contentType,
-        "Content-Type": herokuApi.contentType
-      }
-    })
-    .then(res => {
-    })
-    .then(data => {
-    })
-    .catch(error => {
-      console.log(error);
-    })
+function getProjectIdFromTabsId(id) {
+  return JSON.parse(getLocalStorageData(client_uuid)).projects[id].id;
 }
 
 /**
@@ -237,18 +219,33 @@ async function getProject(id) {
     })
 }
 
+async function deleteProject(id) {
+  return fetch(herokuApi.projectsUrl.concat("/", id),
+    {
+      method: 'DELETE',
+      headers: {
+        Accept: herokuApi.contentType,
+        "Content-Type": herokuApi.contentType
+      }
+    })
+    .catch(error => {
+      console.log(error);
+    })
+}
+
 export async function fetchRemoteProjects(callback) {
   const localData = JSON.parse(getLocalStorageData(client_uuid));
-  if (localData) {
+  if (localData && localData.projects.length > 0) {
     try {
       const responses = await Promise.all(
         localData.projects.map(async project =>
-          await fetch(herokuApi.projectsUrl + "/" + project.id)));
+        await fetch(herokuApi.projectsUrl + "/" + project.id)));
       const responsesJson = await Promise.all(
         responses.map(async response => await response.json())
       );
       callback(responsesJson);
     } catch (error) {
+      callback(null);
       console.log(error);
     }
   } else {
@@ -261,12 +258,16 @@ export async function fetchRemoteProjects(callback) {
  * in the heroku service
  * @param {int} id 
  */
-async function getProjectIssues(id) {
+function getProjectIssues(id, callback) {
   fetch(herokuApi.projectsUrl.concat("/", id, "/issues"))
     .then(res => {
       res.json();
     })
     .then(data => {
+      console.log(data);
+      if(callback){
+        callback(data);
+      }
     })
     .catch(error => {
       console.log(error);
@@ -282,7 +283,7 @@ async function getProjectIssues(id) {
  * @param {String} priority
  * @param {boolean} done
  */
-async function postNewIssue(projectId, issueTitle, dueDate, priority) {
+function postNewIssue(projectId, issueTitle, dueDate, priority) {
   fetch(herokuApi.projectsUrl.concat("/", projectId, "/issues"),
     {
       method: 'POST',
@@ -318,7 +319,7 @@ async function postNewIssue(projectId, issueTitle, dueDate, priority) {
  * @param {String} priority
  * @param {boolean} done
  */
-async function putIssue(projectId, issueId, issueTitle, dueDate, priority, done) {
+function putIssue(projectId, issueId, issueTitle, dueDate, priority, done) {
   fetch(herokuApi.projectsUrl.concat("/", projectId, "/issues/", issueId),
     {
       method: 'PUT',
@@ -344,13 +345,24 @@ async function putIssue(projectId, issueId, issueTitle, dueDate, priority, done)
     })
 }
 
+export async function deleteAllIssuesAndProjectId(tabsId){
+  const projectId = getProjectIdFromTabsId(tabsId);
+  console.log(projectId);
+  const issues = await fetch(herokuApi.projectsUrl.concat("/", projectId, "/issues")).then(res => res.json());
+  const response = await Promise.all(
+    issues.map(async issue => await deleteIssue(projectId, issue.id))
+  );
+  deleteProject(projectId);
+  removeProjectIdFromLocalStorage(projectId);
+}
+
 /**
  * Deletes an issue in the heroku service
  * @param {int} projectId 
  * @param {int} issueId 
  */
-async function deleteIssue(projectId, issueId) {
-  fetch(herokuApi.projectsUrl.concat("/", projectId, "/issues/", issueId),
+function deleteIssue(projectId, issueId) {
+  return fetch(herokuApi.projectsUrl.concat("/", projectId, "/issues/", issueId),
     {
       method: 'DELETE',
       headers: {
@@ -360,8 +372,6 @@ async function deleteIssue(projectId, issueId) {
     })
     .then(res => {
       res.json();
-    })
-    .then(data => {
     })
     .catch(error => {
       console.log(error);
