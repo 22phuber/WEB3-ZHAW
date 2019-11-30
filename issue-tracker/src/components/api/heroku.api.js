@@ -345,15 +345,15 @@ function putIssue(projectId, issueId, issueTitle, dueDate, priority, done) {
     })
 }
 
-export async function deleteAllIssuesAndProjectId(tabsId){
+export async function deleteAllIssuesAndProjectId(tabsId, callback){
   const projectId = getProjectIdFromTabsId(tabsId);
-  console.log(projectId);
   const issues = await fetch(herokuApi.projectsUrl.concat("/", projectId, "/issues")).then(res => res.json());
   const response = await Promise.all(
     issues.map(async issue => await deleteIssue(projectId, issue.id))
   );
   deleteProject(projectId);
   removeProjectIdFromLocalStorage(projectId);
+  fetchRemoteProjects(callback);
 }
 
 /**
