@@ -11,12 +11,6 @@ import "./main.styles.css";
 import * as HerokuAPI from "../api/heroku.api.js";
 import Loading from "../loading/loading.component";
 
-
-const styles = {
-  textField: {},
-  button: {}
-};
-
 const Main = props => {
 
   const [projectData, setProjectData] = useState(null);
