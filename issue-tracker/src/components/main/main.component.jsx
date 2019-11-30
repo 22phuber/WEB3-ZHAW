@@ -36,19 +36,19 @@ const Main = props => {
   const [hidden, setHidden] = React.useState(false);
 
   useEffect(() => {
-    var primary = document.getElementsByClassName('MuiFab-primary');
-    for (var i = 0; i < primary.length; i++) {
-      primary[i].style.backgroundColor = props.darkMode ? "#494949" : "";
-    }
-    var elements = document.getElementsByClassName('MuiSpeedDialAction-fab');
-    for (var i = 0; i < elements.length; i++) {
-      elements[i].style.backgroundColor = props.darkMode ? "#A4A4A4" : "white";
-    }
-    var labels = document.getElementsByClassName('MuiSpeedDialAction-staticTooltipLabel');
-    for (var i = 0; i < labels.length; i++) {
-      labels[i].style.backgroundColor = props.darkMode ? "#A4A4A4" : "white";
-      labels[i].style.color = props.darkMode ? "#4B4B4B" : "#757575";
-    }
+    Array.from(document.getElementsByClassName('MuiFab-primary')) 
+    .forEach((element) => {
+      element.style.backgroundColor = props.darkMode ? "#494949" : "";
+    });
+    Array.from(document.getElementsByClassName('MuiSpeedDialAction-fab'))
+    .forEach((element) => {
+      element.style.backgroundColor = props.darkMode ? "#A4A4A4" : "white";
+    });
+    Array.from(document.getElementsByClassName('MuiSpeedDialAction-staticTooltipLabel'))
+    .forEach((element) => {
+      element.style.backgroundColor = props.darkMode ? "#A4A4A4" : "white";
+      element.style.color = props.darkMode ? "#4B4B4B" : "#757575";
+    });
   });
 
   function setCurrentProjectTab(id) {
