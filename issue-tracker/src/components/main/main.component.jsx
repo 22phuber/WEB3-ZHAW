@@ -12,7 +12,7 @@ import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Brightness3Icon from '@material-ui/icons/Brightness3'
+import Brightness3Icon from '@material-ui/icons/Brightness3';
 
 import "./main.styles.css";
 
@@ -31,6 +31,14 @@ const Main = props => {
   const [getProjectStatus, setGetProjectStatus] = useState(HerokuAPI.loadingState.waiting)
   const [open, setOpen] = React.useState(false);
   const [hidden, setHidden] = React.useState(false);
+
+  useEffect(() => {
+    var elements = document.getElementsByClassName('MuiSpeedDialAction-fab'); // get all elements
+    console.log("found elements: " + elements.length)
+      for(var i = 0; i < elements.length; i++){
+        elements[i].style.backgroundColor = props.darkMode ? "#424242" : "white";
+      }
+  }, [props.darkMode]);
 
   function setCurrentProjectTab(id) {
     setCurrentTab(id);
@@ -86,7 +94,7 @@ const Main = props => {
       position: 'absolute',
       bottom: theme.spacing(props.mobileDevice? 2 : 10),
       right: theme.spacing(2),
-      'white-space': 'nowrap'
+      'white-space': 'nowrap',
     },
   }));
   const classes = useStyles();
@@ -106,14 +114,14 @@ const Main = props => {
         >
           <SpeedDialAction
             key={props.darkMode ? 'Light mode' : 'Dark mode'}
-            icon={<Brightness3Icon />}
+            icon={<Brightness3Icon/>}
             tooltipTitle={props.darkMode ? 'Light mode' : 'Dark mode'}
             tooltipOpen={!props.mobileDevice}
             onClick={changeDarkMode}
           />
           <SpeedDialAction
             key={'New Project'}
-            icon={<AddIcon color={'disabled'}/>}
+            icon={<AddIcon />}
             tooltipTitle={'New Project'}
             tooltipOpen={!props.mobileDevice}
             onClick={handleClose}
