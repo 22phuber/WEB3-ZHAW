@@ -38,7 +38,7 @@ const TabsPane = props => {
 
   useEffect(() => {
     willOverflow(props.data.length);
-  });
+  },[props.data.length]);
 
   function a11yProps(index) {
     return {
