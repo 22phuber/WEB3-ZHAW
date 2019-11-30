@@ -19,7 +19,7 @@ function App() {
   useEffect(() => {
     localStorage.setItem(darkModeKey, darkModeActive);
   }, [darkModeActive]);
-  
+
   useEffect(() => {
     if (/Mobi|Android/i.test(navigator.userAgent)) {
       setIsModuleDevice(true);
@@ -35,7 +35,7 @@ function App() {
   return (
     <div className="App">
       <Header appTitle="Yet another issue tracker" darkMode={darkModeActive} mobileDevice={isMobileDevice} />
-      <Main darkMode={darkModeActive} mobileDevice={isMobileDevice}/>
+      <Main darkMode={darkModeActive} mobileDevice={isMobileDevice} changeDarkMode={changeColourMode}/>
       <Footer checked={darkModeActive} onChange={changeColourMode}
         darkMode={darkModeActive}
         mobileDevice={isMobileDevice} 

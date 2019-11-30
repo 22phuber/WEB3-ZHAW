@@ -12,6 +12,7 @@ import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Brightness3Icon from '@material-ui/icons/Brightness3'
 
 import "./main.styles.css";
 
@@ -68,6 +69,11 @@ const Main = props => {
     HerokuAPI.deleteAllIssuesAndProjectId(currentTab);
   }
 
+  function changeDarkMode() {
+    handleClose();
+    props.changeDarkMode();
+  }
+
   useEffect(() => {
     if (!projectData) {
       setGetProjectStatus(HerokuAPI.loadingState.loading);
@@ -78,7 +84,7 @@ const Main = props => {
   const useStyles = makeStyles(theme => ({
     speedDial: {
       position: 'absolute',
-      bottom: theme.spacing(10),
+      bottom: theme.spacing(props.mobileDevice? 2 : 10),
       right: theme.spacing(2),
       'white-space': 'nowrap'
     },
@@ -99,8 +105,15 @@ const Main = props => {
           open={open}
         >
           <SpeedDialAction
+            key={props.darkMode ? 'Light mode' : 'Dark mode'}
+            icon={<Brightness3Icon />}
+            tooltipTitle={props.darkMode ? 'Light mode' : 'Dark mode'}
+            tooltipOpen={!props.mobileDevice}
+            onClick={changeDarkMode}
+          />
+          <SpeedDialAction
             key={'New Project'}
-            icon={<AddIcon />}
+            icon={<AddIcon color={'disabled'}/>}
             tooltipTitle={'New Project'}
             tooltipOpen={!props.mobileDevice}
             onClick={handleClose}
