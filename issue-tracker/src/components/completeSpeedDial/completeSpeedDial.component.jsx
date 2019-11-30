@@ -51,8 +51,17 @@ const CompleteSpeedDial = props => {
   function createProject(projectTitle) {
     handleCloseProjectDialog();
     props.setGetProjectStatus(HerokuAPI.loadingState.loading);
-    HerokuAPI.postNewProject(
-      projectTitle,
+    HerokuAPI.postNewProject(projectTitle, props.finishLoadingProjects);
+  }
+
+  function createIssue(issueData) {
+    handleCloseIssueDialog();
+    props.setGetProjectStatus(HerokuAPI.loadingState.loading);
+    HerokuAPI.postNewIssue(
+      props.currentTab,
+      issueData.issueTitle,
+      issueData.dueDate,
+      issueData.issuePriority,
       props.finishLoadingProjects
     );
   }
@@ -109,7 +118,7 @@ const CompleteSpeedDial = props => {
           open={openIssueDialog}
           title={"Create new Issue"}
           handleClose={() => handleCloseIssueDialog()}
-          onNewIssueCreated={data => console.log(data)}
+          onNewIssueCreated={formData => createIssue(formData)}
         />
         <ProjectDialog
           open={openProjectDialog}
@@ -164,7 +173,7 @@ const CompleteSpeedDial = props => {
           open={openIssueDialog}
           title={"Create new Issue"}
           handleClose={() => handleCloseIssueDialog()}
-          onNewIssueCreated={data => console.log(data)}
+          onNewIssueCreated={formData => createIssue(formData)}
         />
         <ProjectDialog
           open={openProjectDialog}
@@ -173,7 +182,7 @@ const CompleteSpeedDial = props => {
           onNewProjectCreated={formData => createProject(formData.projectTitle)}
         />
         <SpeedDial
-          ariaLabel="SpeedDial tooltip example"
+          ariaLabel="SpeedDial actions"
           className={classes.speedDial}
           hidden={hidden}
           icon={<SpeedDialIcon />}
