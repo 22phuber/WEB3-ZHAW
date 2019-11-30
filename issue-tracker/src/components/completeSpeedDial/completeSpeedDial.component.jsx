@@ -48,6 +48,15 @@ const CompleteSpeedDial = props => {
     );
   }
 
+  function createProject(projectTitle) {
+    handleCloseProjectDialog();
+    props.setGetProjectStatus(HerokuAPI.loadingState.loading);
+    HerokuAPI.postNewProject(
+      projectTitle,
+      props.finishLoadingProjects
+    );
+  }
+
   function changeDarkMode() {
     handleClose();
     props.changeDarkMode();
@@ -106,7 +115,7 @@ const CompleteSpeedDial = props => {
           open={openProjectDialog}
           title={"Create new Project"}
           handleClose={() => handleCloseProjectDialog()}
-          onNewProjectCreated={data => console.log(data)}
+          onNewProjectCreated={formData => createProject(formData.projectTitle)}
         />
         <SpeedDial
           ariaLabel="SpeedDial actions"
@@ -161,7 +170,7 @@ const CompleteSpeedDial = props => {
           open={openProjectDialog}
           title={"Create new Project"}
           handleClose={() => handleCloseProjectDialog()}
-          onNewProjectCreated={data => console.log(data)}
+          onNewProjectCreated={formData => createProject(formData.projectTitle)}
         />
         <SpeedDial
           ariaLabel="SpeedDial tooltip example"
