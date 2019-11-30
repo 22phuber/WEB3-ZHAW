@@ -46,10 +46,6 @@ const CompleteSpeedDial = props => {
         props.changeDarkMode();
     }
 
-    const handleVisibility = () => {
-        setHidden(prevHidden => !prevHidden);
-    };
-
     const handleOpen = () => {
         setOpen(true);
     };
