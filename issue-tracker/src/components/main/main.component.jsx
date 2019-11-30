@@ -111,6 +111,52 @@ const Main = props => {
   const classes = useStyles();
 
   if (projectData) {
+    if(props.mobileDevice){
+      return (
+        <div className="Main">
+          <TabsPane data={projectData} onChangeCurrentTabId={setCurrentProjectTab} />
+          <SpeedDial
+            ariaLabel="SpeedDial tooltip example"
+            className={classes.speedDial}
+            hidden={hidden}
+            icon={<SpeedDialIcon />}
+            onClose={handleClose}
+            onOpen={handleOpen}
+            open={open}
+          >
+            <SpeedDialAction
+              key={props.darkMode ? 'Light mode' : 'Dark mode'}
+              icon={<Brightness4Icon />}
+              tooltipTitle={props.darkMode ? 'Light mode' : 'Dark mode'}
+              tooltipOpen={!props.mobileDevice}
+              onClick={changeDarkMode}
+            />
+            <SpeedDialAction
+              key={'New Project'}
+              icon={<AddIcon />}
+              tooltipTitle={'New Project'}
+              tooltipOpen={!props.mobileDevice}
+              onClick={handleClose}
+            />
+            <SpeedDialAction
+              key={'Delete Project'}
+              icon={<DeleteIcon />}
+              tooltipTitle={'Delete Project'}
+              tooltipOpen={!props.mobileDevice}
+              onClick={deleteCurrentProject}
+            />
+            <SpeedDialAction
+              key={'New Issue'}
+              icon={<EditIcon />}
+              tooltipTitle={'New Issue'}
+              tooltipOpen={!props.mobileDevice}
+              onClick={handleClose}
+            />
+          </SpeedDial>
+        </div>
+      );
+    } else {
+      
     return (
       <div className="Main">
         <TabsPane data={projectData} onChangeCurrentTabId={setCurrentProjectTab} />
@@ -123,13 +169,6 @@ const Main = props => {
           onOpen={handleOpen}
           open={open}
         >
-          <SpeedDialAction
-            key={props.darkMode ? 'Light mode' : 'Dark mode'}
-            icon={<Brightness4Icon />}
-            tooltipTitle={props.darkMode ? 'Light mode' : 'Dark mode'}
-            tooltipOpen={!props.mobileDevice}
-            onClick={changeDarkMode}
-          />
           <SpeedDialAction
             key={'New Project'}
             icon={<AddIcon />}
@@ -154,6 +193,7 @@ const Main = props => {
         </SpeedDial>
       </div>
     );
+    }
   } else if (getProjectStatus === HerokuAPI.loadingState.finished) {
     return (
       <div className="Main">
