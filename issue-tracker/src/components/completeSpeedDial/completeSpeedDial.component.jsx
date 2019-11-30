@@ -14,8 +14,8 @@ import * as HerokuAPI from "../api/heroku.api.js";
 const CompleteSpeedDial = props => {
 
 
-    const [open, setOpen] = React.useState(false);
-    const [hidden, setHidden] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [hidden, setHidden] = useState(false);
 
 
     useEffect(() => {
