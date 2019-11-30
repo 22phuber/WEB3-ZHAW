@@ -51,15 +51,6 @@ function getCurrentTime() {
 }
 
 /**
- * Generates a random ID.
- */
-function generateID() {
-  return Math.random()
-    .toString(36)
-    .substr(2, 9);
-}
-
-/**
  * Checks if the key returns any data. If not, you get an object with
  * and empty projectIds array.
  * @param {String} key They key value for the data in the local Storage
