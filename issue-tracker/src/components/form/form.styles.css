@@ -2,4 +2,11 @@
     margin: 0 auto;
     display: block;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.Form div {
+    margin-top: 10px;
 }
