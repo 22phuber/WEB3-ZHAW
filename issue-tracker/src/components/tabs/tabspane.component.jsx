@@ -57,7 +57,7 @@ const TabsPane = props => {
           variant={overflow ? "scrollable" : "fullWidth"}
           scrollButtons={overflow ? "auto" : "off"}
           indicatorColor= "primary"
-          textColor= {props.darkMode ? "#4B4B4B" : "#757575"}
+          color= {props.darkMode ? "#4B4B4B" : "#757575"}
           centered={!overflow}
           aria-label="scrollable prevent tabs example"
         >

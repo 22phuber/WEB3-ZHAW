@@ -9,12 +9,14 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 import IssueDialog from "../dialogs/newIssueDialog.component";
+import ProjectDialog from "../dialogs/newProjectDialog.component";
 
 import * as HerokuAPI from "../api/heroku.api.js";
 
 const CompleteSpeedDial = props => {
   const [open, setOpen] = useState(false);
-  const [openIssueDialog, setOpenDialog] = React.useState(false);
+  const [openIssueDialog, setOpenIssueDialog] = React.useState(false);
+  const [openProjectDialog, setOpenProjectDialog] = React.useState(false);
 
   const hidden = false;
 
@@ -60,11 +62,21 @@ const CompleteSpeedDial = props => {
   };
 
   const handleOpenIssueDialog = () => {
-    setOpenDialog(true);
+    console.log(props.currentTab);
+    setOpenIssueDialog(true);
   };
 
   const handleCloseIssueDialog = () => {
-    setOpenDialog(false);
+    setOpenIssueDialog(false);
+  };
+
+  const handleOpenProjectDialog = () => {
+    console.log(props.currentTab);
+    setOpenProjectDialog(true);
+  };
+
+  const handleCloseProjectDialog = () => {
+    setOpenProjectDialog(false);
   };
 
   const useStyles = makeStyles(theme => ({
@@ -90,6 +102,12 @@ const CompleteSpeedDial = props => {
           handleClose={() => handleCloseIssueDialog()}
           onNewIssueCreated={data => console.log(data)}
         />
+        <ProjectDialog
+          open={openProjectDialog}
+          title={"Create new Project"}
+          handleClose={() => handleCloseProjectDialog()}
+          onNewProjectCreated={data => console.log(data)}
+        />
         <SpeedDial
           ariaLabel="SpeedDial actions"
           className={classes.speedDial}
@@ -111,7 +129,7 @@ const CompleteSpeedDial = props => {
             icon={<AddIcon />}
             tooltipTitle={"New Project"}
             tooltipOpen={!props.mobileDevice}
-            onClick={handleClose}
+            onClick={handleOpenProjectDialog}
           />
           <SpeedDialAction
             key={"Delete Project"}
@@ -139,6 +157,12 @@ const CompleteSpeedDial = props => {
           handleClose={() => handleCloseIssueDialog()}
           onNewIssueCreated={data => console.log(data)}
         />
+        <ProjectDialog
+          open={openProjectDialog}
+          title={"Create new Project"}
+          handleClose={() => handleCloseProjectDialog()}
+          onNewProjectCreated={data => console.log(data)}
+        />
         <SpeedDial
           ariaLabel="SpeedDial tooltip example"
           className={classes.speedDial}
@@ -153,7 +177,7 @@ const CompleteSpeedDial = props => {
             icon={<AddIcon />}
             tooltipTitle={"New Project"}
             tooltipOpen={!props.mobileDevice}
-            onClick={handleClose}
+            onClick={handleOpenProjectDialog}
           />
           <SpeedDialAction
             key={"Delete Project"}
