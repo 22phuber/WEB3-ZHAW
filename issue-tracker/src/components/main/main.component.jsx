@@ -38,7 +38,12 @@ const Main = props => {
   useEffect(() => {
     var elements = document.getElementsByClassName('MuiSpeedDialAction-fab');
     for (var i = 0; i < elements.length; i++) {
-      elements[i].style.backgroundColor = props.darkMode ? "#a4a4a4" : "white";
+      elements[i].style.backgroundColor = props.darkMode ? "#A4A4A4" : "white";
+    }
+    var labels = document.getElementsByClassName('MuiSpeedDialAction-staticTooltipLabel');
+    for (var i = 0; i < labels.length; i++) {
+      labels[i].style.backgroundColor = props.darkMode ? "#A4A4A4" : "white";
+      labels[i].style.color = props.darkMode ? "#4B4B4B" : "#777777";
     }
   });
 
@@ -183,126 +188,5 @@ const Main = props => {
       </div>
     );
   }
-
 }
-
-/**
-  async createRemoteProject(projectData) {
-    var now = new Date();
-    const currentISOTimeStamp = now.toISOString();
-    try {
-      const response = await fetch(herokuApi.projects, {
-        method: "POST",
-        headers: {
-          Accept: herokuApi.contentType,
-          "Content-Type": herokuApi.contentType
-        },
-        body: JSON.stringify({
-          ...payloads.project,
-          title: projectData.projectTitle,
-          created_at: currentISOTimeStamp,
-          updated_at: currentISOTimeStamp
-        })
-      });
-      if (!response.ok) {
-        throw Error(response.statusText);
-      }
-      const responseJson = await response.json();
-      // Add new id to localStorage
-      if (responseJson.id) {
-        localStorage.setItem(
-          client_uuid,
-          (localStorage.getItem(client_uuid) || "") +
-            JSON.stringify(responseJson.id) +
-            ","
-        );
-      }
-      this.fetchRemoteProjects();
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async fetchRemoteProjects() {
-    if (
-      localStorage.getItem(client_uuid) &&
-      localStorage.getItem(client_uuid) !== ""
-    ) {
-      const projectIds = localStorage
-        .getItem(client_uuid)
-        .split(",")
-        .filter(Boolean)
-        .map(Number);
-
-      try {
-        const responses = await Promise.all(
-          projectIds.map(async id => await fetch(herokuApi.projects + "/" + id))
-        );
-        const responsesJson = await Promise.all(
-          responses.map(async response => await response.json())
-        );
-        this.setState({ data: responsesJson });
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }
-    
-
-  handleSubmit = event => {
-    event.preventDefault();
-    let jsonObject = {};
-    for (const [key, value] of new FormData(event.target).entries()) {
-      jsonObject[key] = value;
-    }
-    this.createRemoteProject(jsonObject);
-  };
-
-  render() {
-    const { data } = this.state;
-    const { classes } = this.props;
-    if (data) {
-      return (
-        <div className="Main">
-          <TabsPane data={null}/>
-        </div>
-      );
-    } else {
-      return (
-        <div className="Main">
-          <h2>Create your first Project</h2>
-          <form onSubmit={this.handleSubmit} method="POST">
-            <div>
-              <div>
-                <TextField
-                  type="text"
-                  required
-                  name="projectTitle"
-                  id="standard-basic"
-                  className={classes.textField}
-                  label="Project Name"
-                  margin="normal"
-                />
-              </div>
-              <div>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="medium"
-                  type="submit"
-                  className={classes.button}
-                  startIcon={<AddCircleOutlineIcon />}
-                >
-                  Create
-                </Button>
-              </div>
-            </div>
-          </form>
-        </div>
-      );
-    }
-  }
-}
-
- */
 export default Main;
