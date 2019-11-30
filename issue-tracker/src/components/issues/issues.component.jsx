@@ -10,7 +10,7 @@ import Select from "@material-ui/core/Select";
 
 import Issue from "../issue/issue.component";
 import Loading from "../loading/loading.component";
-import NewIssuePopup from "../newIssuePopup/newIssuePopup.component";
+import IssueDialog from "../dialogs/newIssueDialog.component";
 import "./issues.styles.css";
 
 import { payloads, client_uuid, herokuApi } from "../../data/heroku.api";
@@ -19,7 +19,7 @@ const styles = {
   titleTextField: { width: "300px" },
   textField: {},
   button: {},
-  formControl: { width: "150px" }
+  formControl: { width: "150px" },
 };
 
 class Issues extends Component {
@@ -28,7 +28,7 @@ class Issues extends Component {
 
     this.state = {
       projectid: this.props.projectId,
-      showPopup: false
+      showPopup: false,
     };
     this.fetchRemoteIssues = this.fetchRemoteIssues.bind(this);
     this.createRemoteIssue = this.createRemoteIssue.bind(this);
@@ -36,14 +36,25 @@ class Issues extends Component {
     this.deleteRemoteIssue = this.deleteRemoteIssue.bind(this);
   }
 
-  setPopupState = value => {
+  // Dialog
+  setDialogState = open => {
     this.setState({
-      showPopup: value
+      showDialog: open,
     });
   };
 
+  handleClickOpenDialog = () => {
+    this.setDialogState(true);
+  };
+
+  handleCloseDialog = () => {
+    this.setDialogState(false);
+  };
+  // End Dialog
+  
   createdNewIssue = data => {
-    this.setPopupState(false);
+    this.setDialogState(false);
+    //this.setPopupState(false);
     this.createRemoteIssue(data);
     this.fetchRemoteIssues();
   };
@@ -63,7 +74,7 @@ class Issues extends Component {
           method: "POST",
           headers: {
             Accept: herokuApi.contentType,
-            "Content-Type": herokuApi.contentType
+            "Content-Type": herokuApi.contentType,
           },
           body: JSON.stringify({
             ...payloads.issue,
@@ -71,8 +82,8 @@ class Issues extends Component {
             due_date: dueISOTimeStamp,
             created_at: currentISOTimeStamp,
             updated_at: currentISOTimeStamp,
-            priority: issueData.issuePriority
-          })
+            priority: issueData.issuePriority,
+          }),
         }
       );
       if (!response.ok) {
@@ -96,8 +107,8 @@ class Issues extends Component {
             method: "GET",
             headers: {
               Accept: herokuApi.contentType,
-              "Content-Type": herokuApi.contentType
-            }
+              "Content-Type": herokuApi.contentType,
+            },
           }
         );
         if (!response.ok) {
@@ -126,7 +137,7 @@ class Issues extends Component {
           method: "PUT",
           headers: {
             Accept: herokuApi.contentType,
-            "Content-Type": herokuApi.contentType
+            "Content-Type": herokuApi.contentType,
           },
           body: JSON.stringify({
             ...issueData,
@@ -135,8 +146,8 @@ class Issues extends Component {
             due_date: issueData.due_date,
             created_at: issueData.created_at,
             updated_at: currentISOTimeStamp,
-            priority: issueData.priority
-          })
+            priority: issueData.priority,
+          }),
         }
       );
       if (!response.ok) {
@@ -160,8 +171,8 @@ class Issues extends Component {
           method: "DELETE",
           headers: {
             Accept: herokuApi.contentType,
-            "Content-Type": herokuApi.contentType
-          }
+            "Content-Type": herokuApi.contentType,
+          },
         }
       );
       if (!response.ok) {
@@ -195,7 +206,7 @@ class Issues extends Component {
     const { classes } = this.props;
     const dateOptions = {
       timeZone: "Europe/Zurich",
-      hour12: false
+      hour12: false,
     };
     // Crate date and 1 one day => Tomorrow
     var tmrw = new Date();
@@ -209,10 +220,10 @@ class Issues extends Component {
     if (issues && issues.length > 0) {
       return (
         <>
-          <NewIssuePopup
-            show={this.state.showPopup}
-            title={"New issue"}
-            onCloseRequest={() => this.setPopupState(false)}
+          <IssueDialog
+            open={this.state.showDialog}
+            title={"Create new Issue"}
+            handleClose={() => this.handleCloseDialog()}
             onNewIssueCreated={this.createdNewIssue}
           />
           <div className="Issues">
@@ -224,7 +235,8 @@ class Issues extends Component {
                 size="medium"
                 className={classes.button}
                 startIcon={<AddCircleOutlineIcon />}
-                onClick={() => this.setPopupState(true)}
+                // onClick={() => this.setPopupState(true)}
+                onClick={() => this.handleClickOpenDialog()}
               >
                 Create Issue
               </Button>
@@ -237,14 +249,16 @@ class Issues extends Component {
                 <div className="issues-heading-due">Due date</div>
                 <div className="issues-heading-delete">Delete</div>
               </div>
-              {issues.map(issue => (
-                <Issue
-                  updateRemoteIssue={this.updateRemoteIssue}
-                  deleteRemoteIssue={this.deleteRemoteIssue}
-                  key={issue.id}
-                  issue={issue}
-                />
-              ))}
+              <div className="issue-list">
+                {issues.map(issue => (
+                  <Issue
+                    updateRemoteIssue={this.updateRemoteIssue}
+                    deleteRemoteIssue={this.deleteRemoteIssue}
+                    key={issue.id}
+                    issue={issue}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </>
@@ -271,14 +285,16 @@ class Issues extends Component {
             </div>
             <div>
               <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="age-native-simple">Priority</InputLabel>
+                <InputLabel htmlFor="priority-native-simple">
+                  Priority
+                </InputLabel>
                 <Select
                   required
                   native
                   value={issues.priority}
                   inputProps={{
                     name: "issuePriority",
-                    id: "priority-native-simple"
+                    id: "priority-native-simple",
                   }}
                 >
                   <option value={3}>Low</option>
@@ -297,7 +313,7 @@ class Issues extends Component {
                 defaultValue={nowDueDate}
                 className={classes.textField}
                 InputLabelProps={{
-                  shrink: true
+                  shrink: true,
                 }}
               />
             </div>
