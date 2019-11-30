@@ -102,21 +102,21 @@ const Main = props => {
             key={'New Project'}
             icon={<AddIcon />}
             tooltipTitle={'New Project'}
-            tooltipOpen={true}
+            tooltipOpen={!props.mobileDevice}
             onClick={handleClose}
           />
           <SpeedDialAction
             key={'Delete Project'}
             icon={<DeleteIcon />}
             tooltipTitle={'Delete Project'}
-            tooltipOpen={true}
+            tooltipOpen={!props.mobileDevice}
             onClick={deleteCurrentProject}
           />
           <SpeedDialAction
             key={'New Issue'}
             icon={<EditIcon />}
             tooltipTitle={'New Issue'}
-            tooltipOpen={true}
+            tooltipOpen={!props.mobileDevice}
             onClick={handleClose}
           />
         </SpeedDial>
