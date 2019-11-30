@@ -24,7 +24,7 @@ function App() {
     if (/Mobi|Android/i.test(navigator.userAgent)) {
       setIsModuleDevice(true);
     }
-  });
+  },[]);
 
 
   //Needed to block touch on iOS devices
