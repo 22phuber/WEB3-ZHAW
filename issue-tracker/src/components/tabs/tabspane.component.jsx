@@ -11,11 +11,17 @@ const TabsPane = props => {
   const [currentTab, setCurrentTab] = useState(0);
   const [overflow, setOverflow] = useState(false);
 
+  useEffect(() => {
+    Array.from(document.getElementsByClassName('MuiAppBar-colorDefault'))
+        .forEach((element) => {
+            element.style.backgroundColor = props.darkMode ? "#cfcfcf" : "";
+        });
+});
+
   const useStyles = makeStyles(theme => ({
     root: {
       flexGrow: 1,
-      width: "100%",
-      backgroundColor: theme.palette.background.paper,
+      width: "100%"
     },
   }));
 
@@ -40,16 +46,18 @@ const TabsPane = props => {
     };
   }
 
+  const classes = useStyles();
+
   return (
-    <div className={useStyles().root}>
+    <div className={classes.root}>
       <AppBar position="static" color="default">
         <Tabs
           value={currentTab}
           onChange={handleChange}
           variant={overflow ? "scrollable" : "fullWidth"}
           scrollButtons={overflow ? "auto" : "off"}
-          indicatorColor="primary"
-          textColor="primary"
+          indicatorColor= "primary"
+          textColor= {props.darkMode ? "#4B4B4B" : "#757575"}
           centered={!overflow}
           aria-label="scrollable prevent tabs example"
         >

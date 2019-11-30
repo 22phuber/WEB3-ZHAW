@@ -52,7 +52,7 @@ const Main = props => {
   if (projectData) {
     return (
       <div className="Main">
-        <TabsPane data={projectData} onChangeCurrentTabId={setCurrentProjectTab} />
+        <TabsPane data={projectData} onChangeCurrentTabId={setCurrentProjectTab} darkMode={props.darkMode}/>
         <CompleteSpeedDial
           mobileDevice={props.mobileDevice}
           darkMode={props.darkMode}
