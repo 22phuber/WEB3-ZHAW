@@ -12,12 +12,15 @@ import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Brightness3Icon from '@material-ui/icons/Brightness3';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
 
 import "./main.styles.css";
 
 import * as HerokuAPI from "../api/heroku.api.js";
 import Loading from "../loading/loading.component";
+
+
+import { blue, red } from '@material-ui/core/colors';
 
 const styles = {
   textField: {},
@@ -33,12 +36,11 @@ const Main = props => {
   const [hidden, setHidden] = React.useState(false);
 
   useEffect(() => {
-    var elements = document.getElementsByClassName('MuiSpeedDialAction-fab'); // get all elements
-    console.log("found elements: " + elements.length)
-      for(var i = 0; i < elements.length; i++){
-        elements[i].style.backgroundColor = props.darkMode ? "#424242" : "white";
-      }
-  }, [props.darkMode]);
+    var elements = document.getElementsByClassName('MuiSpeedDialAction-fab');
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].style.backgroundColor = props.darkMode ? "#a4a4a4" : "white";
+    }
+  });
 
   function setCurrentProjectTab(id) {
     setCurrentTab(id);
@@ -92,7 +94,7 @@ const Main = props => {
   const useStyles = makeStyles(theme => ({
     speedDial: {
       position: 'absolute',
-      bottom: theme.spacing(props.mobileDevice? 2 : 10),
+      bottom: theme.spacing(props.mobileDevice ? 2 : 10),
       right: theme.spacing(2),
       'white-space': 'nowrap',
     },
@@ -114,7 +116,7 @@ const Main = props => {
         >
           <SpeedDialAction
             key={props.darkMode ? 'Light mode' : 'Dark mode'}
-            icon={<Brightness3Icon/>}
+            icon={<Brightness4Icon />}
             tooltipTitle={props.darkMode ? 'Light mode' : 'Dark mode'}
             tooltipOpen={!props.mobileDevice}
             onClick={changeDarkMode}
