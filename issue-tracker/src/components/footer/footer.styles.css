@@ -8,11 +8,13 @@
 }
 
 .FooterDarkMode {
-    background-color: rgba(168, 168, 168, 0.4);
+    background-color: #A4A4A4;
+    color: #4B4B4B;
 }
 
 .FooterLightMode {
     background-color: rgba(168, 168, 168, 0.1);
+    color: #757575;
 }
 
 footer > label {
