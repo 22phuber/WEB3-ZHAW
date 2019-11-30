@@ -51,6 +51,13 @@ const Main = props => {
     });
   });
 
+  useEffect(() => {
+    if (!projectData) {
+      setGetProjectStatus(HerokuAPI.loadingState.loading);
+      HerokuAPI.fetchRemoteProjects(finishLoadingProjects);
+    }
+  }, [projectData]);
+
   function setCurrentProjectTab(id) {
     setCurrentTab(id);
   }
@@ -92,14 +99,6 @@ const Main = props => {
     handleClose();
     props.changeDarkMode();
   }
-
-  useEffect(() => {
-    if (!projectData) {
-      setGetProjectStatus(HerokuAPI.loadingState.loading);
-      HerokuAPI.fetchRemoteProjects(finishLoadingProjects);
-    }
-  }, [projectData]);
-
   const useStyles = makeStyles(theme => ({
     speedDial: {
       position: 'absolute',
@@ -156,7 +155,6 @@ const Main = props => {
         </div>
       );
     } else {
-      
     return (
       <div className="Main">
         <TabsPane data={projectData} onChangeCurrentTabId={setCurrentProjectTab} />
