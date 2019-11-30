@@ -15,7 +15,8 @@ const CompleteSpeedDial = props => {
 
 
     const [open, setOpen] = useState(false);
-    const [hidden, setHidden] = useState(false);
+
+    const hidden = false;
 
 
     useEffect(() => {
