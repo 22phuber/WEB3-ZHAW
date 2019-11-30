@@ -51,15 +51,6 @@ function getCurrentTime() {
 }
 
 /**
- * Generates a random ID.
- */
-function generateID() {
-  return Math.random()
-    .toString(36)
-    .substr(2, 9);
-}
-
-/**
  * Checks if the key returns any data. If not, you get an object with
  * and empty projectIds array.
  * @param {String} key They key value for the data in the local Storage
@@ -103,7 +94,7 @@ function saveProjectIdToLocalStorage(id, projectTitle) {
  * 
  * @param {int} id 
  * @param {String} title 
- */
+ *
 function changeProjectDataInLocalStorage(id, title) {
   var projectData = getLocalStorageData(client_uuid);
   projectData.projects.forEach(project => {
@@ -113,6 +104,7 @@ function changeProjectDataInLocalStorage(id, title) {
   });
   writeProjectDataToLocalStorage(projectData);
 }
+*/
 
 /**
  * Removes a project from the local Storage. Only call this
@@ -181,7 +173,7 @@ function getProjectIdFromTabsId(id) {
  * @param {int} id 
  * @param {String} title 
  * @param {boolean} active 
- */
+ *
 async function putProject(id, title, active) {
   fetch(herokuApi.projectsUrl.concat("/", id),
     {
@@ -206,7 +198,9 @@ async function putProject(id, title, active) {
       console.log(error);
     })
 }
+*/
 
+/*
 async function getProject(id) {
   fetch(herokuApi.projectsUrl.concat("/", id))
     .then(res => {
@@ -218,6 +212,7 @@ async function getProject(id) {
       console.log(error);
     })
 }
+*/
 
 async function deleteProject(id) {
   return fetch(herokuApi.projectsUrl.concat("/", id),
@@ -257,7 +252,7 @@ export async function fetchRemoteProjects(callback) {
  * Gets all issues stored on the given project id
  * in the heroku service
  * @param {int} id 
- */
+ *
 function getProjectIssues(id, callback) {
   fetch(herokuApi.projectsUrl.concat("/", id, "/issues"))
     .then(res => {
@@ -273,6 +268,7 @@ function getProjectIssues(id, callback) {
       console.log(error);
     })
 }
+*/
 
 /**
  * Function to post a new issue to a certain projectId on
@@ -282,7 +278,7 @@ function getProjectIssues(id, callback) {
  * @param {String} dueDate
  * @param {String} priority
  * @param {boolean} done
- */
+ *
 function postNewIssue(projectId, issueTitle, dueDate, priority) {
   fetch(herokuApi.projectsUrl.concat("/", projectId, "/issues"),
     {
@@ -308,6 +304,7 @@ function postNewIssue(projectId, issueTitle, dueDate, priority) {
       console.log(error);
     })
 }
+*/
 
 /**
  * Function to update an issue
@@ -318,7 +315,7 @@ function postNewIssue(projectId, issueTitle, dueDate, priority) {
  * @param {String} dueDate
  * @param {String} priority
  * @param {boolean} done
- */
+ *
 function putIssue(projectId, issueId, issueTitle, dueDate, priority, done) {
   fetch(herokuApi.projectsUrl.concat("/", projectId, "/issues/", issueId),
     {
@@ -344,16 +341,17 @@ function putIssue(projectId, issueId, issueTitle, dueDate, priority, done) {
       console.log(error);
     })
 }
+*/
 
-export async function deleteAllIssuesAndProjectId(tabsId){
+export async function deleteAllIssuesAndProjectId(tabsId, callback){
   const projectId = getProjectIdFromTabsId(tabsId);
-  console.log(projectId);
   const issues = await fetch(herokuApi.projectsUrl.concat("/", projectId, "/issues")).then(res => res.json());
-  const response = await Promise.all(
+  await Promise.all(
     issues.map(async issue => await deleteIssue(projectId, issue.id))
   );
   deleteProject(projectId);
   removeProjectIdFromLocalStorage(projectId);
+  fetchRemoteProjects(callback);
 }
 
 /**
