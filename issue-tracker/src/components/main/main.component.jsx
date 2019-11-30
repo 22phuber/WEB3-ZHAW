@@ -12,10 +12,11 @@ import * as HerokuAPI from "../api/heroku.api.js";
 import Loading from "../loading/loading.component";
 
 const Main = props => {
-
   const [projectData, setProjectData] = useState(null);
   const [currentTab, setCurrentTab] = useState(0);
-  const [getProjectStatus, setGetProjectStatus] = useState(HerokuAPI.loadingState.waiting)
+  const [getProjectStatus, setGetProjectStatus] = useState(
+    HerokuAPI.loadingState.waiting
+  );
 
   useEffect(() => {
     if (!projectData) {
@@ -46,7 +47,11 @@ const Main = props => {
   if (projectData) {
     return (
       <div className="Main">
-        <TabsPane data={projectData} onChangeCurrentTabId={setCurrentProjectTab} darkMode={props.darkMode}/>
+        <TabsPane
+          data={projectData}
+          onChangeCurrentTabId={setCurrentProjectTab}
+          darkMode={props.darkMode}
+        />
         <CompleteSpeedDial
           mobileDevice={props.mobileDevice}
           darkMode={props.darkMode}
@@ -95,5 +100,5 @@ const Main = props => {
       </div>
     );
   }
-}
+};
 export default Main;
