@@ -7,7 +7,7 @@ import './footer.styles.css';
 const Footer = props => {;
 
     return (
-      <footer className={"Footer" + props.colourMode}>
+      <footer className={"Footer".concat(props.darkMode ? " FooterDarkMode" : " FooterLightMode")}>
         <FormControlLabel 
             value="start"
             control={<Switch 

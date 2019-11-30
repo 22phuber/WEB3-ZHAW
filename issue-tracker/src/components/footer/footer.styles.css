@@ -1,4 +1,4 @@
-footer[class^="Footer"] {
+.Footer {
     padding: 0;
     margin: 0;
     position: absolute; 
@@ -7,11 +7,11 @@ footer[class^="Footer"] {
     bottom: 0; 
 }
 
-.Footer-dark {
+.FooterDarkMode {
     background-color: rgba(168, 168, 168, 0.4);
 }
 
-.Footer-light {
+.FooterLightMode {
     background-color: rgba(168, 168, 168, 0.1);
 }
 
