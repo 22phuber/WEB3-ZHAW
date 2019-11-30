@@ -6,12 +6,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
-import SpeedDial from '@material-ui/lab/SpeedDial';
-import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
-import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
-import AddIcon from '@material-ui/icons/Add';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
+import SpeedDial from "@material-ui/lab/SpeedDial";
+import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
+import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
+import AddIcon from "@material-ui/icons/Add";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+
+import IssueDialog from "../dialogs/newIssueDialog.component";
 
 import "./main.styles.css";
 
@@ -19,16 +21,20 @@ import * as HerokuAPI from "../api/heroku.api.js";
 import Loading from "../loading/loading.component";
 
 const styles = {
+  titleTextField: { width: "300px" },
   textField: {},
-  button: {}
+  button: {},
+  formControl: { width: "150px" },
 };
 
 const Main = props => {
-
   const [projectData, setProjectData] = useState(null);
   const [currentTab, setCurrentTab] = useState(0);
-  const [getProjectStatus, setGetProjectStatus] = useState(HerokuAPI.loadingState.waiting)
+  const [getProjectStatus, setGetProjectStatus] = useState(
+    HerokuAPI.loadingState.waiting
+  );
   const [open, setOpen] = React.useState(false);
+  const [openIssueDialog, setOpenDialog] = React.useState(false);
   const [hidden, setHidden] = React.useState(false);
 
   function setCurrentProjectTab(id) {
@@ -37,6 +43,14 @@ const Main = props => {
 
   const handleVisibility = () => {
     setHidden(prevHidden => !prevHidden);
+  };
+
+  const handleOpenIssueDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseIssueDialog = () => {
+    setOpenDialog(false);
   };
 
   const handleOpen = () => {
@@ -53,7 +67,6 @@ const Main = props => {
   }
 
   function submitNewProject(event) {
-
     event.preventDefault();
     let jsonObject = {};
     for (const [key, value] of new FormData(event.target).entries()) {
@@ -77,10 +90,10 @@ const Main = props => {
 
   const useStyles = makeStyles(theme => ({
     speedDial: {
-      position: 'absolute',
+      position: "absolute",
       bottom: theme.spacing(10),
       right: theme.spacing(2),
-      'white-space': 'nowrap'
+      "white-space": "nowrap",
     },
   }));
   const classes = useStyles();
@@ -88,9 +101,18 @@ const Main = props => {
   if (projectData) {
     return (
       <div className="Main">
-        <TabsPane data={projectData} onChangeCurrentTabId={setCurrentProjectTab} />
+        <IssueDialog
+          open={openIssueDialog}
+          title={"Create new Issue"}
+          handleClose={() => handleCloseIssueDialog()}
+          onNewIssueCreated={(data) => console.log(data)}
+        />
+        <TabsPane
+          data={projectData}
+          onChangeCurrentTabId={setCurrentProjectTab}
+        />
         <SpeedDial
-          ariaLabel="SpeedDial tooltip example"
+          ariaLabel="Choose you action"
           className={classes.speedDial}
           hidden={hidden}
           icon={<SpeedDialIcon />}
@@ -99,25 +121,25 @@ const Main = props => {
           open={open}
         >
           <SpeedDialAction
-            key={'New Project'}
+            key={"New Project"}
             icon={<AddIcon />}
-            tooltipTitle={'New Project'}
+            tooltipTitle={"New Project"}
             tooltipOpen={true}
             onClick={handleClose}
           />
           <SpeedDialAction
-            key={'Delete Project'}
+            key={"Delete Project"}
             icon={<DeleteIcon />}
-            tooltipTitle={'Delete Project'}
+            tooltipTitle={"Delete Project"}
             tooltipOpen={true}
             onClick={deleteCurrentProject}
           />
           <SpeedDialAction
-            key={'New Issue'}
+            key={"New Issue"}
             icon={<EditIcon />}
-            tooltipTitle={'New Issue'}
+            tooltipTitle={"New Issue"}
             tooltipOpen={true}
-            onClick={handleClose}
+            onClick={handleOpenIssueDialog}
           />
         </SpeedDial>
       </div>
@@ -160,8 +182,7 @@ const Main = props => {
       </div>
     );
   }
-
-}
+};
 
 /**
   async createRemoteProject(projectData) {

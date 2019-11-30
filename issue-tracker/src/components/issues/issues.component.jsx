@@ -43,11 +43,11 @@ class Issues extends Component {
     });
   };
 
-  handleClickOpen = () => {
+  handleClickOpenDialog = () => {
     this.setDialogState(true);
   };
 
-  handleClose = () => {
+  handleCloseDialog = () => {
     this.setDialogState(false);
   };
   // End Dialog
@@ -223,7 +223,7 @@ class Issues extends Component {
           <IssueDialog
             open={this.state.showDialog}
             title={"Create new Issue"}
-            handleClose={() => this.handleClose()}
+            handleClose={() => this.handleCloseDialog()}
             onNewIssueCreated={this.createdNewIssue}
           />
           <div className="Issues">
@@ -236,7 +236,7 @@ class Issues extends Component {
                 className={classes.button}
                 startIcon={<AddCircleOutlineIcon />}
                 // onClick={() => this.setPopupState(true)}
-                onClick={() => this.handleClickOpen()}
+                onClick={() => this.handleClickOpenDialog()}
               >
                 Create Issue
               </Button>
