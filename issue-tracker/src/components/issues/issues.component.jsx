@@ -10,7 +10,7 @@ import Select from "@material-ui/core/Select";
 
 import Issue from "../issue/issue.component";
 import Loading from "../loading/loading.component";
-import NewIssuePopup from "../newIssuePopup/newIssuePopup.component";
+import IssueDialog from "../dialogs/newIssueDialog.component";
 import "./issues.styles.css";
 
 import { payloads, client_uuid, herokuApi } from "../../data/heroku.api";
@@ -36,14 +36,25 @@ class Issues extends Component {
     this.deleteRemoteIssue = this.deleteRemoteIssue.bind(this);
   }
 
-  setPopupState = value => {
+  // Dialog
+  setDialogState = open => {
     this.setState({
-      showPopup: value,
+      showDialog: open,
     });
   };
 
+  handleClickOpenDialog = () => {
+    this.setDialogState(true);
+  };
+
+  handleCloseDialog = () => {
+    this.setDialogState(false);
+  };
+  // End Dialog
+  
   createdNewIssue = data => {
-    this.setPopupState(false);
+    this.setDialogState(false);
+    //this.setPopupState(false);
     this.createRemoteIssue(data);
     this.fetchRemoteIssues();
   };
@@ -209,10 +220,10 @@ class Issues extends Component {
     if (issues && issues.length > 0) {
       return (
         <>
-          <NewIssuePopup
-            show={this.state.showPopup}
-            title={"New issue"}
-            onCloseRequest={() => this.setPopupState(false)}
+          <IssueDialog
+            open={this.state.showDialog}
+            title={"Create new Issue"}
+            handleClose={() => this.handleCloseDialog()}
             onNewIssueCreated={this.createdNewIssue}
           />
           <div className="Issues">
@@ -224,7 +235,8 @@ class Issues extends Component {
                 size="medium"
                 className={classes.button}
                 startIcon={<AddCircleOutlineIcon />}
-                onClick={() => this.setPopupState(true)}
+                // onClick={() => this.setPopupState(true)}
+                onClick={() => this.handleClickOpenDialog()}
               >
                 Create Issue
               </Button>
@@ -273,7 +285,9 @@ class Issues extends Component {
             </div>
             <div>
               <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="age-native-simple">Priority</InputLabel>
+                <InputLabel htmlFor="priority-native-simple">
+                  Priority
+                </InputLabel>
                 <Select
                   required
                   native
