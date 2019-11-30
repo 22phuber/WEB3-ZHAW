@@ -12,10 +12,6 @@ function App() {
   const [darkModeActive, setDarkMode] = useState(localStorage.getItem(darkModeKey) === 'true');
   const [isMobileDevice, setIsModuleDevice] = useState(false);
 
-  if (/Mobi|Android/i.test(navigator.userAgent)) {
-    setIsModuleDevice(true);
-  }
-
   const changeColourMode = () => {
     setDarkMode(!darkModeActive);
   }
@@ -23,6 +19,13 @@ function App() {
   useEffect(() => {
     localStorage.setItem(darkModeKey, darkModeActive);
   }, [darkModeActive]);
+  
+  useEffect(() => {
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+      setIsModuleDevice(true);
+    }
+  });
+
 
   //Needed to block touch on iOS devices
   App.ontouchstart = (e) => {
