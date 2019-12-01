@@ -89,7 +89,6 @@ const CompleteSpeedDial = props => {
   };
 
   const handleOpenProjectDialog = () => {
-    console.log(props.currentTab);
     setOpenProjectDialog(true);
   };
 

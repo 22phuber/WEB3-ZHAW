@@ -32,7 +32,7 @@ const TabsPane = props => {
 
   function willOverflow(amountOfTabs) {
     const { innerWidth: width } = window;
-    setOverflow(width < amountOfTabs * 100);
+    setOverflow(width < (amountOfTabs * 180));
   }
 
   useEffect(() => {
