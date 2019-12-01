@@ -14,6 +14,7 @@ import Loading from "../loading/loading.component";
 const Main = props => {
   const [projectData, setProjectData] = useState(null);
   const [currentTab, setCurrentTab] = useState(0);
+  const [firstLoad, setFirstLoad] = useState(true);
   const [getProjectStatus, setGetProjectStatus] = useState(
     HerokuAPI.loadingState.waiting
   );
@@ -32,6 +33,7 @@ const Main = props => {
   function finishLoadingProjects(projectData) {
     setProjectData(projectData);
     setGetProjectStatus(HerokuAPI.loadingState.finished);
+    setFirstLoad(false);
   }
 
   function submitNewProject(event) {
@@ -44,13 +46,14 @@ const Main = props => {
     HerokuAPI.postNewProject(jsonObject.projectTitle, setProjectData);
   }
 
-  if (projectData) {
+  if (projectData && getProjectStatus === HerokuAPI.loadingState.finished) {
     return (
       <div className="Main">
         <TabsPane
           data={projectData}
           onChangeCurrentTabId={setCurrentProjectTab}
           darkMode={props.darkMode}
+          firstLoad={firstLoad}
         />
         <CompleteSpeedDial
           mobileDevice={props.mobileDevice}
