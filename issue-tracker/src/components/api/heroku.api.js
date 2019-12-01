@@ -109,11 +109,9 @@ function changeProjectDataInLocalStorage(id, title) {
  */
 function removeProjectIdFromLocalStorage(id) {
   var projectData = JSON.parse(getLocalStorageData(client_uuid));
-  console.log(projectData);
   projectData.projects = projectData.projects.filter(
     project => project.id !== id
   );
-  console.log(projectData);
   writeProjectDataToLocalStorage(projectData);
 }
 
@@ -312,9 +310,8 @@ export async function postNewIssue(
       throw Error(response.statusText);
     }
     const responseJson = await response.json();
-    console.log(responseJson);
     if (callback) {
-      callback();
+      callback(responseJson);
     }
   } catch (error) {
     console.log(error);
