@@ -30,6 +30,10 @@ const Main = props => {
     setCurrentTab(id);
   }
 
+  function onProjectDelete(){
+    setFirstLoad(true);
+  }
+
   function finishLoadingProjects(projectData) {
     setProjectData(projectData);
     setGetProjectStatus(HerokuAPI.loadingState.finished);
@@ -59,6 +63,7 @@ const Main = props => {
           mobileDevice={props.mobileDevice}
           darkMode={props.darkMode}
           changeDarkMode={props.changeDarkMode}
+          onProjectDelete={onProjectDelete}
           currentTab={currentTab}
           finishLoadingProjects={finishLoadingProjects}
           setGetProjectStatus={setGetProjectStatus}
