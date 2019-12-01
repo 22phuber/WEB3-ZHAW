@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import TabsPane from "../tabs/tabspane.component";
 import CompleteSpeedDial from "../completeSpeedDial/completeSpeedDial.component";
+import IssueDialog from "../dialogs/newIssueDialog.component";
+import ProjectDialog from "../dialogs/newProjectDialog.component";
+
 /* material-ui */
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -13,9 +16,16 @@ import Loading from "../loading/loading.component";
 
 const Main = props => {
   const [projectData, setProjectData] = useState(null);
+  const [issueData, setIssueData] = useState(null);
   const [currentTab, setCurrentTab] = useState(0);
   const [firstLoad, setFirstLoad] = useState(true);
+  const [openIssueDialog, setOpenIssueDialog] = useState(false);
+  const [openProjectDialog, setOpenProjectDialog] = useState(false);
+
   const [getProjectStatus, setGetProjectStatus] = useState(
+    HerokuAPI.loadingState.waiting
+  );
+  const [getIssueStatus, setGetIssuesStatus] = useState(
     HerokuAPI.loadingState.waiting
   );
 
@@ -23,21 +33,76 @@ const Main = props => {
     if (!projectData) {
       setGetProjectStatus(HerokuAPI.loadingState.loading);
       HerokuAPI.fetchRemoteProjects(finishLoadingProjects);
+    } else {
+      startLoadingIssues();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectData]);
+
+  useEffect(() => {
+    startLoadingIssues();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[currentTab])
 
   function setCurrentProjectTab(id) {
     setCurrentTab(id);
   }
 
-  function onProjectDelete(){
+  function onProjectDelete() {
     setFirstLoad(true);
+    setCurrentTab(0);
+  }
+
+  function createProject(projectTitle) {
+    setOpenProjectDialog(false);
+    setGetProjectStatus(HerokuAPI.loadingState.loading);
+    HerokuAPI.postNewProject(projectTitle, finishLoadingProjects);
+  }
+
+  function createIssue(issueData) {
+    setOpenIssueDialog(false);
+    setGetIssuesStatus(HerokuAPI.loadingState.loading);
+    HerokuAPI.postNewIssue(
+      projectData[currentTab].id,
+      issueData.issueTitle,
+      issueData.dueDate,
+      issueData.issuePriority,
+      startLoadingIssues
+    );
+  }
+
+  function showIssueDialog() {
+    setOpenIssueDialog(true);
+  }
+
+  function hideIssueDialog() {
+    setOpenIssueDialog(false);
+  };
+
+  function showProjectDialog() {
+    setOpenProjectDialog(true);
+  }
+
+  function hideProjectDialog() {
+    setOpenProjectDialog(false);
+  };
+
+  function finishLoadingIssues(issueData) {
+    setIssueData(issueData);
+    setGetIssuesStatus(HerokuAPI.loadingState.finished);
   }
 
   function finishLoadingProjects(projectData) {
-    setProjectData(projectData);
     setGetProjectStatus(HerokuAPI.loadingState.finished);
+    setProjectData(projectData);
     setFirstLoad(false);
+  }
+
+  function startLoadingIssues() {
+    if (projectData && projectData[currentTab]) {
+      setGetIssuesStatus(HerokuAPI.loadingState.loading)
+      HerokuAPI.getProjectIssues(projectData[currentTab].id, finishLoadingIssues)
+    }
   }
 
   function submitNewProject(event) {
@@ -53,11 +118,28 @@ const Main = props => {
   if (projectData && getProjectStatus === HerokuAPI.loadingState.finished) {
     return (
       <div className="Main">
+        <IssueDialog
+          open={openIssueDialog}
+          title={"Create new Issue"}
+          handleClose={hideIssueDialog}
+          onNewIssueCreated={formData => createIssue(formData)}
+        />
+        <ProjectDialog
+          open={openProjectDialog}
+          title={"Create new Project"}
+          handleClose={hideProjectDialog}
+          onNewProjectCreated={formData => createProject(formData.projectTitle)}
+        />
         <TabsPane
-          data={projectData}
+          projectData={projectData}
+          issueData={issueData}
           onChangeCurrentTabId={setCurrentProjectTab}
           darkMode={props.darkMode}
           firstLoad={firstLoad}
+          getIssueStatus={getIssueStatus}
+          createIssue={createIssue}
+          setGetIssuesStatus={setGetIssuesStatus}
+          startLoadingIssues={startLoadingIssues}
         />
         <CompleteSpeedDial
           mobileDevice={props.mobileDevice}
@@ -67,6 +149,8 @@ const Main = props => {
           currentTab={currentTab}
           finishLoadingProjects={finishLoadingProjects}
           setGetProjectStatus={setGetProjectStatus}
+          handleOpenIssueDialog={showIssueDialog}
+          handleOpenProjectDialog={showProjectDialog}
         />
       </div>
     );
@@ -76,27 +160,25 @@ const Main = props => {
         <h2>Create your first Project</h2>
         <form onSubmit={submitNewProject}>
           <div>
-            <div>
-              <TextField
-                type="text"
-                required
-                name="projectTitle"
-                id="standard-basic"
-                label="Project Name"
-                margin="normal"
-              />
-            </div>
-            <div>
-              <Button
-                variant="contained"
-                color="primary"
-                size="medium"
-                type="submit"
-                startIcon={<AddCircleOutlineIcon />}
-              >
-                Create
+            <TextField
+              type="text"
+              required
+              name="projectTitle"
+              id="standard-basic"
+              label="Project Name"
+              margin="normal"
+            />
+          </div>
+          <div>
+            <Button
+              variant="contained"
+              color="primary"
+              size="medium"
+              type="submit"
+              startIcon={<AddCircleOutlineIcon />}
+            >
+              Create
               </Button>
-            </div>
           </div>
         </form>
       </div>
@@ -104,7 +186,7 @@ const Main = props => {
   } else {
     return (
       <div className="Main">
-        <Loading />
+        <Loading text={"Fetching projects data..."} />
       </div>
     );
   }
