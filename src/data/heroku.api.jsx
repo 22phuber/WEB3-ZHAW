@@ -26,7 +26,7 @@ const payloads = {
 
 // API related informations: Endpoint and JSON payload
 const herokuApi = {
-  projects: "http://zhaw-issue-tracker-api.herokuapp.com/api/projects",
+  projects: "https://zhaw-issue-tracker-api.herokuapp.com/api/projects",
   contentType: "application/json"
 };
 
