@@ -13,10 +13,10 @@ const TabsPane = props => {
 
   useEffect(() => {
     Array.from(document.getElementsByClassName('MuiAppBar-colorDefault'))
-        .forEach((element) => {
-            element.style.backgroundColor = props.darkMode ? "#cfcfcf" : "";
-        });
-});
+      .forEach((element) => {
+        element.style.backgroundColor = props.darkMode ? "#cfcfcf" : "";
+      });
+  });
 
   const useStyles = makeStyles(theme => ({
     root: {
@@ -25,19 +25,27 @@ const TabsPane = props => {
     },
   }));
 
-  const handleChange = (event, newValue) => {
+  function handleChange(event, newValue) {
     props.onChangeCurrentTabId(newValue);
     setCurrentTab(newValue);
   };
 
   function willOverflow(amountOfTabs) {
     const { innerWidth: width } = window;
-    setOverflow(width < amountOfTabs * 100);
+    setOverflow(width < (amountOfTabs * 180));
   }
 
   useEffect(() => {
     willOverflow(props.data.length);
-  },[props.data.length]);
+    if (props.data.length < currentTab) {
+      handleChange(null, 0);
+    } else if (props.data.length > currentTab) {
+      if (!props.firstLoad) {
+        handleChange(null, props.data.length - 1);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.data.length]);
 
   function a11yProps(index) {
     return {
@@ -56,8 +64,8 @@ const TabsPane = props => {
           onChange={handleChange}
           variant={overflow ? "scrollable" : "fullWidth"}
           scrollButtons={overflow ? "auto" : "off"}
-          indicatorColor= "primary"
-          color= {props.darkMode ? "#4B4B4B" : "#757575"}
+          indicatorColor="primary"
+          color={props.darkMode ? "#4B4B4B" : "#757575"}
           centered={!overflow}
           aria-label="scrollable prevent tabs example"
         >

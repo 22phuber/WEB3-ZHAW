@@ -41,6 +41,7 @@ const CompleteSpeedDial = props => {
 
   function deleteCurrentProject() {
     handleClose();
+    props.onProjectDelete();
     props.setGetProjectStatus(HerokuAPI.loadingState.loading);
     HerokuAPI.deleteAllIssuesAndProjectId(
       props.currentTab,
@@ -89,7 +90,6 @@ const CompleteSpeedDial = props => {
   };
 
   const handleOpenProjectDialog = () => {
-    console.log(props.currentTab);
     setOpenProjectDialog(true);
   };
 
