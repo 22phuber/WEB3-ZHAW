@@ -59,16 +59,12 @@ const CompleteSpeedDial = props => {
   };
 
   const useStyles = makeStyles(theme => ({
-    titleTextField: { width: "300px" },
     speedDial: {
       position: "absolute",
-      bottom: theme.spacing(props.mobileDevice ? 2 : 10),
+      bottom: theme.spacing(props.mobileDevice ? 2 : 3),
       right: theme.spacing(2),
       "white-space": "nowrap",
     },
-    formControl: { width: "150px" },
-    textField: {},
-    button: {},
   }));
   const classes = useStyles();
 

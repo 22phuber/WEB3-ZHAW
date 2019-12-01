@@ -42,7 +42,7 @@ const Main = props => {
   useEffect(() => {
     startLoadingIssues();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[currentTab])
+  }, [currentTab]);
 
   function setCurrentProjectTab(id) {
     setCurrentTab(id);
@@ -77,7 +77,7 @@ const Main = props => {
 
   function hideIssueDialog() {
     setOpenIssueDialog(false);
-  };
+  }
 
   function showProjectDialog() {
     setOpenProjectDialog(true);
@@ -85,7 +85,7 @@ const Main = props => {
 
   function hideProjectDialog() {
     setOpenProjectDialog(false);
-  };
+  }
 
   function finishLoadingIssues(issueData) {
     setIssueData(issueData);
@@ -100,8 +100,11 @@ const Main = props => {
 
   function startLoadingIssues() {
     if (projectData && projectData[currentTab]) {
-      setGetIssuesStatus(HerokuAPI.loadingState.loading)
-      HerokuAPI.getProjectIssues(projectData[currentTab].id, finishLoadingIssues)
+      setGetIssuesStatus(HerokuAPI.loadingState.loading);
+      HerokuAPI.getProjectIssues(
+        projectData[currentTab].id,
+        finishLoadingIssues
+      );
     }
   }
 
@@ -157,30 +160,32 @@ const Main = props => {
   } else if (getProjectStatus === HerokuAPI.loadingState.finished) {
     return (
       <div className="Main">
-        <h2>Create your first Project</h2>
-        <form onSubmit={submitNewProject}>
-          <div>
-            <TextField
-              type="text"
-              required
-              name="projectTitle"
-              id="standard-basic"
-              label="Project Name"
-              margin="normal"
-            />
-          </div>
-          <div>
-            <Button
-              variant="contained"
-              color="primary"
-              size="medium"
-              type="submit"
-              startIcon={<AddCircleOutlineIcon />}
-            >
-              Create
+        <div className="new-project-form">
+          <h2>Create your first Project</h2>
+          <form onSubmit={submitNewProject} className="project-form">
+            <div>
+              <TextField
+                type="text"
+                required
+                name="projectTitle"
+                id="standard-basic"
+                label="Project Name"
+                margin="normal"
+              />
+            </div>
+            <div>
+              <Button
+                variant="contained"
+                color="primary"
+                size="medium"
+                type="submit"
+                startIcon={<AddCircleOutlineIcon />}
+              >
+                Create
               </Button>
-          </div>
-        </form>
+            </div>
+          </form>
+        </div>
       </div>
     );
   } else {

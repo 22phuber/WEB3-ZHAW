@@ -15,6 +15,8 @@ import Issues from "../issues/issues.component";
 import * as HerokuAPI from "../api/heroku.api.js";
 import Loading from "../loading/loading.component";
 
+import "./tabspane.styles.css";
+
 const TabsPane = props => {
   const [currentTab, setCurrentTab] = useState(0);
   const [overflow, setOverflow] = useState(false);
@@ -33,16 +35,15 @@ const TabsPane = props => {
     .replace(/(.*):\d+\D\d+Z/, "$1");
 
   useEffect(() => {
-    Array.from(document.getElementsByClassName('MuiAppBar-colorDefault'))
-      .forEach((element) => {
-        element.style.backgroundColor = props.darkMode ? "#cfcfcf" : "";
-      });
+    Array.from(
+      document.getElementsByClassName("MuiAppBar-colorDefault")
+    ).forEach(element => {
+      element.style.backgroundColor = props.darkMode ? "#cfcfcf" : "";
+    });
   });
 
   const useStyles = makeStyles(theme => ({
     root: {
-      flexGrow: 1,
-      width: "100%"
     },
     titleTextField: { width: "300px" },
     textField: {},
@@ -53,11 +54,11 @@ const TabsPane = props => {
   function handleChange(event, newValue) {
     props.onChangeCurrentTabId(newValue);
     setCurrentTab(newValue);
-  };
+  }
 
   function willOverflow(amountOfTabs) {
     const { innerWidth: width } = window;
-    setOverflow(width < (amountOfTabs * 180));
+    setOverflow(width < amountOfTabs * 180);
   }
 
   useEffect(() => {
@@ -78,12 +79,14 @@ const TabsPane = props => {
     for (const [key, value] of new FormData(event.target).entries()) {
       jsonObject[key] = value;
     }
-    HerokuAPI.postNewIssue(props.projectData[currentTab].id,
+    HerokuAPI.postNewIssue(
+      props.projectData[currentTab].id,
       jsonObject.issueTitle,
       jsonObject.dueDate,
       jsonObject.issuePriority,
-      props.startLoadingIssues);
-  };
+      props.startLoadingIssues
+    );
+  }
 
   function a11yProps(index) {
     return {
@@ -93,7 +96,10 @@ const TabsPane = props => {
   }
 
   const classes = useStyles();
-  if (props.issueData && props.getIssueStatus === HerokuAPI.loadingState.finished) {
+  if (
+    props.issueData &&
+    props.getIssueStatus === HerokuAPI.loadingState.finished
+  ) {
     if (props.issueData.length === 0) {
       return (
         <div className={classes.root}>
@@ -117,72 +123,68 @@ const TabsPane = props => {
               ))}
             </Tabs>
           </AppBar>
-          <div>
-          <h2>Create your first Issue</h2>
-          <form
-            onSubmit={handleSubmit}
-            method="POST"
-            className="IssueForm"
-          >
-            <div>
-              <TextField
-                required
-                type="text"
-                name="issueTitle"
-                id="standard-basic"
-                className={classes.titleTextField}
-                label="Issue Name"
-                margin="normal"
-              />
-            </div>
-            <div>
-              <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="priority-native-simple">
-                  Priority
-                </InputLabel>
-                <Select
+          <div className="new-issue-form">
+            <h2>Create your first Issue</h2>
+            <form onSubmit={handleSubmit} method="POST" className="issue-form">
+              <div>
+                <TextField
                   required
-                  native
-                  value={3}
-                  inputProps={{
-                    name: "issuePriority",
-                    id: "priority-native-simple",
+                  type="text"
+                  name="issueTitle"
+                  id="standard-basic"
+                  className={classes.titleTextField}
+                  label="Issue Name"
+                  margin="normal"
+                />
+              </div>
+              <div>
+                <FormControl className={classes.formControl}>
+                  <InputLabel htmlFor="priority-native-simple">
+                    Priority
+                  </InputLabel>
+                  <Select
+                    required
+                    native
+                    value={3}
+                    inputProps={{
+                      name: "issuePriority",
+                      id: "priority-native-simple",
+                    }}
+                  >
+                    <option value={3}>Low</option>
+                    <option value={2}>Middle</option>
+                    <option value={1}>High</option>
+                  </Select>
+                </FormControl>
+              </div>
+              <div>
+                <TextField
+                  required
+                  name="dueDate"
+                  id="datetime-local"
+                  label="Due date"
+                  type="datetime-local"
+                  defaultValue={nowDueDate}
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
                   }}
+                />
+              </div>
+              <div>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="medium"
+                  type="submit"
+                  className={classes.button}
+                  startIcon={<AddCircleOutlineIcon />}
                 >
-                  <option value={3}>Low</option>
-                  <option value={2}>Middle</option>
-                  <option value={1}>High</option>
-                </Select>
-              </FormControl>
-            </div>
-            <div>
-              <TextField
-                required
-                name="dueDate"
-                id="datetime-local"
-                label="Due date"
-                type="datetime-local"
-                defaultValue={nowDueDate}
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </div>
-            <div>
-              <Button
-                variant="contained"
-                color="primary"
-                size="medium"
-                type="submit"
-                className={classes.button}
-                startIcon={<AddCircleOutlineIcon />}
-              >
-                Create
-              </Button>
-            </div>
-          </form>
-        </div>
+                  Create
+                </Button>
+              </div>
+            </form>
+          </div>
         </div>
       );
     } else {

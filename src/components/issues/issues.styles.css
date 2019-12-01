@@ -1,8 +1,17 @@
-.Issues {
-    margin-left: auto;
-    margin-right: auto;
-    margin:3%;
-    padding: 3%;
+.issue-main {
+    padding-top: 20px;
+    margin-left: 2%;
+    margin-right: 2%;
+    display: flex;
+    flex-direction: column;
+}
+
+.issue-section {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    flex-grow: 1;
+    margin-bottom: 60px;
 }
 
 .issues-header {
@@ -10,10 +19,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.issue-list {
-    overflow-y: auto;
 }
 
 .issues-heading-table {
@@ -49,12 +54,9 @@
     flex-basis: 20px;
 }
 
-.IssueForm {
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-}
-
-.IssueForm > * {
-    margin:  3px;
+.issue-list {
+    flex-grow: 1;
+    overflow: auto;
+    /* for Firefox */
+    min-height: 0;
 }
