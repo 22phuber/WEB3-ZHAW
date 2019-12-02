@@ -44,6 +44,8 @@ const TabsPane = props => {
 
   const useStyles = makeStyles(theme => ({
     root: {
+      flexGrow: 1,
+      width: "100%"
     },
     titleTextField: { width: "300px" },
     textField: {},
