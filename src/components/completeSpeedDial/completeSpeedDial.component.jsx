@@ -61,7 +61,7 @@ const CompleteSpeedDial = props => {
   const useStyles = makeStyles(theme => ({
     speedDial: {
       position: "absolute",
-      bottom: theme.spacing(props.mobileDevice ? 1 : 10),
+      bottom: theme.spacing(props.mobileDevice ? 1 : 8),
       right: theme.spacing(1),
       "white-space": "nowrap",
     },
