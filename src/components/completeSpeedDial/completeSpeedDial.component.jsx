@@ -8,15 +8,11 @@ import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
-import IssueDialog from "../dialogs/newIssueDialog.component";
-import ProjectDialog from "../dialogs/newProjectDialog.component";
 
 import * as HerokuAPI from "../api/heroku.api.js";
 
 const CompleteSpeedDial = props => {
   const [open, setOpen] = useState(false);
-  const [openIssueDialog, setOpenIssueDialog] = React.useState(false);
-  const [openProjectDialog, setOpenProjectDialog] = React.useState(false);
 
   const hidden = false;
 
@@ -49,24 +45,6 @@ const CompleteSpeedDial = props => {
     );
   }
 
-  function createProject(projectTitle) {
-    handleCloseProjectDialog();
-    props.setGetProjectStatus(HerokuAPI.loadingState.loading);
-    HerokuAPI.postNewProject(projectTitle, props.finishLoadingProjects);
-  }
-
-  function createIssue(issueData) {
-    handleCloseIssueDialog();
-    props.setGetProjectStatus(HerokuAPI.loadingState.loading);
-    HerokuAPI.postNewIssue(
-      props.currentTab,
-      issueData.issueTitle,
-      issueData.dueDate,
-      issueData.issuePriority,
-      props.finishLoadingProjects
-    );
-  }
-
   function changeDarkMode() {
     handleClose();
     props.changeDarkMode();
@@ -80,139 +58,90 @@ const CompleteSpeedDial = props => {
     setOpen(false);
   };
 
-  const handleOpenIssueDialog = () => {
-    console.log(props.currentTab);
-    setOpenIssueDialog(true);
-  };
-
-  const handleCloseIssueDialog = () => {
-    setOpenIssueDialog(false);
-  };
-
-  const handleOpenProjectDialog = () => {
-    setOpenProjectDialog(true);
-  };
-
-  const handleCloseProjectDialog = () => {
-    setOpenProjectDialog(false);
-  };
-
   const useStyles = makeStyles(theme => ({
-    titleTextField: { width: "300px" },
     speedDial: {
       position: "absolute",
-      bottom: theme.spacing(props.mobileDevice ? 2 : 10),
-      right: theme.spacing(2),
+      bottom: theme.spacing(props.mobileDevice ? 1 : 8),
+      right: theme.spacing(1),
       "white-space": "nowrap",
     },
-    formControl: { width: "150px" },
-    textField: {},
-    button: {},
   }));
   const classes = useStyles();
 
   if (props.mobileDevice) {
     return (
-      <>
-        <IssueDialog
-          open={openIssueDialog}
-          title={"Create new Issue"}
-          handleClose={() => handleCloseIssueDialog()}
-          onNewIssueCreated={formData => createIssue(formData)}
+      <SpeedDial
+        ariaLabel="SpeedDial actions"
+        className={classes.speedDial}
+        hidden={hidden}
+        icon={<SpeedDialIcon />}
+        onClose={handleClose}
+        onOpen={handleOpen}
+        open={open}
+      >
+        <SpeedDialAction
+          key={props.darkMode ? "Light mode" : "Dark mode"}
+          icon={<Brightness4Icon />}
+          tooltipTitle={props.darkMode ? "Light mode" : "Dark mode"}
+          tooltipOpen={!props.mobileDevice}
+          onClick={changeDarkMode}
         />
-        <ProjectDialog
-          open={openProjectDialog}
-          title={"Create new Project"}
-          handleClose={() => handleCloseProjectDialog()}
-          onNewProjectCreated={formData => createProject(formData.projectTitle)}
+        <SpeedDialAction
+          key={"New Project"}
+          icon={<AddIcon />}
+          tooltipTitle={"New Project"}
+          tooltipOpen={!props.mobileDevice}
+          onClick={props.handleOpenProjectDialog}
         />
-        <SpeedDial
-          ariaLabel="SpeedDial actions"
-          className={classes.speedDial}
-          hidden={hidden}
-          icon={<SpeedDialIcon />}
-          onClose={handleClose}
-          onOpen={handleOpen}
-          open={open}
-        >
-          <SpeedDialAction
-            key={props.darkMode ? "Light mode" : "Dark mode"}
-            icon={<Brightness4Icon />}
-            tooltipTitle={props.darkMode ? "Light mode" : "Dark mode"}
-            tooltipOpen={!props.mobileDevice}
-            onClick={changeDarkMode}
-          />
-          <SpeedDialAction
-            key={"New Project"}
-            icon={<AddIcon />}
-            tooltipTitle={"New Project"}
-            tooltipOpen={!props.mobileDevice}
-            onClick={handleOpenProjectDialog}
-          />
-          <SpeedDialAction
-            key={"Delete Project"}
-            icon={<DeleteIcon />}
-            tooltipTitle={"Delete Project"}
-            tooltipOpen={!props.mobileDevice}
-            onClick={deleteCurrentProject}
-          />
-          <SpeedDialAction
-            key={"New Issue"}
-            icon={<EditIcon />}
-            tooltipTitle={"New Issue"}
-            tooltipOpen={!props.mobileDevice}
-            onClick={handleOpenIssueDialog}
-          />
-        </SpeedDial>
-      </>
+        <SpeedDialAction
+          key={"Delete Project"}
+          icon={<DeleteIcon />}
+          tooltipTitle={"Delete Project"}
+          tooltipOpen={!props.mobileDevice}
+          onClick={deleteCurrentProject}
+        />
+        <SpeedDialAction
+          key={"New Issue"}
+          icon={<EditIcon />}
+          tooltipTitle={"New Issue"}
+          tooltipOpen={!props.mobileDevice}
+          onClick={props.handleOpenIssueDialog}
+        />
+      </SpeedDial>
     );
   } else {
     return (
-      <>
-        <IssueDialog
-          open={openIssueDialog}
-          title={"Create new Issue"}
-          handleClose={() => handleCloseIssueDialog()}
-          onNewIssueCreated={formData => createIssue(formData)}
+      <SpeedDial
+        ariaLabel="SpeedDial actions"
+        className={classes.speedDial}
+        hidden={hidden}
+        icon={<SpeedDialIcon />}
+        onClose={handleClose}
+        onOpen={handleOpen}
+        open={open}
+      >
+        <SpeedDialAction
+          key={"New Project"}
+          icon={<AddIcon />}
+          tooltipTitle={"New Project"}
+          tooltipOpen={!props.mobileDevice}
+          onClick={props.handleOpenProjectDialog}
         />
-        <ProjectDialog
-          open={openProjectDialog}
-          title={"Create new Project"}
-          handleClose={() => handleCloseProjectDialog()}
-          onNewProjectCreated={formData => createProject(formData.projectTitle)}
+        <SpeedDialAction
+          key={"Delete Project"}
+          icon={<DeleteIcon />}
+          tooltipTitle={"Delete Project"}
+          tooltipOpen={!props.mobileDevice}
+          onClick={deleteCurrentProject}
         />
-        <SpeedDial
-          ariaLabel="SpeedDial actions"
-          className={classes.speedDial}
-          hidden={hidden}
-          icon={<SpeedDialIcon />}
-          onClose={handleClose}
-          onOpen={handleOpen}
-          open={open}
-        >
-          <SpeedDialAction
-            key={"New Project"}
-            icon={<AddIcon />}
-            tooltipTitle={"New Project"}
-            tooltipOpen={!props.mobileDevice}
-            onClick={handleOpenProjectDialog}
-          />
-          <SpeedDialAction
-            key={"Delete Project"}
-            icon={<DeleteIcon />}
-            tooltipTitle={"Delete Project"}
-            tooltipOpen={!props.mobileDevice}
-            onClick={deleteCurrentProject}
-          />
-          <SpeedDialAction
-            key={"New Issue"}
-            icon={<EditIcon />}
-            tooltipTitle={"New Issue"}
-            tooltipOpen={!props.mobileDevice}
-            onClick={handleOpenIssueDialog}
-          />
-        </SpeedDial>
-      </>
+        <SpeedDialAction
+          key={"New Issue"}
+          icon={<EditIcon />}
+          tooltipTitle={"New Issue"}
+          tooltipOpen={!props.mobileDevice}
+          onClick={props.handleOpenIssueDialog}
+        />
+      </SpeedDial>
     );
   }
 };

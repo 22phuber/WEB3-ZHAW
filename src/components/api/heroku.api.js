@@ -26,7 +26,6 @@ const standardPayload = {
   issue: {
     done: false,
     due_date: null,
-    created_at: null,
     updated_at: null,
     title: null,
     project_client_id: client_uuid,
@@ -245,15 +244,12 @@ export async function fetchRemoteProjects(callback) {
  * Gets all issues stored on the given project id
  * in the heroku service
  * @param {int} id 
- *
-function getProjectIssues(id, callback) {
-  fetch(herokuApi.projectsUrl.concat("/", id, "/issues"))
-    .then(res => {
-      res.json();
-    })
+ */
+export async function getProjectIssues(id, callback) {
+  await fetch(herokuApi.projectsUrl.concat("/", id, "/issues"))
+    .then(res => res.json())
     .then(data => {
-      console.log(data);
-      if(callback){
+      if (callback) {
         callback(data);
       }
     })
@@ -261,7 +257,6 @@ function getProjectIssues(id, callback) {
       console.log(error);
     })
 }
-*/
 
 /**
  * Function to post a new issue to a certain projectId on
@@ -272,50 +267,33 @@ function getProjectIssues(id, callback) {
  * @param {String} priority
  * @param {boolean} done
  */
-export async function postNewIssue(
-  tabsId,
-  issueTitle,
-  dueDate,
-  priority,
-  callback
-) {
-  const projectId = getProjectIdFromTabsId(tabsId);
+export async function postNewIssue(projectId, issueTitle, dueDate,
+  priority, callback) {
   // current
-  var now = new Date();
-  const currentISOTimeStamp = now.toISOString();
-  // due date
+  const now = getCurrentTime();
   var due = new Date(dueDate + ":00");
   const dueISOTimeStamp = due.toISOString();
 
-  try {
-    const response = await fetch(
-      herokuApi.projectsUrl.concat("/", projectId, "/issues"),
-      {
-        method: "POST",
-        headers: {
-          Accept: herokuApi.contentType,
-          "Content-Type": herokuApi.contentType,
-        },
-        body: JSON.stringify({
-          ...standardPayload.issue,
-          title: issueTitle,
-          due_date: dueISOTimeStamp,
-          created_at: currentISOTimeStamp,
-          updated_at: currentISOTimeStamp,
-          priority: priority,
-        }),
-      }
-    );
-    if (!response.ok) {
-      throw Error(response.statusText);
+  fetch(herokuApi.projectsUrl.concat("/", projectId, "/issues"),
+    {
+      method: "POST",
+      headers: {
+        Accept: herokuApi.contentType,
+        "Content-Type": herokuApi.contentType,
+      },
+      body: JSON.stringify({
+        ...standardPayload.issue,
+        title: issueTitle,
+        due_date: dueISOTimeStamp,
+        created_at: now,
+        updated_at: now,
+        priority: priority,
+      }),
     }
-    const responseJson = await response.json();
-    if (callback) {
-      callback(responseJson);
-    }
-  } catch (error) {
-    console.log(error);
-  }
+  ).then(res => res.json())
+    .then(data => {
+      if (callback) { callback() };
+    })
 }
 
 /**
@@ -327,8 +305,9 @@ export async function postNewIssue(
  * @param {String} dueDate
  * @param {String} priority
  * @param {boolean} done
- *
-function putIssue(projectId, issueId, issueTitle, dueDate, priority, done) {
+ */
+export async function putIssue(projectId, issueId, issueTitle, dueDate, priority, isDone) {
+  const updatedAt = getCurrentTime();
   fetch(herokuApi.projectsUrl.concat("/", projectId, "/issues/", issueId),
     {
       method: 'PUT',
@@ -336,13 +315,14 @@ function putIssue(projectId, issueId, issueTitle, dueDate, priority, done) {
         Accept: herokuApi.contentType,
         "Content-Type": herokuApi.contentType
       },
-      body: {
+      body: JSON.stringify({
         ...standardPayload.issue,
-        done: done,
+        done: isDone,
         title: issueTitle,
         due_date: dueDate,
+        updated_at: updatedAt,
         priority: priority
-      }
+      }),
     })
     .then(res => {
       res.json();
@@ -353,7 +333,6 @@ function putIssue(projectId, issueId, issueTitle, dueDate, priority, done) {
       console.log(error);
     })
 }
-*/
 
 export async function deleteAllIssuesAndProjectId(tabsId, callback) {
   const projectId = getProjectIdFromTabsId(tabsId);
@@ -373,7 +352,7 @@ export async function deleteAllIssuesAndProjectId(tabsId, callback) {
  * @param {int} projectId
  * @param {int} issueId
  */
-function deleteIssue(projectId, issueId) {
+export function deleteIssue(projectId, issueId, callback) {
   return fetch(
     herokuApi.projectsUrl.concat("/", projectId, "/issues/", issueId),
     {
@@ -386,6 +365,10 @@ function deleteIssue(projectId, issueId) {
   )
     .then(res => {
       res.json();
+    }).then(data => {
+      if (callback) {
+        callback();
+      }
     })
     .catch(error => {
       console.log(error);

@@ -1,24 +1,37 @@
 .Main {
     width: 100%;
+    position: absolute;
+    top: 80px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    overflow: hidden;
 }
 
-.tab-list {
-    border-bottom: 1px solid #ccc;
-    padding-left: 0;
-    cursor: pointer;
+.new-issue-form {
+    margin-top: 50px;
 }
 
-.tab-list-item {
-    display: inline-block;
-    list-style: none;
-    margin-bottom: -1px;
-    padding: 0.5rem 0.75rem;
-    border: solid #ccc;
-    border-width: 1px 1px 0 1px;
+.issue-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.tab-list-active {
-    background-color: white;
-    border: solid #ccc;
-    border-width: 1px 1px 0 1px;
+.issue-form>div {
+    margin: 8px;
+}
+
+.new-project-form {
+    margin-top: 50px;
+}
+
+.project-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.project-form>div {
+    margin: 8px;
 }

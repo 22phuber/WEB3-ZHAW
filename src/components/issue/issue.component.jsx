@@ -5,19 +5,22 @@ import Checkbox from "@material-ui/core/Checkbox";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import { makeStyles } from "@material-ui/core/styles";
 
+import * as HerokuAPI from "../api/heroku.api";
+
 import "./issue.styles.css";
 
 const useStyles = makeStyles(theme => ({
   button: {}
 }));
 
-const Issue = ({ issue, updateRemoteIssue, deleteRemoteIssue }) => {
+const Issue = ({ issue, updateRemoteIssue, deleteRemoteIssue, projectId, setGetIssuesStatus, startLoadingIssues }) => {
   const updateIssue = issueData => {
-    updateRemoteIssue(issueData);
+    HerokuAPI.putIssue(projectId, issueData.id, issueData.title, issueData.due_date, issueData.priority, issueData.done);
   };
 
   const deleteIssue = issueData => {
-    deleteRemoteIssue(issueData);
+    setGetIssuesStatus(HerokuAPI.loadingState.loading);
+    HerokuAPI.deleteIssue(projectId, issueData.id, startLoadingIssues);
   };
 
   const classes = useStyles();
