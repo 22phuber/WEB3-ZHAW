@@ -61,17 +61,27 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ## Dark mode
 
-css is set using a file name equal to the component name.
-To enable light and dark switch mode, set the changing attributes in .css classes called:
-<ComponentName>-light and <ComponentName>-dark, for example:
+css is set using a useState variable called `darkModeActive`. Upon change it saves its state to the local storage.
+The state is passed to every component, which can then implement it if they want.
+One example of such an implementation would be our Footer:
+
+```js
+<footer className={"Footer".concat(props.darkMode ? " FooterDarkMode" : " FooterLightMode")}>
+```
+The footer element then contains the classNames `Footer` and either `FooterDarkMode` or `FooterLightMode`.
+Please note the space infront of the 2nd class name. This is needed or you'll end up with a className like `FooterFooterDarkMode`.
+
+And this is the corresponding css.
 
 ```css
-.TextInputField-dark {
-    background-color: rgba(65,62,62,0.9);
+.FooterDarkMode {
+    background-color: #A4A4A4;
+    color: #4B4B4B;
 }
 
-.TextInputField-light {
-    background-color: rgba(242,241,241,1);
+.FooterLightMode {
+    background-color: rgba(168, 168, 168, 0.1);
+    color: #757575;
 }
 ```
 
