@@ -56,7 +56,9 @@
 
 .issue-list {
     flex-grow: 1;
+    max-height: 55vh;
     overflow: auto;
     /* for Firefox */
     min-height: 0;
+    margin-bottom: 25px;
 }
